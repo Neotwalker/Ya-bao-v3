@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 220" fill="none">
+  <defs><filter id="b"><feGaussianBlur stdDeviation="4.5"/></filter><linearGradient id="g" x1="70" y1="210" x2="70" y2="5" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity="0"/><stop offset=".22" stop-color="#fff" stop-opacity=".34"/><stop offset=".78" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+  <path d="M62 214C110 183 35 155 84 120C116 97 88 75 70 61C46 42 57 21 78 7" stroke="url(#g)" stroke-width="15" stroke-linecap="round" filter="url(#b)"/>
+  <path d="M91 206C120 181 73 158 103 130C126 109 109 90 92 78" stroke="url(#g)" stroke-width="8" stroke-linecap="round" filter="url(#b)" opacity=".65"/>
+</svg>

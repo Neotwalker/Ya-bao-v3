@@ -1,0 +1,83 @@
+@media (max-width: 1320px) {
+  :root { --header-height: 94px; }
+  .site-nav { gap: 22px; }
+  .site-nav__link { font-size: 15px; }
+  .button--header { padding-inline: 17px; }
+  .hero__content { width: 58%; }
+  .hero__scene { width: 50vw; }
+  .hero__title { font-size: clamp(54px, 5.2vw, 76px); }
+  .hero-feature { padding-inline: 18px; }
+}
+
+@media (max-width: 1120px) {
+  .container { width: min(calc(100% - 40px), var(--container)); }
+  .brand__text strong { font-size: 21px; }
+  .brand__text small { font-size: 13px; }
+  .site-nav { display: none; position: fixed; inset: 0; z-index: 1; padding: 120px 24px 40px; background: rgba(13,10,8,.97); flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 12px; opacity: 0; visibility: hidden; transform: translateY(-12px); transition: opacity .25s ease, visibility .25s ease, transform .25s ease; }
+  .site-nav.is-open { display: flex; opacity: 1; visibility: visible; transform: none; }
+  .site-nav__link { width: 100%; padding: 12px 0; font-size: clamp(28px, 6vw, 46px); }
+  .brand, .button--header, .menu-toggle { position: relative; z-index: 2; }
+  .menu-toggle { display: block; margin-left: auto; order: 2; }
+  .button--header { order: 1; margin-left: auto; }
+  .hero__content { width: 60%; }
+  .hero__scene { width: 54vw; opacity: .86; }
+  .hero__title { font-size: clamp(50px, 6vw, 70px); }
+  .hero__features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 520px; gap: 18px 0; }
+  .hero-feature:nth-child(3) { padding-left: 0; border-left: 0; }
+}
+
+@media (max-width: 767px) {
+  :root { --header-height: 80px; }
+  .container { width: min(calc(100% - 28px), var(--container)); }
+  .site-header { height: 80px; }
+  .site-header.is-scrolled { height: 72px; }
+  .site-header__container { gap: 10px; }
+  .brand__mark { width: 45px; height: 45px; }
+  .brand__text strong { font-size: 18px; }
+  .brand__text small { display: none; }
+  .button--header { width: 48px; height: 48px; min-height: 48px; padding: 0; border-radius: 50%; }
+  .button--header span { display: none; }
+  .menu-toggle { width: 48px; height: 48px; }
+  .site-nav { padding-top: 104px; }
+
+  .hero { min-height: 900px; }
+  .hero__scene { top: 0; left: 0; right: auto; width: 100%; height: 100%; opacity: .72; transform: none !important; }
+  .hero__picture img { object-position: 54% center; }
+  .hero__scene::before { background: linear-gradient(180deg, rgba(13,10,8,.3) 0%, rgba(13,10,8,.42) 26%, rgba(13,10,8,.92) 66%, #0d0a08 88%); }
+  .hero__container { align-items: flex-end; padding-top: 150px; padding-bottom: 78px; }
+  .hero__content { width: 100%; }
+  .hero__eyebrow { margin-bottom: 14px; font-size: 10px; letter-spacing: .21em; }
+  .hero__title { font-size: clamp(46px, 13vw, 64px); line-height: .98; }
+  .hero__description { max-width: 520px; margin-top: 20px; font-size: 18px; line-height: 1.45; }
+  .hero__actions { display: grid; grid-template-columns: 1fr; margin-top: 24px; }
+  .hero__actions .button { width: 100%; min-width: 0; min-height: 58px; }
+  .hero__features { width: 100%; margin-top: 30px; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 0; }
+  .hero-feature { min-height: 56px; padding-inline: 12px; font-size: 13px; }
+  .hero-feature:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .hero-feature svg { width: 28px; height: 28px; }
+  .hero__scroll { display: none; }
+
+  .steam--kettle { left: 7%; top: 22%; width: 130px; height: 220px; }
+  .steam--cup-left { left: 30%; top: 52%; width: 80px; height: 140px; }
+  .steam--cup-right { display: none; }
+  .candle-fx { left: 66%; top: 56%; }
+
+  .demo-section { padding: 72px 0; }
+  .demo-section__grid { grid-template-columns: 1fr; gap: 24px; }
+  .demo-section h2 { font-size: clamp(40px, 12vw, 58px); }
+  .demo-section p { font-size: 16px; }
+  .booking-modal__inner { padding: 34px 22px 24px; }
+}
+
+@media (max-width: 390px) {
+  .brand__text strong { font-size: 16px; }
+  .hero { min-height: 880px; }
+  .hero__title { font-size: 44px; }
+  .hero__description { font-size: 16px; }
+  .hero__features { margin-top: 25px; }
+  .hero-feature { grid-template-columns: 26px auto; gap: 7px; padding-right: 8px; font-size: 12px; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .button:hover { transform: none; }
+}
