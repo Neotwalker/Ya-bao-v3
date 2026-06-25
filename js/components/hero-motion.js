@@ -1,26 +1,37 @@
 export function initHeroMotion() {
   const hero = document.querySelector('[data-hero]');
-  const scene = document.querySelector('[data-scene]');
-  if (!hero || !scene) return;
+  const video = document.querySelector('[data-hero-video]');
+  if (!hero || !video) return;
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const finePointer = window.matchMedia('(pointer: fine)');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const saveData = navigator.connection?.saveData === true;
 
-  const reset = () => {
-    scene.style.setProperty('--scene-x', '0px');
-    scene.style.setProperty('--scene-y', '0px');
+  const syncPlayback = () => {
+    if (reducedMotion.matches || saveData || document.hidden) {
+      video.pause();
+      return;
+    }
+
+    const playPromise = video.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(() => {
+        // The poster remains visible if a browser blocks autoplay.
+      });
+    }
   };
 
-  const onPointerMove = (event) => {
-    if (prefersReducedMotion.matches || !finePointer.matches || window.innerWidth < 768) return;
-    const rect = hero.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
-    scene.style.setProperty('--scene-x', `${x * -9}px`);
-    scene.style.setProperty('--scene-y', `${y * -6}px`);
-  };
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) syncPlayback();
+      else video.pause();
+    },
+    { threshold: 0.08 }
+  );
 
-  hero.addEventListener('pointermove', onPointerMove, { passive: true });
-  hero.addEventListener('pointerleave', reset);
-  prefersReducedMotion.addEventListener?.('change', reset);
+  observer.observe(hero);
+  document.addEventListener('visibilitychange', syncPlayback);
+  reducedMotion.addEventListener?.('change', syncPlayback);
+  video.addEventListener('canplay', () => hero.classList.add('hero--video-ready'), { once: true });
+
+  syncPlayback();
 }

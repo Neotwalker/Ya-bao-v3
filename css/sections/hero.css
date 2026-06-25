@@ -107,3 +107,69 @@
 @keyframes haloPulse { 0%,100% { transform: translate(-50%,-50%) scale(.9); opacity: .58; } 50% { transform: translate(-50%,-50%) scale(1.08); opacity: .95; } }
 @keyframes ambientBreath { 0%,100% { transform: scale(.94); opacity: .56; } 50% { transform: scale(1.05); opacity: .95; } }
 @keyframes scrollLine { 0% { transform: translateY(-100%); } 60%,100% { transform: translateY(100%); } }
+
+/* Video background: the frame stays locked; movement exists only inside the source video. */
+.hero__ambient {
+  animation: none;
+  opacity: .62;
+}
+
+.hero__scene--video {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+  will-change: auto;
+  background: #0d0a08;
+}
+
+.hero__picture--fallback,
+.hero__picture--fallback img,
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero__picture--fallback {
+  z-index: 0;
+}
+
+.hero__picture--fallback img,
+.hero__video {
+  object-fit: cover;
+  object-position: center center;
+}
+
+.hero__video {
+  z-index: 1;
+  display: block;
+  border: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .5s ease;
+  background: transparent;
+}
+
+.hero--video-ready .hero__video {
+  opacity: 1;
+}
+
+.hero__scene--video::before {
+  z-index: 3;
+  background:
+    linear-gradient(90deg, rgba(13,10,8,.97) 0%, rgba(13,10,8,.89) 27%, rgba(13,10,8,.48) 47%, rgba(13,10,8,.08) 72%, rgba(13,10,8,.08) 100%),
+    linear-gradient(180deg, rgba(6,5,4,.14), transparent 58%, rgba(6,5,4,.4));
+}
+
+.hero__scene--video .hero__scene-shade {
+  z-index: 4;
+  box-shadow: inset 0 0 120px rgba(0,0,0,.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__video {
+    display: none;
+  }
+}

@@ -81,3 +81,38 @@
 @media (hover: none) and (pointer: coarse) {
   .button:hover { transform: none; }
 }
+
+/* Video hero overrides */
+@media (max-width: 1320px) {
+  .hero__scene.hero__scene--video { width: 100%; }
+}
+
+@media (max-width: 1120px) {
+  .hero__scene.hero__scene--video { width: 100%; opacity: 1; }
+  .hero__scene--video::before {
+    background:
+      linear-gradient(90deg, rgba(13,10,8,.96) 0%, rgba(13,10,8,.84) 35%, rgba(13,10,8,.42) 58%, rgba(13,10,8,.12) 100%),
+      linear-gradient(180deg, rgba(6,5,4,.16), transparent 58%, rgba(6,5,4,.46));
+  }
+}
+
+@media (max-width: 767px) {
+  .hero__scene.hero__scene--video {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .76;
+  }
+
+  .hero__scene--video .hero__video {
+    display: none;
+  }
+
+  .hero__scene--video .hero__picture--fallback img {
+    object-position: 54% center;
+  }
+
+  .hero__scene--video::before {
+    background: linear-gradient(180deg, rgba(13,10,8,.32) 0%, rgba(13,10,8,.48) 28%, rgba(13,10,8,.93) 67%, #0d0a08 90%);
+  }
+}
