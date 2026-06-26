@@ -57,8 +57,7 @@
 
       <div class="hero__scene hero__scene--video" data-scene aria-hidden="true">
         <picture class="hero__picture hero__picture--fallback">
-          <source media="(max-width: 767px)" srcset="assets/images/hero-scene-mobile.webp">
-          <img src="assets/images/hero-video-poster.webp" width="910" height="512" alt="" fetchpriority="high" decoding="async">
+          <img src="assets/images/hero-video-poster.webp" width="1920" height="1080" alt="" fetchpriority="high" decoding="async">
         </picture>
 
         <video
@@ -66,10 +65,10 @@
           data-hero-video
           autoplay
           muted
-          loop
           playsinline
-          preload="metadata"
+          preload="auto"
           poster="assets/images/hero-video-poster.webp"
+          disablepictureinpicture
           tabindex="-1"
         >
           <source src="assets/video/hero-tea-loop.mp4" type="video/mp4">

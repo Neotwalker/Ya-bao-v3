@@ -57,11 +57,6 @@
   .hero-feature svg { width: 28px; height: 28px; }
   .hero__scroll { display: none; }
 
-  .steam--kettle { left: 7%; top: 22%; width: 130px; height: 220px; }
-  .steam--cup-left { left: 30%; top: 52%; width: 80px; height: 140px; }
-  .steam--cup-right { display: none; }
-  .candle-fx { left: 66%; top: 56%; }
-
   .demo-section { padding: 72px 0; }
   .demo-section__grid { grid-template-columns: 1fr; gap: 24px; }
   .demo-section h2 { font-size: clamp(40px, 12vw, 58px); }
@@ -104,12 +99,9 @@
     opacity: .76;
   }
 
+  .hero__scene--video .hero__picture--fallback img,
   .hero__scene--video .hero__video {
-    display: none;
-  }
-
-  .hero__scene--video .hero__picture--fallback img {
-    object-position: 54% center;
+    object-position: 68% center;
   }
 
   .hero__scene--video::before {
