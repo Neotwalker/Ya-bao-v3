@@ -1,109 +1,30 @@
-<!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#17130f">
-  <title>Забронировать чайную церемонию — Я Бао Завари</title>
-  <meta name="description" content="Форма бронирования чайной церемонии, комнаты или события в чайной «Я Бао Завари».">
-  <link rel="canonical" href="https://example.ru/booking/">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Забронировать чайную церемонию — Я Бао Завари">
-  <meta property="og:description" content="Форма бронирования чайной церемонии, комнаты или события в чайной «Я Бао Завари».">
-  <meta property="og:image" content="https://example.ru/assets/images/hero-video-poster.webp">
-  <meta property="og:locale" content="ru_RU">
-  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="stylesheet" href="assets/css/sections.css">
-  <link rel="stylesheet" href="assets/css/pages.css">
-  <link rel="stylesheet" href="assets/css/responsive.css">
-  
-  <script type="module" src="assets/js/app.js"></script>
-</head><body class="page-inner"><noscript><div class="no-js-note">Для работы меню и формы включите JavaScript.</div></noscript>
-<a class="skip-link" href="#main-content">Перейти к содержимому</a>
-<header class="site-header" data-header>
-  <div class="container header-inner">
-    <a class="brand" href="index.html" aria-label="Я Бао Завари — главная">
-      <img src="assets/icons/logo-mark.svg" width="48" height="48" alt="">
-      <span><strong>Я Бао Завари</strong><small>чайная · чай · церемонии</small></span>
-    </a>
-    <nav class="site-nav" aria-label="Основная навигация"><ul><li><a href="ceremonies.html">Церемонии</a></li><li><a href="spaces.html">Пространства</a></li><li><a href="menu.html">Меню</a></li><li><a href="events.html">События</a></li><li><a href="about.html">О чайной</a></li><li><a href="contacts.html">Контакты</a></li></ul></nav>
-    <div class="header-actions">
-      <button class="button button--primary" type="button" data-modal-open data-source="header">Забронировать</button>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-navigation" data-menu-toggle>
-        <span></span><span></span><span></span><span class="visually-hidden">Открыть меню</span>
-      </button>
-    </div>
-  </div>
-</header>
-<div class="mobile-nav" id="mobile-navigation" data-mobile-nav aria-hidden="true">
-  <nav aria-label="Мобильная навигация"><ul><li><a href="ceremonies.html">Церемонии</a></li><li><a href="spaces.html">Пространства</a></li><li><a href="menu.html">Меню</a></li><li><a href="events.html">События</a></li><li><a href="about.html">О чайной</a></li><li><a href="contacts.html">Контакты</a></li></ul></nav>
-  <div class="mobile-nav__meta">
-    <a href="tel:+79995847290">+7 999 584-72-90</a>
-    <span>Челябинск, ул. Кирова, 94</span>
-    <span>Ежедневно 10:00–01:00</span>
-  </div>
-</div>
-<main id="main-content">
-<section class="page-hero"><div class="container page-hero__grid"><div><p class="eyebrow">Бронирование</p><h1>Расскажите, какой вечер вы хотите провести</h1></div><div class="page-hero__aside"><p>После подключения формы администратор получит формат, дату, время, количество гостей, пространство и источник заявки.</p></div></div></section>
-<section class="section section--paper"><div class="container booking-page-grid"><aside class="booking-page__aside"><p class="eyebrow">Как это работает</p><h2>Три простых шага</h2><ol><li>Выберите формат, дату и количество гостей.</li><li>Администратор уточнит наличие места и условия.</li><li>После подтверждения вы получите детали визита.</li></ol><p><strong>Телефон:</strong><br><a href="tel:+79995847290">+7 999 584-72-90</a></p></aside><div class="booking-card">
-<form class="booking-form" data-demo-form novalidate>
-  <input type="hidden" name="source" value="page">
-  <div class="form-grid">
-    <div class="field"><label for="page-name">Ваше имя *</label><input id="page-name" name="name" autocomplete="name" required><span class="field__error"></span></div>
-    <div class="field"><label for="page-phone">Телефон *</label><input id="page-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required><span class="field__error"></span></div>
-    <div class="field"><label for="page-date">Дата *</label><input id="page-date" name="date" type="date" required><span class="field__error"></span></div>
-    <div class="field"><label for="page-time">Время *</label><input id="page-time" name="time" type="time" required><span class="field__error"></span></div>
-    <div class="field"><label for="page-guests">Количество гостей *</label><select id="page-guests" name="guests" required><option value="">Выберите</option><option>1–2 гостя</option><option>3–4 гостя</option><option>5–6 гостей</option><option>Больше 6 гостей</option></select><span class="field__error"></span></div>
-    <div class="field"><label for="page-ceremony">Формат посещения *</label><select id="page-ceremony" name="ceremony" required><option value="">Выберите формат</option><option value="first">Первое знакомство</option><option value="couple">Церемония для двоих</option><option value="company">Церемония для компании</option><option value="event">Событие / музыкальный вечер</option><option value="visit">Просто прийти в чайную</option></select><span class="field__error"></span></div>
-    <div class="field field--full"><label for="page-room">Пространство</label><select id="page-room" name="room"><option value="">Подобрать вместе с администратором</option><option value="main">Основной зал</option><option value="vip">VIP-комната</option><option value="second">Второй этаж / кальянная</option></select><span class="field__error"></span></div>
-    <div class="field field--full"><label for="page-comment">Комментарий</label><textarea id="page-comment" name="comment" placeholder="Расскажите о пожеланиях, поводе или выбранном событии"></textarea><span class="field__error"></span></div>
-    <label class="checkbox field--full"><input type="checkbox" name="consent" required><span>Согласен на <a href="privacy.html">обработку персональных данных</a> и ознакомлен с политикой конфиденциальности.</span><span class="field__error"></span></label>
-    <div class="field--full"><button class="button button--walnut" type="submit">Отправить заявку <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="form-status" data-form-status aria-live="polite"></div></div>
-  </div>
-</form></div></div></section>
-</main>
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a class="brand" href="index.html"><img src="assets/icons/logo-mark.svg" width="48" height="48" alt=""><span><strong>Я Бао Завари</strong><small>чайная в Челябинске</small></span></a>
-        <p>Китайский чай, камерные церемонии, события и пространство для неспешного отдыха в центре города.</p>
-      </div>
-      <div><div class="footer-title">Сайт</div><ul class="footer-links"><li><a href="ceremonies.html">Церемонии</a></li><li><a href="spaces.html">Пространства</a></li><li><a href="menu.html">Меню</a></li><li><a href="events.html">События</a></li></ul></div>
-      <div><div class="footer-title">Информация</div><ul class="footer-links"><li><a href="about.html">О чайной</a></li><li><a href="certificates.html">Сертификаты</a></li><li><a href="contacts.html">Контакты</a></li><li><a href="privacy.html">Политика</a></li></ul></div>
-      <div><div class="footer-title">Связаться</div><ul class="footer-links"><li><a href="tel:+79995847290">+7 999 584-72-90</a></li><li><a href="https://vk.com/yabaozavary" target="_blank" rel="noopener">ВКонтакте</a></li><li><a href="https://2gis.ru/chelyabinsk/firm/70000001110715460" target="_blank" rel="noopener">2ГИС</a></li><li><a href="https://yandex.ru/maps/org/ya_bao_zavari/112754832500/" target="_blank" rel="noopener">Яндекс Карты</a></li></ul></div>
-    </div>
-    <div class="footer-bottom"><span>© <span data-current-year></span> «Я Бао Завари». Все права защищены.</span><span>Контент, цены и вместимость необходимо сверить перед публикацией.</span></div>
-  </div>
-</footer>
-<div class="mobile-cta" data-mobile-cta><button class="button button--primary" type="button" data-modal-open data-source="mobile-sticky">Забронировать церемонию</button></div>
-
-<dialog class="modal" id="booking-modal" aria-labelledby="booking-modal-title">
-  <div class="modal__inner">
-    <button class="modal__close" type="button" data-modal-close aria-label="Закрыть">×</button>
-    <p class="eyebrow">Бронирование</p>
-    <h2 id="booking-modal-title">Выберите удобный формат</h2>
-    <p class="modal__intro">Администратор свяжется с вами, подтвердит время, формат и актуальные условия.</p>
-    
-<form class="booking-form" data-demo-form novalidate>
-  <input type="hidden" name="source" value="modal">
-  <div class="form-grid">
-    <div class="field"><label for="modal-name">Ваше имя *</label><input id="modal-name" name="name" autocomplete="name" required><span class="field__error"></span></div>
-    <div class="field"><label for="modal-phone">Телефон *</label><input id="modal-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required><span class="field__error"></span></div>
-    <div class="field"><label for="modal-date">Дата *</label><input id="modal-date" name="date" type="date" required><span class="field__error"></span></div>
-    <div class="field"><label for="modal-time">Время *</label><input id="modal-time" name="time" type="time" required><span class="field__error"></span></div>
-    <div class="field"><label for="modal-guests">Количество гостей *</label><select id="modal-guests" name="guests" required><option value="">Выберите</option><option>1–2 гостя</option><option>3–4 гостя</option><option>5–6 гостей</option><option>Больше 6 гостей</option></select><span class="field__error"></span></div>
-    <div class="field"><label for="modal-ceremony">Формат посещения *</label><select id="modal-ceremony" name="ceremony" required><option value="">Выберите формат</option><option value="first">Первое знакомство</option><option value="couple">Церемония для двоих</option><option value="company">Церемония для компании</option><option value="event">Событие / музыкальный вечер</option><option value="visit">Просто прийти в чайную</option></select><span class="field__error"></span></div>
-    <div class="field field--full"><label for="modal-room">Пространство</label><select id="modal-room" name="room"><option value="">Подобрать вместе с администратором</option><option value="main">Основной зал</option><option value="vip">VIP-комната</option><option value="second">Второй этаж / кальянная</option></select><span class="field__error"></span></div>
-    <div class="field field--full"><label for="modal-comment">Комментарий</label><textarea id="modal-comment" name="comment" placeholder="Расскажите о пожеланиях, поводе или выбранном событии"></textarea><span class="field__error"></span></div>
-    <label class="checkbox field--full"><input type="checkbox" name="consent" required><span>Согласен на <a href="privacy.html">обработку персональных данных</a> и ознакомлен с политикой конфиденциальности.</span><span class="field__error"></span></label>
-    <div class="field--full"><button class="button button--walnut" type="submit">Отправить заявку <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="form-status" data-form-status aria-live="polite"></div></div>
-  </div>
-</form>
-  </div>
-</dialog>
-<dialog class="lightbox" id="lightbox"><button class="lightbox__close" type="button" data-lightbox-close aria-label="Закрыть">×</button><img src="" alt=""></dialog>
-<script>document.querySelectorAll("[data-current-year]").forEach(el=>el.textContent=new Date().getFullYear())</script></body></html>
+<!doctype html><html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#17130f">
+<title>Бронирование чайной церемонии — Я Бао Завари</title><meta name="description" content="Забронируйте чайную церемонию, стол или приватную комнату в Я Бао Завари в Челябинске."><link rel="canonical" href="https://neotwalker.github.io/Ya-bao-v3/booking.html">
+<meta property="og:type" content="website"><meta property="og:title" content="Бронирование чайной церемонии — Я Бао Завари"><meta property="og:description" content="Забронируйте чайную церемонию, стол или приватную комнату в Я Бао Завари в Челябинске."><meta property="og:image" content="https://neotwalker.github.io/Ya-bao-v3/assets/images/hero-poster.webp"><meta property="og:locale" content="ru_RU">
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml"><link rel="manifest" href="site.webmanifest">
+<link rel="stylesheet" href="assets/css/base.css"><link rel="stylesheet" href="assets/css/components.css"><link rel="stylesheet" href="assets/css/sections.css"><link rel="stylesheet" href="assets/css/pages.css"><link rel="stylesheet" href="assets/css/responsive.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "CafeOrCoffeeShop", "name": "Я Бао Завари", "telephone": "+7 999 584-72-90", "address": {"@type": "PostalAddress", "streetAddress": "ул. Кирова, 94", "addressLocality": "Челябинск", "postalCode": "454091", "addressCountry": "RU"}, "openingHours": "Mo-Su 10:00-01:00", "priceRange": "₽₽", "url": "https://neotwalker.github.io/Ya-bao-v3/", "sameAs": ["https://vk.com/yabaozavary", "https://2gis.ru/chelyabinsk/firm/70000001110715460", "https://yandex.ru/maps/org/ya_bao_zavari/112754832500/"]}</script><script type="module" src="assets/js/app.js"></script></head><body class="page-booking"><noscript><div class="no-js-note">Для работы меню и формы включите JavaScript.</div></noscript><a class="skip-link" href="#main-content">Перейти к содержимому</a>
+<header class="site-header" data-header><div class="container header-inner"><a class="brand" href="index.html" aria-label="Я Бао Завари — главная"><img src="assets/icons/logo-mark.svg" width="56" height="56" alt=""><span><strong>Я Бао Завари</strong><small>чайная · чай · церемонии</small></span></a><nav class="site-nav" aria-label="Основная навигация"><ul><li><a href="ceremonies.html">Церемонии</a></li><li><a href="spaces.html">Пространства</a></li><li><a href="menu.html">Меню</a></li><li><a href="events.html">События</a></li><li><a href="about.html">О чайной</a></li><li><a href="contacts.html">Контакты</a></li></ul></nav><div class="header-actions"><button class="button button--primary" type="button" data-modal-open data-source="header">Забронировать</button><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-navigation" data-menu-toggle><span></span><span></span><span></span><span class="visually-hidden">Открыть меню</span></button></div></div></header>
+<div class="mobile-nav" id="mobile-navigation" data-mobile-nav aria-hidden="true"><nav aria-label="Мобильная навигация"><ul><li><a href="ceremonies.html">Церемонии</a></li><li><a href="spaces.html">Пространства</a></li><li><a href="menu.html">Меню</a></li><li><a href="events.html">События</a></li><li><a href="about.html">О чайной</a></li><li><a href="contacts.html">Контакты</a></li></ul></nav><div class="mobile-nav__meta"><a href="tel:+79995847290">+7 999 584-72-90</a><span>Челябинск, ул. Кирова, 94</span><span>Ежедневно 10:00–01:00</span></div></div><main id="main-content"><section class="page-hero "><div class="container page-hero__grid"><div><p class="eyebrow">Бронирование</p><h1>Расскажите, какой вечер вы хотите провести</h1></div><div class="page-hero__aside"><p>После заявки администратор свяжется с вами, проверит свободное время и подтвердит итоговую стоимость.</p></div></div></section><section class="section section--paper"><div class="container booking-page-grid"><aside class="booking-page__aside"><p class="eyebrow">Как это работает</p><h2>Три простых шага</h2><ol class="booking-steps"><li><span>1</span>Выберите формат, дату и количество гостей.</li><li><span>2</span>Администратор подтвердит наличие места и условия.</li><li><span>3</span>После предоплаты бронь будет зафиксирована.</li></ol><div class="booking-note"><strong>Ответ администратора</strong><p>Обычно в течение 30 минут в рабочее время.</p></div><p><strong>Телефон:</strong><br><a href="tel:+79995847290">+7 999 584-72-90</a></p></aside><div class="booking-card"><form class="booking-form" data-demo-form novalidate><input type="hidden" name="source" value="page"><div class="form-grid">
+<div class="field"><label for="page-name">Ваше имя *</label><input id="page-name" name="name" autocomplete="name" required><span class="field__error"></span></div>
+<div class="field"><label for="page-phone">Телефон *</label><input id="page-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required><span class="field__error"></span></div>
+<div class="field"><label for="page-date">Дата *</label><input id="page-date" name="date" type="date" required><span class="field__error"></span></div>
+<div class="field"><label for="page-time">Время *</label><input id="page-time" name="time" type="time" required><span class="field__error"></span></div>
+<div class="field"><label for="page-guests">Количество гостей *</label><select id="page-guests" name="guests" required><option value="">Выберите</option><option>1–2 гостя</option><option>3–4 гостя</option><option>5–6 гостей</option><option>7–8 гостей</option><option>Больше 8 гостей</option></select><span class="field__error"></span></div>
+<div class="field"><label for="page-ceremony">Формат посещения *</label><select id="page-ceremony" name="ceremony" required><option value="">Выберите формат</option><option value="first">Первое знакомство</option><option value="couple">Церемония для двоих</option><option value="company">Общий чайный стол</option><option value="event">Событие</option><option value="visit">Визит без церемонии</option></select><span class="field__error"></span></div>
+<div class="field field--full"><label for="page-room">Пространство</label><select id="page-room" name="room"><option value="">Подобрать с администратором</option><option value="main">Основной зал</option><option value="vip">VIP-комната</option><option value="second">Второй этаж</option></select><span class="field__error"></span></div>
+<div class="field field--full"><label for="page-comment">Комментарий</label><textarea id="page-comment" name="comment" placeholder="Повод, пожелания по чаю или выбранное событие"></textarea><span class="field__error"></span></div>
+<label class="checkbox field--full"><input type="checkbox" name="consent" required><span>Согласен на <a href="consent.html">обработку персональных данных</a> и ознакомлен с <a href="privacy.html">политикой конфиденциальности</a>.</span><span class="field__error"></span></label>
+<div class="field--full form-submit"><button class="button button--walnut" type="submit">Отправить заявку <span aria-hidden="true">→</span></button><div class="form-status" data-form-status aria-live="polite"></div></div></div></form></div></div></section></main><footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a class="brand" href="index.html"><img src="assets/icons/logo-mark.svg" width="52" height="52" alt=""><span><strong>Я Бао Завари</strong><small>чайная в Челябинске</small></span></a><p>Китайский чай, камерные церемонии, встречи и события в историческом центре Челябинска.</p></div><div><h3>Посетить</h3><ul class="footer-links"><li><a href="ceremonies.html">Церемонии</a></li><li><a href="spaces.html">Пространства</a></li><li><a href="menu.html">Меню</a></li><li><a href="events.html">События</a></li></ul></div><div><h3>Информация</h3><ul class="footer-links"><li><a href="about.html">О чайной</a></li><li><a href="certificates.html">Сертификаты</a></li><li><a href="faq.html">Вопросы и ответы</a></li><li><a href="privacy.html">Политика</a></li></ul></div><div><h3>Связаться</h3><ul class="footer-links"><li><a href="tel:+79995847290">+7 999 584-72-90</a></li><li><a href="https://vk.com/yabaozavary" target="_blank" rel="noopener">ВКонтакте</a></li><li><a href="https://2gis.ru/chelyabinsk/firm/70000001110715460" target="_blank" rel="noopener">2ГИС</a></li><li><a href="https://yandex.ru/maps/org/ya_bao_zavari/112754832500/" target="_blank" rel="noopener">Яндекс Карты</a></li></ul></div></div><div class="footer-bottom"><span>© <span data-current-year></span> «Я Бао Завари». Все права защищены.</span><span><a href="consent.html">Согласие на обработку данных</a></span></div></div></footer>
+<div class="mobile-cta" data-mobile-cta><button class="button button--primary" type="button" data-modal-open data-source="mobile-sticky">Забронировать церемонию</button></div><dialog class="modal" id="booking-modal" aria-labelledby="booking-modal-title"><div class="modal__inner"><button class="modal__close" type="button" data-modal-close aria-label="Закрыть">×</button><p class="eyebrow">Бронирование</p><h2 id="booking-modal-title">Расскажите, какой вечер вы планируете</h2><p class="modal__intro">Администратор подтвердит свободное время, формат и стоимость. Заявка не считается бронью до подтверждения.</p><form class="booking-form" data-demo-form novalidate><input type="hidden" name="source" value="modal"><div class="form-grid">
+<div class="field"><label for="modal-name">Ваше имя *</label><input id="modal-name" name="name" autocomplete="name" required><span class="field__error"></span></div>
+<div class="field"><label for="modal-phone">Телефон *</label><input id="modal-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required><span class="field__error"></span></div>
+<div class="field"><label for="modal-date">Дата *</label><input id="modal-date" name="date" type="date" required><span class="field__error"></span></div>
+<div class="field"><label for="modal-time">Время *</label><input id="modal-time" name="time" type="time" required><span class="field__error"></span></div>
+<div class="field"><label for="modal-guests">Количество гостей *</label><select id="modal-guests" name="guests" required><option value="">Выберите</option><option>1–2 гостя</option><option>3–4 гостя</option><option>5–6 гостей</option><option>7–8 гостей</option><option>Больше 8 гостей</option></select><span class="field__error"></span></div>
+<div class="field"><label for="modal-ceremony">Формат посещения *</label><select id="modal-ceremony" name="ceremony" required><option value="">Выберите формат</option><option value="first">Первое знакомство</option><option value="couple">Церемония для двоих</option><option value="company">Общий чайный стол</option><option value="event">Событие</option><option value="visit">Визит без церемонии</option></select><span class="field__error"></span></div>
+<div class="field field--full"><label for="modal-room">Пространство</label><select id="modal-room" name="room"><option value="">Подобрать с администратором</option><option value="main">Основной зал</option><option value="vip">VIP-комната</option><option value="second">Второй этаж</option></select><span class="field__error"></span></div>
+<div class="field field--full"><label for="modal-comment">Комментарий</label><textarea id="modal-comment" name="comment" placeholder="Повод, пожелания по чаю или выбранное событие"></textarea><span class="field__error"></span></div>
+<label class="checkbox field--full"><input type="checkbox" name="consent" required><span>Согласен на <a href="consent.html">обработку персональных данных</a> и ознакомлен с <a href="privacy.html">политикой конфиденциальности</a>.</span><span class="field__error"></span></label>
+<div class="field--full form-submit"><button class="button button--walnut" type="submit">Отправить заявку <span aria-hidden="true">→</span></button><div class="form-status" data-form-status aria-live="polite"></div></div></div></form></div></dialog><dialog class="lightbox" id="lightbox"><button class="lightbox__close" type="button" data-lightbox-close aria-label="Закрыть">×</button><img src="" alt=""></dialog><script>document.querySelectorAll('[data-current-year]').forEach(el=>el.textContent=new Date().getFullYear())</script></body></html>

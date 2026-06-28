@@ -1,49 +1,7 @@
 :root {
-  --color-ink: #17130f;
-  --color-ink-soft: #272018;
-  --color-olive: #7f7a55;
-  --color-olive-dark: #57543a;
-  --color-walnut: #5f4630;
-  --color-walnut-dark: #352519;
-  --color-ivory: #e5d8c3;
-  --color-ivory-soft: #f3ecdf;
-  --color-paper: #eee5d7;
-  --color-bronze: #ae7c42;
-  --color-gold: #d1aa67;
-  --color-white: #fffdf9;
-  --color-muted: #7c7164;
-  --color-line: rgba(95, 70, 48, .2);
-  --color-line-light: rgba(255, 253, 249, .14);
-  --color-success: #55704c;
-  --color-error: #9e4d44;
-
-  --font-display: "Iowan Old Style", "Baskerville", "Palatino Linotype", Georgia, serif;
-  --font-ui: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-
-  --container: 1320px;
-  --gutter: clamp(18px, 4vw, 64px);
-  --section-space: clamp(76px, 10vw, 144px);
-  --header-height: 92px;
-
-  --radius-sm: 10px;
-  --radius-md: 18px;
-  --radius-lg: 30px;
-  --radius-pill: 999px;
-
-  --shadow-soft: 0 24px 70px rgba(38, 27, 18, .12);
-  --shadow-dark: 0 28px 80px rgba(0, 0, 0, .3);
-
-  --ease: cubic-bezier(.22, 1, .36, 1);
-  --duration: .35s;
-
-  --z-header: 50;
-  --z-mobile-cta: 45;
-  --z-modal: 100;
+  --color-ink:#17130f;--color-ink-soft:#241d16;--color-olive:#7f7a55;--color-olive-dark:#5d5a3d;--color-walnut:#67492f;--color-walnut-dark:#3b281b;--color-paper:#efe5d6;--color-ivory:#f8f2e8;--color-bronze:#a86f33;--color-gold:#d3aa66;--color-white:#fffdf8;--color-muted:#766b5f;--color-line:rgba(91,68,46,.18);--color-line-light:rgba(255,255,255,.16);--color-success:#506d48;--color-error:#9b453d;
+  --font-display:"Iowan Old Style","Baskerville","Palatino Linotype",Georgia,serif;--font-ui:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --container:1480px;--gutter:clamp(22px,4vw,72px);--section-space:clamp(78px,8vw,132px);--header-height:104px;
+  --radius-sm:12px;--radius-md:20px;--radius-lg:34px;--radius-pill:999px;--shadow-soft:0 26px 70px rgba(55,36,22,.12);--shadow-dark:0 34px 90px rgba(0,0,0,.28);--ease:cubic-bezier(.22,1,.36,1);--duration:.35s;--z-header:50;--z-mobile-cta:45;--z-modal:100;
 }
-
-@media (max-width: 767px) {
-  :root {
-    --header-height: 72px;
-    --section-space: 72px;
-  }
-}
+@media(max-width:767px){:root{--header-height:76px;--section-space:72px}}

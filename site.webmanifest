@@ -1,10 +1,15 @@
 {
   "name": "Я Бао Завари",
   "short_name": "Я Бао",
-  "lang": "ru",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#17130f",
   "theme_color": "#17130f",
-  "icons": []
+  "icons": [
+    {
+      "src": "assets/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
 }

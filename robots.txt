@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://example.ru/sitemap.xml
+Sitemap: https://neotwalker.github.io/Ya-bao-v3/sitemap.xml
