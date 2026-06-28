@@ -2,180 +2,194 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#110e0c">
-  <meta name="description" content="Демонстрационный hero-блок сайта чайного дома «Я Бао Завари»: чайные церемонии, авторские напитки и культурный отдых в Челябинске.">
-  <title>Я Бао Завари — чайный дом в Челябинске</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#17130f">
+  <title>Я Бао Завари — чайная и чайные церемонии в Челябинске</title>
+  <meta name="description" content="Китайский чай, чайные церемонии, камерные пространства, события и подарочные сертификаты на улице Кирова, 94 в Челябинске.">
+  <link rel="canonical" href="https://example.ru/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Я Бао Завари — чайная и чайные церемонии в Челябинске">
+  <meta property="og:description" content="Китайский чай, чайные церемонии, камерные пространства, события и подарочные сертификаты на улице Кирова, 94 в Челябинске.">
+  <meta property="og:image" content="https://example.ru/assets/images/hero-video-poster.webp">
+  <meta property="og:locale" content="ru_RU">
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="assets/images/hero-video-poster.webp" as="image" type="image/webp" fetchpriority="high">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/components/header.css">
-  <link rel="stylesheet" href="css/sections/hero.css">
-  <link rel="stylesheet" href="css/components/modal.css">
-  <link rel="stylesheet" href="css/responsive.css">
-  <script type="module" src="js/main.js"></script>
-</head>
-<body>
-  <a class="skip-link" href="#main-content">Перейти к содержимому</a>
-
-  <header class="site-header" data-header>
-    <div class="site-header__container container">
-      <a class="brand" href="#top" aria-label="Я Бао Завари — на главную">
-        <img class="brand__mark" src="assets/icons/logo-mark.svg" width="58" height="58" alt="" aria-hidden="true">
-        <span class="brand__text">
-          <strong>Я Бао Завари</strong>
-          <small>чайный дом</small>
-        </span>
-      </a>
-
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation" data-menu-toggle>
-        <span class="menu-toggle__line"></span>
-        <span class="menu-toggle__line"></span>
-        <span class="menu-toggle__line"></span>
-        <span class="visually-hidden">Открыть меню</span>
-      </button>
-
-      <nav class="site-nav" id="main-navigation" aria-label="Основная навигация" data-navigation>
-        <a class="site-nav__link" href="#about">О нас</a>
-        <a class="site-nav__link" href="#menu">Меню</a>
-        <a class="site-nav__link" href="#ceremonies">Церемонии</a>
-        <a class="site-nav__link" href="#events">События</a>
-        <a class="site-nav__link" href="#vip">VIP-комнаты</a>
-        <a class="site-nav__link" href="#contacts">Контакты</a>
-      </nav>
-
-      <button class="button button--header" type="button" data-modal-open="booking-modal">
-        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path d="M7 2v3M17 2v3M3.5 9h17M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm4 9h6M9 17h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <span>Забронировать столик</span>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CafeOrCoffeeShop", "name": "Я Бао Завари", "telephone": "+7-999-584-72-90", "address": {"@type": "PostalAddress", "streetAddress": "ул. Кирова, 94", "addressLocality": "Челябинск", "postalCode": "454091", "addressCountry": "RU"}, "geo": {"@type": "GeoCoordinates", "latitude": 55.164485, "longitude": 61.400074}, "openingHours": "Mo-Su 10:00-01:00", "priceRange": "₽₽", "sameAs": ["https://vk.com/yabaozavary", "https://2gis.ru/chelyabinsk/firm/70000001110715460", "https://yandex.ru/maps/org/ya_bao_zavari/112754832500/"]}</script>
+  <script type="module" src="assets/js/app.js"></script>
+</head><body class="home"><noscript><div class="no-js-note">Для работы меню и формы включите JavaScript.</div></noscript>
+<a class="skip-link" href="#main-content">Перейти к содержимому</a>
+<header class="site-header" data-header>
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="Я Бао Завари — главная">
+      <img src="assets/icons/logo-mark.svg" width="48" height="48" alt="">
+      <span><strong>Я Бао Завари</strong><small>чайная · чай · церемонии</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Основная навигация"><ul><li><a href="ceremonies.html">Церемонии</a></li><li><a href="spaces.html">Пространства</a></li><li><a href="menu.html">Меню</a></li><li><a href="events.html">События</a></li><li><a href="about.html">О чайной</a></li><li><a href="contacts.html">Контакты</a></li></ul></nav>
+    <div class="header-actions">
+      <button class="button button--primary" type="button" data-modal-open data-source="header">Забронировать</button>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-navigation" data-menu-toggle>
+        <span></span><span></span><span></span><span class="visually-hidden">Открыть меню</span>
       </button>
     </div>
-  </header>
+  </div>
+</header>
+<div class="mobile-nav" id="mobile-navigation" data-mobile-nav aria-hidden="true">
+  <nav aria-label="Мобильная навигация"><ul><li><a href="ceremonies.html">Церемонии</a></li><li><a href="spaces.html">Пространства</a></li><li><a href="menu.html">Меню</a></li><li><a href="events.html">События</a></li><li><a href="about.html">О чайной</a></li><li><a href="contacts.html">Контакты</a></li></ul></nav>
+  <div class="mobile-nav__meta">
+    <a href="tel:+79995847290">+7 999 584-72-90</a>
+    <span>Челябинск, ул. Кирова, 94</span>
+    <span>Ежедневно 10:00–01:00</span>
+  </div>
+</div>
+<main id="main-content">
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero__media" data-hero-media aria-hidden="true">
+    <img class="hero__poster" src="assets/images/hero-video-poster.webp" width="1920" height="1080" alt="" fetchpriority="high">
+    <video muted loop playsinline autoplay preload="metadata" poster="assets/images/hero-video-poster.webp"><source src="assets/video/hero-tea-loop.mp4" type="video/mp4"></video>
+  </div>
+  <div class="hero__shade"></div><div class="hero__grain"></div>
+  <div class="container hero__container"><div class="hero__content">
+    <p class="hero__eyebrow">Чайная культура в центре Челябинска</p>
+    <h1 id="hero-title">Церемонии, в которых время становится тише</h1>
+    <p class="hero__description">Китайский чай, камерные пространства, музыкальные вечера и персональные церемонии для двоих и компаний.</p>
+    <div class="hero__actions"><button class="button button--primary" type="button" data-modal-open data-source="hero">Забронировать церемонию <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><a class="button button--ghost" href="#visit-formats">Выбрать формат</a></div>
+    <ul class="hero__markers"><li>Церемонии по записи</li><li>Камерные пространства</li><li>События и живые вечера</li><li>Чай и напитки с собой</li></ul>
+  </div></div>
+  <a class="hero__scroll" href="#visit-formats"><span>Листайте</span><i></i></a>
+</section>
 
-  <main id="main-content">
-    <section class="hero" id="top" aria-labelledby="hero-title" data-hero>
-      <div class="hero__ambient" aria-hidden="true"></div>
-
-      <div class="hero__scene hero__scene--video" data-scene aria-hidden="true">
-        <picture class="hero__picture hero__picture--fallback">
-          <img src="assets/images/hero-video-poster.webp" width="1920" height="1080" alt="" fetchpriority="high" decoding="async">
-        </picture>
-
-        <video
-          class="hero__video"
-          data-hero-video
-          autoplay
-          muted
-          playsinline
-          preload="auto"
-          poster="assets/images/hero-video-poster.webp"
-          disablepictureinpicture
-          tabindex="-1"
-        >
-          <source src="assets/video/hero-tea-loop.mp4" type="video/mp4">
-        </video>
-
-        <div class="hero__scene-shade"></div>
-      </div>
-
-      <div class="hero__container container">
-        <div class="hero__content">
-          <p class="hero__eyebrow">Традиции · вкус · атмосфера</p>
-          <h1 class="hero__title" id="hero-title">Премиальная<br>чайная культура<br>и уютный отдых</h1>
-          <p class="hero__description">Чайные церемонии, авторские напитки, музыкальные вечера и особая атмосфера в самом сердце Челябинска.</p>
-
-          <div class="hero__actions">
-            <button class="button button--primary" type="button" data-modal-open="booking-modal">
-              <span>Записаться на церемонию</span>
-              <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path d="M4 13c4-1 7-4 9-9 1 4 3 7 7 9-4 1-7 3-9 7-1-4-3-6-7-7Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-            </button>
-            <a class="button button--secondary" href="#menu">
-              <span>Посмотреть меню</span>
-              <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><path d="M5 8h12v8a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8Zm12 2h1a3 3 0 0 1 0 6h-1M8 4h6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </a>
-          </div>
-
-          <ul class="hero__features" aria-label="Преимущества чайного дома">
-            <li class="hero-feature">
-              <svg aria-hidden="true" viewBox="0 0 32 32"><path d="M7 14c1-5 5-8 9-8s8 3 9 8v8H7v-8Zm-2 8h22M13 6c-1-2 0-4 2-5M18 6c1-2 1-4-1-5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-              <span>Чай с собой</span>
-            </li>
-            <li class="hero-feature">
-              <svg aria-hidden="true" viewBox="0 0 32 32"><path d="M6 17h18v3a7 7 0 0 1-7 7h-4a7 7 0 0 1-7-7v-3Zm18 2h2a3 3 0 0 1 0 6h-3M10 12c0-3 3-3 3-6M16 12c0-3 3-3 3-6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-              <span>Церемонии<br>по записи</span>
-            </li>
-            <li class="hero-feature">
-              <svg aria-hidden="true" viewBox="0 0 32 32"><path d="M8 27V5h16v22M12 9h8M16 15v7M6 27h20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-              <span>VIP-комнаты</span>
-            </li>
-            <li class="hero-feature">
-              <svg aria-hidden="true" viewBox="0 0 32 32"><path d="M12 24V9l13-3v15M12 13l13-3M8 27c2.2 0 4-1.3 4-3s-1.8-3-4-3-4 1.3-4 3 1.8 3 4 3Zm13-3c2.2 0 4-1.3 4-3s-1.8-3-4-3-4 1.3-4 3 1.8 3 4 3Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span>Живые вечера</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <a class="hero__scroll" href="#about" aria-label="Прокрутить к следующему разделу">
-        <span>Листайте</span>
-        <i aria-hidden="true"></i>
-      </a>
-    </section>
-
-    <section class="demo-section" id="about" aria-labelledby="about-title">
-      <div class="container demo-section__grid">
-        <div>
-          <p class="section-kicker">Прототип продолжения</p>
-          <h2 id="about-title">Чайная, в которой время становится тише</h2>
-        </div>
-        <p>Этот экран добавлен, чтобы показать корректный переход из hero-блока и работу якорной навигации. В полноценном проекте здесь будет история пространства и сценарии посещения.</p>
-      </div>
-    </section>
-
-    <section class="anchor-section" id="menu"><span>Меню</span></section>
-    <section class="anchor-section" id="ceremonies"><span>Церемонии</span></section>
-    <section class="anchor-section" id="events"><span>События</span></section>
-    <section class="anchor-section" id="vip"><span>VIP-комнаты</span></section>
-    <section class="anchor-section" id="contacts"><span>Контакты</span></section>
-  </main>
-
-  <dialog class="booking-modal" id="booking-modal" aria-labelledby="booking-title">
-    <div class="booking-modal__inner">
-      <button class="booking-modal__close" type="button" aria-label="Закрыть окно" data-modal-close>
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-      </button>
-      <p class="booking-modal__eyebrow">Я Бао Завари</p>
-      <h2 id="booking-title">Забронировать церемонию</h2>
-      <p class="booking-modal__lead">Оставьте контакты — администратор уточнит дату, формат и количество гостей.</p>
-
-      <form class="booking-form" data-booking-form novalidate>
-        <div class="field">
-          <label for="booking-name">Ваше имя</label>
-          <input id="booking-name" name="name" type="text" autocomplete="name" required placeholder="Например, Мария">
-          <span class="field__error" data-error-for="name"></span>
-        </div>
-        <div class="field">
-          <label for="booking-phone">Телефон</label>
-          <input id="booking-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+7 (___) ___-__-__" data-phone>
-          <span class="field__error" data-error-for="phone"></span>
-        </div>
-        <div class="field">
-          <label for="booking-guests">Количество гостей</label>
-          <select id="booking-guests" name="guests">
-            <option value="1–2">1–2 гостя</option>
-            <option value="3–4">3–4 гостя</option>
-            <option value="5–6">5–6 гостей</option>
-            <option value="7+">Больше 6 гостей</option>
-          </select>
-        </div>
-        <label class="consent">
-          <input type="checkbox" name="consent" required>
-          <span>Согласен на обработку персональных данных</span>
-        </label>
-        <span class="field__error" data-error-for="consent"></span>
-        <button class="button button--primary booking-form__submit" type="submit">Отправить заявку</button>
-        <p class="booking-form__status" role="status" aria-live="polite" data-form-status></p>
-      </form>
+<section class="section section--paper" id="visit-formats">
+  <div class="container">
+    <div class="section-heading reveal"><div><p class="eyebrow">Сценарии визита</p><h2>Выберите, каким будет ваш вечер</h2></div><p>Не обязательно разбираться в сортах и правилах. Можно прийти впервые, выбрать чай вместе с мастером или заранее забронировать приватный формат.</p></div>
+    <div class="visit-grid">
+      <a class="visit-card reveal" href="ceremonies.html#first"><span class="visit-card__number">01</span><h3>Первое знакомство</h3><p>Спокойное погружение в китайский чай без сложных терминов и обязательной подготовки.</p><span class="visit-card__arrow">→</span></a>
+      <a class="visit-card reveal" href="ceremonies.html#couple"><span class="visit-card__number">02</span><h3>Церемония для двоих</h3><p>Камерный формат для свидания, неспешной встречи или подарка близкому человеку.</p><span class="visit-card__arrow">→</span></a>
+      <a class="visit-card reveal" href="ceremonies.html#company"><span class="visit-card__number">03</span><h3>Для компании</h3><p>Общий чайный стол, подбор нескольких вкусов и пространство для разговора.</p><span class="visit-card__arrow">→</span></a>
+      <a class="visit-card reveal" href="spaces.html"><span class="visit-card__number">04</span><h3>Приватное пространство</h3><p>VIP-комната для встречи, небольшого события или уединённого отдыха.</p><span class="visit-card__arrow">→</span></a>
+      <a class="visit-card reveal" href="events.html"><span class="visit-card__number">05</span><h3>События и музыкальные вечера</h3><p>Джаз, гитара, клубные встречи, дегустации и тематические мастер-классы.</p><span class="visit-card__arrow">→</span></a>
+      <a class="visit-card reveal" href="certificates.html"><span class="visit-card__number">06</span><h3>Подарочный сертификат</h3><p>Подарите не вещь, а время, внимание и новый опыт.</p><span class="visit-card__arrow">→</span></a>
     </div>
-  </dialog>
-</body>
-</html>
+  </div>
+</section>
+
+<section class="section section--dark">
+  <div class="container">
+    <div class="section-heading reveal"><div><p class="eyebrow">Чайные церемонии</p><h2>Форматы, которые можно выбрать заранее</h2></div><p>Точные продолжительность, вместимость и состав каждого формата редактируются в карточках. Сейчас установлены нейтральные шаблоны для будущего наполнения.</p></div>
+    <div class="product-grid">
+      <article class="product-card reveal" data-placeholder><div class="product-card__image"><img src="assets/images/ceremony-intro.webp" width="1000" height="760" alt="Чайник и пиалы для первой чайной церемонии" loading="lazy"></div><div class="product-card__content"><div class="product-card__meta"><span class="tag">для новичков</span><span class="tag">время уточняется</span></div><h3>Первое знакомство</h3><p>Мастер поможет выбрать чай, объяснит процесс и проведёт церемонию в комфортном темпе.</p><div class="card__footer"><a class="button button--light" href="ceremonies.html#first">Подробнее</a><button class="button button--ghost" data-modal-open data-ceremony="first">Забронировать</button></div></div></article>
+      <article class="product-card reveal" data-placeholder><div class="product-card__image"><img src="assets/images/ceremony-couple.webp" width="1000" height="760" alt="Камерная чайная церемония для двоих" loading="lazy"></div><div class="product-card__content"><div class="product-card__meta"><span class="tag">для двоих</span><span class="tag">приватный формат</span></div><h3>Церемония для двоих</h3><p>Неспешный сценарий для свидания, разговора или тихого совместного отдыха.</p><div class="card__footer"><a class="button button--light" href="ceremonies.html#couple">Подробнее</a><button class="button button--ghost" data-modal-open data-ceremony="couple">Забронировать</button></div></div></article>
+      <article class="product-card reveal" data-placeholder><div class="product-card__image"><img src="assets/images/ceremony-company.webp" width="1000" height="760" alt="Чайная церемония для небольшой компании" loading="lazy"></div><div class="product-card__content"><div class="product-card__meta"><span class="tag">для компании</span><span class="tag">вместимость уточняется</span></div><h3>Общий чайный стол</h3><p>Несколько чаёв, общий ритм церемонии и пространство, где можно спокойно общаться.</p><div class="card__footer"><a class="button button--light" href="ceremonies.html#company">Подробнее</a><button class="button button--ghost" data-modal-open data-ceremony="company">Забронировать</button></div></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--paper">
+  <div class="container intro-split">
+    <div class="intro-split__image reveal"><img src="assets/images/about-interior.webp" width="1400" height="900" alt="Тёмный деревянный интерьер с чайной посудой и свечами" loading="lazy"></div>
+    <div class="intro-split__content reveal"><p class="eyebrow">Впервые в чайной?</p><h2>Не нужно быть знатоком чая</h2><p class="lead">Вам не придётся запоминать названия, соблюдать сложные правила или угадывать, что заказать.</p><p>Расскажите, какое настроение и вкус вам ближе. Мастер предложит несколько вариантов, объяснит отличия и проведёт церемонию без спешки.</p><ul class="intro-split__list"><li><span>1</span><div><strong>Расскажите о вкусе</strong><br>Насыщенный, мягкий, фруктовый, медитативный — можно описать обычными словами.</div></li><li><span>2</span><div><strong>Выберите темп</strong><br>Короткое знакомство, полноценная церемония или вечер в компании.</div></li><li><span>3</span><div><strong>Остальное сделает мастер</strong><br>Подберёт чай, посуду и способ заваривания.</div></li></ul><button class="button button--walnut" data-modal-open data-ceremony="first">Подобрать первую церемонию <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+  </div>
+</section>
+
+<section class="section section--olive">
+  <div class="container">
+    <div class="section-heading reveal"><div><p class="eyebrow">Пространства</p><h2>От общего зала до приватного вечера</h2></div><p>Фотографии используются как визуальные шаблоны. Перед публикацией замените их реальными кадрами конкретных залов и укажите точную вместимость.</p></div>
+    <div class="spaces-grid">
+      <article class="space-card reveal" data-placeholder><img src="assets/images/space-vip.webp" width="1200" height="850" alt="Приватная чайная комната" loading="lazy"><div class="space-card__body"><div class="card__meta"><span class="tag">вместимость уточняется</span><span class="tag">по записи</span></div><h3>VIP-комната</h3><p>Камерное пространство для двоих, небольшой компании или личного события.</p><a class="button button--light" href="spaces.html#vip">Посмотреть пространство</a></div></article>
+      <article class="space-card reveal" data-placeholder><img src="assets/images/space-lounge.webp" width="1200" height="850" alt="Тёмный лаунж-зал чайной" loading="lazy"><div class="space-card__body"><div class="card__meta"><span class="tag">второй этаж</span><span class="tag">условия уточняются</span></div><h3>Чайная и лаунж-зона</h3><p>Формат для долгого вечера, встречи друзей и знакомства с премиальной кальянной культурой.</p><a class="button button--light" href="spaces.html#lounge">Подробнее</a></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--dark">
+  <div class="container menu-preview">
+    <div class="menu-preview__intro reveal"><p class="eyebrow">Чайная карта</p><h2>Вкус начинается с вопроса: чего хочется сейчас?</h2><p>В карточках показаны несколько позиций, опубликованных в Яндекс Картах. Полное меню и наличие необходимо синхронизировать с актуальной таблицей.</p><a class="button button--light" href="menu.html">Открыть меню <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+    <div class="menu-preview__list reveal">
+      <article class="menu-row"><img src="assets/images/menu-gaba.webp" width="100" height="100" alt="Чай Габа Алишань" loading="lazy"><div><h3>Габа Алишань</h3><p>Сливочный, фруктовый, мягкий и спокойный чай.</p></div><strong>20 ₽ / г</strong></article>
+      <article class="menu-row"><img src="assets/images/menu-shu.webp" width="100" height="100" alt="Чай Габа Наньтоу" loading="lazy"><div><h3>Габа Наньтоу</h3><p>Сладкий вкус с нотами печёных фруктов.</p></div><strong>25 ₽ / г</strong></article>
+      <article class="menu-row"><img src="assets/images/menu-yabao.webp" width="100" height="100" alt="Чай Я Бао взрослые почки" loading="lazy"><div><h3>Я Бао — взрослые почки</h3><p>Хвойный, медовый и немного пряный вкус.</p></div><strong>22 ₽ / г</strong></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--paper">
+  <div class="container">
+    <div class="section-heading reveal"><div><p class="eyebrow">Афиша</p><h2>Ближайшие форматы встреч</h2></div><p>Даты и цены оставлены шаблонными: события должны управляться через CMS и автоматически уходить в архив после завершения.</p></div>
+    <div class="events-list">
+      <article class="event-row reveal" data-placeholder><div class="event-row__date">Дата уточняется</div><div><span class="event-row__type">музыкальный вечер</span><h3>Пятничный джаз и чай</h3></div><p>Живой звук, камерный свет и подбор чая под настроение вечера.</p><button class="button button--walnut" data-modal-open data-event="Пятничный джаз и чай">Записаться</button></article>
+      <article class="event-row reveal" data-placeholder><div class="event-row__date">По расписанию</div><div><span class="event-row__type">клубная встреча</span><h3>Английский чайный клуб</h3></div><p>Разговорная практика в спокойной атмосфере за общим чайным столом.</p><button class="button button--walnut" data-modal-open data-event="Английский чайный клуб">Записаться</button></article>
+      <article class="event-row reveal" data-placeholder><div class="event-row__date">Дата уточняется</div><div><span class="event-row__type">мастер-класс</span><h3>Как заваривать чай дома</h3></div><p>Практический формат с посудой, температурой воды и понятным алгоритмом.</p><button class="button button--walnut" data-modal-open data-event="Мастер-класс по завариванию">Записаться</button></article>
+    </div>
+    <div style="margin-top:32px"><a class="button button--outline" href="events.html"><span>Посмотреть всю афишу</span> <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+  </div>
+</section>
+
+<section class="section section--dark">
+  <div class="container">
+    <div class="section-heading reveal"><div><p class="eyebrow">Отзывы гостей</p><h2>Тепло, которое замечают прежде всего</h2></div><p>Короткие фрагменты реальных отзывов из Яндекс Карт. Перед запуском рекомендуется согласовать автоматическое или ручное обновление.</p></div>
+    <div class="review-grid">
+      <article class="review-card reveal"><span class="review-card__quote">“</span><blockquote>Очень тепло, уютно и по-настоящему душевно. Вернуться хочется именно из-за отношения и заботы.</blockquote><div class="review-card__source">Евгения · Яндекс Карты</div></article>
+      <article class="review-card reveal"><span class="review-card__quote">“</span><blockquote>Мастер заварил вкусный китайский чай и провёл небольшую церемонию. Унёс чай с собой.</blockquote><div class="review-card__source">Марат · Яндекс Карты</div></article>
+      <article class="review-card reveal"><span class="review-card__quote">“</span><blockquote>Приятная атмосфера, помогли выбрать и красиво подали чай. Всё понравилось.</blockquote><div class="review-card__source">Гость · Яндекс Карты</div></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--paper"><div class="container"><div class="certificate-panel reveal"><div class="certificate-panel__image"><img src="assets/images/certificate.webp" width="1200" height="800" alt="Чайная композиция со свечой для подарочного сертификата" loading="lazy"></div><div class="certificate-panel__content"><p class="eyebrow">Подарочный сценарий</p><h2>Подарите время, которое не хочется торопить</h2><p>Электронный или физический сертификат на церемонию для двоих, компании либо на выбранную сумму.</p><a class="button button--light" href="certificates.html">Выбрать сертификат <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div></div></section>
+
+<section class="section section--paper" id="faq"><div class="container"><div class="section-heading reveal"><div><p class="eyebrow">Частые вопросы</p><h2>Всё, что важно знать перед визитом</h2></div></div><div class="accordion reveal">
+  <div class="accordion__item"><button class="accordion__button" data-accordion-button aria-expanded="false"><span>Нужно ли разбираться в китайском чае?</span><span class="accordion__icon"></span></button><div class="accordion__panel"><div><p>Нет. Мастер поможет подобрать чай по вкусу и настроению и объяснит процесс без сложных терминов.</p></div></div></div>
+  <div class="accordion__item"><button class="accordion__button" data-accordion-button aria-expanded="false"><span>Нужна ли предварительная запись?</span><span class="accordion__icon"></span></button><div class="accordion__panel"><div><p>Для церемоний и приватных пространств запись рекомендуется. Возможность обычного визита лучше уточнить у администратора.</p></div></div></div>
+  <div class="accordion__item"><button class="accordion__button" data-accordion-button aria-expanded="false"><span>Можно ли прийти с собакой?</span><span class="accordion__icon"></span></button><div class="accordion__panel"><div><p>В карточке организации указано, что заведение pet-friendly. Перед визитом с крупным питомцем лучше предупредить администратора.</p></div></div></div>
+  <div class="accordion__item"><button class="accordion__button" data-accordion-button aria-expanded="false"><span>Есть ли подарочные сертификаты?</span><span class="accordion__icon"></span></button><div class="accordion__panel"><div><p>Да, такая возможность отмечена в карточке организации. На странице сертификатов подготовлены шаблоны форматов для согласования.</p></div></div></div>
+</div></div></section>
+
+<section class="section section--paper"><div class="container contact-grid"><div class="contact-card reveal"><p class="eyebrow">Контакты</p><h2>Ждём вас в центре Челябинска</h2><ul class="contact-list"><li><small>Адрес</small><a href="https://2gis.ru/chelyabinsk/firm/70000001110715460" target="_blank" rel="noopener">ул. Кирова, 94</a></li><li><small>Режим работы</small><span>Ежедневно, 10:00–01:00</span></li><li><small>Телефон</small><a href="tel:+79995847290">+7 999 584-72-90</a></li></ul><div class="card__footer"><a class="button button--light" href="https://yandex.ru/maps/org/ya_bao_zavari/112754832500/" target="_blank" rel="noopener">Открыть в Яндекс Картах</a><a class="button button--ghost" href="contacts.html">Как добраться</a></div></div><div class="map-placeholder reveal"><div class="map-placeholder__content"><div><div class="map-pin">茶</div><h3>Кирова, 94</h3><p>Интерактивную карту лучше загружать только после нажатия, чтобы не ухудшать скорость страницы.</p><a class="button button--light" href="https://2gis.ru/chelyabinsk/firm/70000001110715460" target="_blank" rel="noopener">Построить маршрут</a></div></div></div></div></section>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="index.html"><img src="assets/icons/logo-mark.svg" width="48" height="48" alt=""><span><strong>Я Бао Завари</strong><small>чайная в Челябинске</small></span></a>
+        <p>Китайский чай, камерные церемонии, события и пространство для неспешного отдыха в центре города.</p>
+      </div>
+      <div><div class="footer-title">Сайт</div><ul class="footer-links"><li><a href="ceremonies.html">Церемонии</a></li><li><a href="spaces.html">Пространства</a></li><li><a href="menu.html">Меню</a></li><li><a href="events.html">События</a></li></ul></div>
+      <div><div class="footer-title">Информация</div><ul class="footer-links"><li><a href="about.html">О чайной</a></li><li><a href="certificates.html">Сертификаты</a></li><li><a href="contacts.html">Контакты</a></li><li><a href="privacy.html">Политика</a></li></ul></div>
+      <div><div class="footer-title">Связаться</div><ul class="footer-links"><li><a href="tel:+79995847290">+7 999 584-72-90</a></li><li><a href="https://vk.com/yabaozavary" target="_blank" rel="noopener">ВКонтакте</a></li><li><a href="https://2gis.ru/chelyabinsk/firm/70000001110715460" target="_blank" rel="noopener">2ГИС</a></li><li><a href="https://yandex.ru/maps/org/ya_bao_zavari/112754832500/" target="_blank" rel="noopener">Яндекс Карты</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© <span data-current-year></span> «Я Бао Завари». Все права защищены.</span><span>Контент, цены и вместимость необходимо сверить перед публикацией.</span></div>
+  </div>
+</footer>
+<div class="mobile-cta" data-mobile-cta><button class="button button--primary" type="button" data-modal-open data-source="mobile-sticky">Забронировать церемонию</button></div>
+
+<dialog class="modal" id="booking-modal" aria-labelledby="booking-modal-title">
+  <div class="modal__inner">
+    <button class="modal__close" type="button" data-modal-close aria-label="Закрыть">×</button>
+    <p class="eyebrow">Бронирование</p>
+    <h2 id="booking-modal-title">Выберите удобный формат</h2>
+    <p class="modal__intro">Администратор свяжется с вами, подтвердит время, формат и актуальные условия.</p>
+    
+<form class="booking-form" data-demo-form novalidate>
+  <input type="hidden" name="source" value="modal">
+  <div class="form-grid">
+    <div class="field"><label for="modal-name">Ваше имя *</label><input id="modal-name" name="name" autocomplete="name" required><span class="field__error"></span></div>
+    <div class="field"><label for="modal-phone">Телефон *</label><input id="modal-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required><span class="field__error"></span></div>
+    <div class="field"><label for="modal-date">Дата *</label><input id="modal-date" name="date" type="date" required><span class="field__error"></span></div>
+    <div class="field"><label for="modal-time">Время *</label><input id="modal-time" name="time" type="time" required><span class="field__error"></span></div>
+    <div class="field"><label for="modal-guests">Количество гостей *</label><select id="modal-guests" name="guests" required><option value="">Выберите</option><option>1–2 гостя</option><option>3–4 гостя</option><option>5–6 гостей</option><option>Больше 6 гостей</option></select><span class="field__error"></span></div>
+    <div class="field"><label for="modal-ceremony">Формат посещения *</label><select id="modal-ceremony" name="ceremony" required><option value="">Выберите формат</option><option value="first">Первое знакомство</option><option value="couple">Церемония для двоих</option><option value="company">Церемония для компании</option><option value="event">Событие / музыкальный вечер</option><option value="visit">Просто прийти в чайную</option></select><span class="field__error"></span></div>
+    <div class="field field--full"><label for="modal-room">Пространство</label><select id="modal-room" name="room"><option value="">Подобрать вместе с администратором</option><option value="main">Основной зал</option><option value="vip">VIP-комната</option><option value="second">Второй этаж / кальянная</option></select><span class="field__error"></span></div>
+    <div class="field field--full"><label for="modal-comment">Комментарий</label><textarea id="modal-comment" name="comment" placeholder="Расскажите о пожеланиях, поводе или выбранном событии"></textarea><span class="field__error"></span></div>
+    <label class="checkbox field--full"><input type="checkbox" name="consent" required><span>Согласен на <a href="privacy.html">обработку персональных данных</a> и ознакомлен с политикой конфиденциальности.</span><span class="field__error"></span></label>
+    <div class="field--full"><button class="button button--walnut" type="submit">Отправить заявку <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="form-status" data-form-status aria-live="polite"></div></div>
+  </div>
+</form>
+  </div>
+</dialog>
+<dialog class="lightbox" id="lightbox"><button class="lightbox__close" type="button" data-lightbox-close aria-label="Закрыть">×</button><img src="" alt=""></dialog>
+<script>document.querySelectorAll("[data-current-year]").forEach(el=>el.textContent=new Date().getFullYear())</script></body></html>

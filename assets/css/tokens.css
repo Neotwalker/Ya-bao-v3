@@ -1,0 +1,49 @@
+:root {
+  --color-ink: #17130f;
+  --color-ink-soft: #272018;
+  --color-olive: #7f7a55;
+  --color-olive-dark: #57543a;
+  --color-walnut: #5f4630;
+  --color-walnut-dark: #352519;
+  --color-ivory: #e5d8c3;
+  --color-ivory-soft: #f3ecdf;
+  --color-paper: #eee5d7;
+  --color-bronze: #ae7c42;
+  --color-gold: #d1aa67;
+  --color-white: #fffdf9;
+  --color-muted: #7c7164;
+  --color-line: rgba(95, 70, 48, .2);
+  --color-line-light: rgba(255, 253, 249, .14);
+  --color-success: #55704c;
+  --color-error: #9e4d44;
+
+  --font-display: "Iowan Old Style", "Baskerville", "Palatino Linotype", Georgia, serif;
+  --font-ui: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --container: 1320px;
+  --gutter: clamp(18px, 4vw, 64px);
+  --section-space: clamp(76px, 10vw, 144px);
+  --header-height: 92px;
+
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 30px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 24px 70px rgba(38, 27, 18, .12);
+  --shadow-dark: 0 28px 80px rgba(0, 0, 0, .3);
+
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --duration: .35s;
+
+  --z-header: 50;
+  --z-mobile-cta: 45;
+  --z-modal: 100;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --header-height: 72px;
+    --section-space: 72px;
+  }
+}

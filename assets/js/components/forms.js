@@ -1,0 +1,66 @@
+function formatPhone(value) {
+  const digits = value.replace(/\D/g, '').replace(/^8/, '7').slice(0, 11);
+  const body = digits.startsWith('7') ? digits.slice(1) : digits;
+  let result = '+7';
+  if (body.length) result += ` (${body.slice(0,3)}`;
+  if (body.length >= 3) result += ') ';
+  if (body.length > 3) result += body.slice(3,6);
+  if (body.length > 6) result += `-${body.slice(6,8)}`;
+  if (body.length > 8) result += `-${body.slice(8,10)}`;
+  return result;
+}
+
+function setError(field, message) {
+  field.setAttribute('aria-invalid', message ? 'true' : 'false');
+  const error = field.closest('.field, .checkbox')?.querySelector('.field__error');
+  if (error) error.textContent = message;
+}
+
+function validate(form) {
+  let valid = true;
+  const required = form.querySelectorAll('[required]');
+  required.forEach(field => {
+    let message = '';
+    if (field.type === 'checkbox' && !field.checked) message = 'Подтвердите согласие.';
+    else if (!String(field.value).trim()) message = 'Заполните поле.';
+    else if (field.type === 'tel' && field.value.replace(/\D/g, '').length < 11) message = 'Введите полный номер телефона.';
+    setError(field, message);
+    if (message) valid = false;
+  });
+  return valid;
+}
+
+export function initForms() {
+  document.querySelectorAll('input[type="tel"]').forEach(input => {
+    input.addEventListener('input', () => { input.value = formatPhone(input.value); });
+  });
+  document.querySelectorAll('input[type="date"]').forEach(input => {
+    input.min = new Date().toISOString().split('T')[0];
+  });
+
+  document.querySelectorAll('[data-demo-form]').forEach(form => {
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const status = form.querySelector('[data-form-status]');
+      if (!validate(form)) {
+        if (status) { status.textContent = 'Проверьте выделенные поля.'; status.className = 'form-status is-error'; }
+        return;
+      }
+      const submit = form.querySelector('[type="submit"]');
+      submit?.classList.add('is-loading');
+      submit?.setAttribute('disabled', '');
+      if (status) { status.textContent = 'Отправляем заявку…'; status.className = 'form-status'; }
+      await new Promise(resolve => setTimeout(resolve, 700));
+      if (status) {
+        status.textContent = 'Демонстрационный режим: форма заполнена корректно. Подключите обработчик по инструкции в README.';
+        status.className = 'form-status is-success';
+      }
+      form.reset();
+      submit?.classList.remove('is-loading');
+      submit?.removeAttribute('disabled');
+    });
+    form.querySelectorAll('input, select, textarea').forEach(field => {
+      field.addEventListener('input', () => setError(field, ''));
+    });
+  });
+}
