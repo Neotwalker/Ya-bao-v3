@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://neotwalker.github.io/Ya-bao-v3/</loc></url><url><loc>https://neotwalker.github.io/Ya-bao-v3/ceremonies.html</loc></url><url><loc>https://neotwalker.github.io/Ya-bao-v3/spaces.html</loc></url><url><loc>https://neotwalker.github.io/Ya-bao-v3/menu.html</loc></url><url><loc>https://neotwalker.github.io/Ya-bao-v3/events.html</loc></url><url><loc>https://neotwalker.github.io/Ya-bao-v3/certificates.html</loc></url><url><loc>https://neotwalker.github.io/Ya-bao-v3/about.html</loc></url><url><loc>https://neotwalker.github.io/Ya-bao-v3/contacts.html</loc></url><url><loc>https://neotwalker.github.io/Ya-bao-v3/booking.html</loc></url><url><loc>https://neotwalker.github.io/Ya-bao-v3/faq.html</loc></url><url><loc>https://neotwalker.github.io/Ya-bao-v3/privacy.html</loc></url><url><loc>https://neotwalker.github.io/Ya-bao-v3/consent.html</loc></url></urlset>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/</loc></url>
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/menu.html</loc></url>
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/events.html</loc></url>
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/event-single.html</loc></url>
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/about.html</loc></url>
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/contacts.html</loc></url>
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/booking.html</loc></url>
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/certificates.html</loc></url>
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/faq.html</loc></url>
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/reviews.html</loc></url>
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/privacy.html</loc></url>
+  <url><loc>https://neotwalker.github.io/Ya-bao-v3/consent.html</loc></url>
+</urlset>

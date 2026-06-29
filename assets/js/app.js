@@ -6,6 +6,7 @@ import { initFilters } from './components/filters.js';
 import { initAccordion } from './components/accordion.js';
 import { initGallery } from './components/gallery.js';
 import { initReveal } from './components/reveal.js';
+import { initReviewSlider } from './components/reviews.js';
 
 document.documentElement.classList.add('js');
 [
@@ -18,6 +19,7 @@ document.documentElement.classList.add('js');
   initAccordion,
   initGallery,
   initReveal,
+  initReviewSlider,
 ].forEach(init => {
   try { init(); } catch (error) { console.error(`${init.name} failed`, error); }
 });

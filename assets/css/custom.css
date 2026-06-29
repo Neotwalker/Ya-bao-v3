@@ -1,0 +1,65 @@
+
+.site-header.is-scrolled,.page-menu .site-header,.page-events .site-header,.page-about .site-header,.page-contacts .site-header,.page-booking .site-header,.page-certificates .site-header,.page-faq .site-header,.page-reviews .site-header,.page-privacy .site-header,.page-consent .site-header,.page-404 .site-header{background:rgba(23,19,15,.95);box-shadow:0 14px 44px rgba(0,0,0,.16);backdrop-filter:blur(18px)}
+.brand small{letter-spacing:.16em}
+.site-nav a{font-size:15px}
+.header-meta{display:flex;align-items:center;gap:16px}
+.header-phone{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-size:14px;font-weight:600}
+.header-phone svg,.social-link svg{width:18px;height:18px}
+.header-socials,.mobile-nav__socials,.footer-socials{display:flex;align-items:center;gap:10px}
+.social-link{display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(255,255,255,.22);border-radius:50%;color:#fff;text-decoration:none;transition:transform .25s ease,border-color .25s ease,background .25s ease}
+.social-link:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.48);background:rgba(255,255,255,.08)}
+.header-actions .button{white-space:nowrap}
+.hero__content{width:min(760px,100%)}
+.hero__description{max-width:640px}
+.hero__markers{display:none}
+.hero__actions .button--light{background:rgba(255,255,255,.92)}
+.visit-card{cursor:pointer;text-align:left;border:1px solid var(--color-line)}
+.visit-card__icon{display:grid;place-items:center;width:54px;height:54px;border-radius:50%;border:1px solid currentColor;color:var(--color-bronze)}
+.visit-card__icon svg{width:25px;height:25px}
+.visit-card h3{margin-top:30px}
+.visit-card--featured .visit-card__icon,.visit-card--featured .visit-card__number{color:var(--color-gold)}
+.visit-card p{font-size:18px;line-height:1.55}
+.intro-split--balanced .intro-split__image{min-height:560px}
+.ambience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.ambience-card{overflow:hidden;border-radius:var(--radius-md);background:rgba(255,255,255,.14);box-shadow:var(--shadow-dark)}
+.ambience-card__image{aspect-ratio:4/3;overflow:hidden}.ambience-card__image img{width:100%;height:100%;object-fit:cover}
+.ambience-card__body{padding:28px 28px 30px}.ambience-card__body p{color:rgba(255,255,255,.75)}
+.section-heading__actions{display:grid;gap:16px;justify-items:start}
+.menu-preview--home .menu-row strong{min-width:80px;text-align:right}
+.events-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.event-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--color-line);border-radius:var(--radius-md);background:rgba(255,255,255,.55);box-shadow:var(--shadow-soft)}
+.event-card img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.event-card__body{display:flex;flex-direction:column;flex:1;padding:26px}
+.event-card__meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.event-card p{color:var(--color-muted)}
+.event-card.is-past{opacity:.9}
+.event-card__status{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:14px 24px;border-radius:var(--radius-sm);background:rgba(95,70,48,.12);color:var(--color-muted);font-weight:700}
+.reviews-slider__top{display:flex;justify-content:flex-end;margin-bottom:20px}.slider-nav{display:flex;gap:12px}
+.slider-button{display:grid;place-items:center;width:54px;height:54px;border:1px solid rgba(255,255,255,.26);border-radius:50%;background:transparent;color:#fff;font-size:20px;cursor:pointer;transition:transform .25s ease,background .25s ease}
+.slider-button:hover{transform:translateY(-2px);background:rgba(255,255,255,.08)}
+.reviews-slider__track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:6px}.reviews-slider__track::-webkit-scrollbar{height:8px}.reviews-slider__track::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:999px}
+.review-slide{flex:0 0 calc(33.333% - 14px);scroll-snap-align:start}
+.review-actions{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 30px}
+.certificate-panel__image{inset:0 0 0 47%}
+.faq-layout .button--walnut{margin-top:24px}
+.contact-actions .button--walnut{color:#fff}
+.footer-contact-phone a{color:#fff;text-decoration:none;font-family:var(--font-display);font-size:28px;line-height:1.1}
+.footer-socials .social-link{width:44px;height:44px}
+.inner-hero{padding-top:calc(var(--header-height) + 44px)}
+.inner-hero__grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:clamp(28px,6vw,96px);align-items:end}.inner-hero__text{color:rgba(255,255,255,.7);font-size:18px}
+.cards-grid{display:grid;gap:24px}.cards-grid--three{grid-template-columns:repeat(3,minmax(0,1fr))}.cards-grid--two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.menu-card .card__meta,.feature-panel .card__meta{justify-content:space-between}.menu-card .card__meta strong{font-family:var(--font-display);font-size:20px}
+.feature-panel{background:rgba(255,255,255,.08);border-color:var(--color-line-light)}.feature-panel p{color:rgba(255,255,255,.68)}
+.tea-note{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(40px,7vw,110px);align-items:start}.tea-note p{color:rgba(255,255,255,.7)}
+.booking-layout{display:grid;grid-template-columns:minmax(280px,.7fr) minmax(0,1fr);gap:clamp(32px,6vw,96px);align-items:start}.booking-copy ol{padding-left:22px}.booking-card{padding:clamp(28px,4vw,48px);border-radius:var(--radius-lg);background:rgba(255,255,255,.6);box-shadow:var(--shadow-soft)}
+.faq-page,.narrow{max-width:880px}.content-prose{font-size:18px}.content-prose h2,.content-prose h3{margin-top:34px}.content-prose ul{padding-left:22px}
+.event-single{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(32px,6vw,88px);align-items:start}.event-single__media img{width:100%;border-radius:var(--radius-md);object-fit:cover;aspect-ratio:4/5}.event-single__meta{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+.reviews-page-grid{margin-top:24px}
+.page-404 .site-header{background:rgba(23,19,15,.95)}.not-found{min-height:calc(100svh - var(--header-height));display:grid;align-content:center;justify-items:start}.not-found p{max-width:520px;color:rgba(255,255,255,.72)}
+.section--muted{background:#f2ede3}
+.mobile-nav__socials .social-link{width:44px;height:44px}
+@media (min-width: 1440px){.site-nav a{font-size:16px}.header-phone{font-size:15px}}
+@media (max-width: 1180px){.header-meta{display:none}.header-inner{gap:28px}}
+@media (max-width: 1024px){.review-slide{flex-basis:calc(50% - 10px)}.events-cards,.cards-grid--three{grid-template-columns:repeat(2,minmax(0,1fr))}.ambience-grid,.event-single,.booking-layout,.contact-grid,.intro-split,.faq-layout,.inner-hero__grid,.tea-note{grid-template-columns:1fr}.intro-split__image{min-height:440px}.certificate-panel__image{inset:50% 0 0 0}.certificate-panel::after{background:linear-gradient(180deg,rgba(23,19,15,.96) 18%,rgba(23,19,15,.72) 45%,rgba(23,19,15,.2) 100%)}.certificate-panel__content{padding-bottom:calc(46vw + 40px)}.site-nav ul{gap:18px}.visit-card{grid-column:span 6}.visit-card--featured{grid-column:span 12}}
+@media (max-width: 860px){.site-nav,.header-actions>.button,.header-meta{display:none}.menu-toggle{display:block}.cards-grid--two,.cards-grid--three,.events-cards,.product-grid{grid-template-columns:1fr}.review-slide{flex-basis:100%}.footer-grid{grid-template-columns:1fr 1fr}.footer-bottom{flex-direction:column}.hero{min-height:760px}.hero h1{font-size:clamp(48px,12vw,74px)}.hero__description{font-size:22px}.hero__actions{display:grid}.hero__actions .button{width:100%}.ambience-grid{grid-template-columns:1fr}.visit-card,.visit-card--featured{grid-column:span 12;min-height:240px}.visit-card h3{max-width:unset}.contact-list strong,.contact-list a{font-size:21px}.mobile-cta{display:block}}
+@media (max-width: 600px){.brand strong{font-size:20px}.brand img{width:48px;height:48px}.brand small{font-size:9px}.inner-hero h1{font-size:clamp(40px,12vw,58px)}.intro-split__image,.map-frame,.map-frame iframe{min-height:340px}.certificate-panel{min-height:540px}.certificate-panel__content{padding:28px 22px calc(70vw + 24px)}.footer-grid{grid-template-columns:1fr}.event-card__status{width:100%}.review-card{min-height:300px}.slider-button{width:46px;height:46px}.contact-actions .button,.review-actions .button{width:100%}}
