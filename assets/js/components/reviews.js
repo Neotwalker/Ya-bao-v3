@@ -13,5 +13,15 @@ export function initReviewSlider(){
     };
     prev?.addEventListener('click', () => track.scrollBy({left: -step(), behavior: 'smooth'}));
     next?.addEventListener('click', () => track.scrollBy({left: step(), behavior: 'smooth'}));
+    track.addEventListener('wheel', event => {
+      if (track.scrollWidth <= track.clientWidth) return;
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      const canLeft = track.scrollLeft > 0;
+      const canRight = track.scrollLeft < track.scrollWidth - track.clientWidth - 2;
+      if ((delta < 0 && canLeft) || (delta > 0 && canRight)) {
+        event.preventDefault();
+        track.scrollLeft += delta;
+      }
+    }, {passive:false});
   });
 }
