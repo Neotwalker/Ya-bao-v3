@@ -115,3 +115,28 @@
 @keyframes catalogPulse{0%,100%{opacity:.45;transform:scale(.85)}50%{opacity:1;transform:scale(1.05)}}
 @media(prefers-reduced-motion:reduce){.catalog-notice[data-state="loading"]::before{animation:none}}
 @media(max-width:600px){.catalog-notice{align-items:flex-start;font-size:13px}.stock-badge{margin-bottom:14px}}
+
+
+/* v4.4 interaction and typography refinements */
+.social-link img{width:18px;height:18px;object-fit:contain}
+.header-phone{transition:color .25s ease,transform .25s ease}
+.header-phone svg{transition:transform .25s ease}
+.header-phone:hover{color:var(--color-gold);transform:translateY(-2px)}
+.header-phone:hover svg{transform:scale(1.08)}
+
+/* Compact booking modal */
+.modal{width:min(760px,calc(100% - 28px));max-height:calc(100svh - 32px);overflow:auto;border-radius:28px}
+.modal__inner{padding:34px 38px 30px}
+.modal__close{top:14px;right:14px;width:42px;height:42px;font-size:24px}
+.modal .eyebrow{margin-bottom:12px}
+.modal h2{max-width:590px;margin-bottom:10px;font-size:clamp(34px,3.5vw,48px);line-height:1.04}
+.modal__intro{max-width:620px;margin-bottom:0;font-size:15px;line-height:1.5}
+.modal .form-grid{gap:12px 16px;margin-top:20px}
+.modal .field{gap:5px}
+.modal .field label,.modal .field>label{font-size:12px}
+.modal .field input,.modal .field select,.modal .field textarea{min-height:48px;padding:10px 13px}
+.modal .field textarea{min-height:86px}
+.modal .field__error{min-height:12px;font-size:11px}
+.modal .checkbox{font-size:12px;line-height:1.45}
+.modal .form-submit{gap:12px}
+@media(max-width:640px){.modal__inner{padding:28px 20px 22px}.modal h2{font-size:34px}.modal .form-grid{grid-template-columns:1fr}.modal .field--full{grid-column:auto}}
