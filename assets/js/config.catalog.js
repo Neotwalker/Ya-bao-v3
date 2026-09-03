@@ -3,6 +3,6 @@ export const catalogConfig = Object.freeze({
   sheets: ['Склад', 'Меню'],
   cacheKey: 'yabao-public-catalog-v1',
   cacheTtlMs: 5 * 60 * 1000,
-  outOfStockMode: 'mark', // 'mark' — показать «Закончился», 'hide' — скрыть карточку
+  outOfStockMode: 'mark', // 'mark' - показать «Закончился», 'hide' - скрыть карточку
   requestTimeoutMs: 12000,
 });

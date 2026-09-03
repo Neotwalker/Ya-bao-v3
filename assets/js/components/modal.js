@@ -46,7 +46,7 @@ export function initModal() {
       if (eventInputs.price) eventInputs.price.value = price;
     } else {
       if (title) title.textContent = 'Расскажите, какой вечер вы хотите провести';
-      if (intro) intro.textContent = 'Оставьте заявку — администратор уточнит свободное время, формат встречи и ответит на вопросы.';
+      if (intro) intro.textContent = 'Оставьте заявку - администратор уточнит свободное время, формат встречи и ответит на вопросы.';
       if (eyebrow) eyebrow.textContent = 'Бронирование';
       if (eventSummary) eventSummary.value = '';
       Object.values(eventInputs).forEach(input => { if (input) input.value = ''; });
