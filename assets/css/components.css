@@ -36,3 +36,8 @@ textarea{resize:none}
 .custom-select__menu::-webkit-scrollbar-thumb:hover{background:rgba(95,70,48,.62)}
 .modal .checkbox{font-size:14px;line-height:1.45}
 .modal .flatpickr-calendar{z-index:100000}
+
+/* Flatpickr stays anchored to its field without changing modal width */
+.field .flatpickr-wrapper{position:relative;display:block;width:100%;min-width:0}
+.field .flatpickr-calendar.static{left:0!important;right:auto!important;top:calc(100% + 8px)!important;width:307.875px;max-width:min(307.875px,calc(100vw - 48px));z-index:100000}
+.modal .flatpickr-calendar.static{z-index:100000}
