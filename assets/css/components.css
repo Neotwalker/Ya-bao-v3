@@ -185,3 +185,8 @@ textarea{resize:none}
   line-height:1!important;
   background:#fff!important;
 }
+
+
+/* Consent links */
+.checkbox a{color:inherit;transition:color .25s ease}
+.checkbox a:hover{color:var(--color-walnut)}
