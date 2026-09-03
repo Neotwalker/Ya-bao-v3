@@ -137,6 +137,6 @@
 .modal .field input,.modal .field select,.modal .field textarea{min-height:48px;padding:10px 13px}
 .modal .field textarea{min-height:86px}
 .modal .field__error{min-height:12px;font-size:11px}
-.modal .checkbox{font-size:12px;line-height:1.45}
+.modal .checkbox{font-size:14px;line-height:1.45}
 .modal .form-submit{gap:12px}
 @media(max-width:640px){.modal__inner{padding:28px 20px 22px}.modal h2{font-size:34px}.modal .form-grid{grid-template-columns:1fr}.modal .field--full{grid-column:auto}}

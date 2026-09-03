@@ -26,3 +26,13 @@ textarea{resize:none}
 .flatpickr-day.selected,.flatpickr-day.startRange,.flatpickr-day.endRange,.flatpickr-day.selected:hover{border-color:var(--color-walnut);background:var(--color-walnut)}
 .flatpickr-day.today{border-color:var(--color-gold)}
 .flatpickr-time input:hover,.flatpickr-time .flatpickr-am-pm:hover{background:rgba(95,70,48,.06)}
+
+
+/* Booking control refinements */
+.custom-select__menu{scrollbar-width:thin;scrollbar-color:rgba(95,70,48,.48) transparent}
+.custom-select__menu::-webkit-scrollbar{width:6px}
+.custom-select__menu::-webkit-scrollbar-track{background:transparent}
+.custom-select__menu::-webkit-scrollbar-thumb{background:rgba(95,70,48,.42);border-radius:999px}
+.custom-select__menu::-webkit-scrollbar-thumb:hover{background:rgba(95,70,48,.62)}
+.modal .checkbox{font-size:14px;line-height:1.45}
+.modal .flatpickr-calendar{z-index:100000}
