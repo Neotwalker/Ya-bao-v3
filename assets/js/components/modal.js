@@ -1,4 +1,3 @@
-
 let lastFocused = null;
 
 export function initModal() {
@@ -10,8 +9,6 @@ export function initModal() {
   const intro = dialog.querySelector('[data-modal-intro]');
   const eyebrow = dialog.querySelector('[data-modal-eyebrow]');
   const generalFields = [...dialog.querySelectorAll('[data-general-field]')];
-  const eventField = dialog.querySelector('[data-event-field]');
-  const eventSummary = dialog.querySelector('[name="event_summary"]');
   const ceremonySelect = dialog.querySelector('[name="ceremony"]');
   const sourceInput = dialog.querySelector('[name="source"]');
   const eventInputs = {
@@ -27,19 +24,19 @@ export function initModal() {
     dialog.classList.toggle('modal--event', isEvent);
     generalFields.forEach(field => {
       field.hidden = isEvent;
-      field.querySelectorAll('input, select, textarea').forEach(control => control.disabled = isEvent);
+      field.querySelectorAll('input, select, textarea').forEach(control => {
+        control.disabled = isEvent;
+        control.dispatchEvent(new Event('change', { bubbles: true }));
+      });
     });
-    if (eventField) eventField.hidden = !isEvent;
-    if (eventSummary) eventSummary.disabled = !isEvent;
 
     if (isEvent) {
       const date = button.dataset.eventDate || 'дата уточняется';
       const time = button.dataset.eventTime || 'время уточняется';
       const price = button.dataset.eventPrice || 'цена уточняется';
       if (title) title.textContent = 'Запись на событие';
-      if (intro) intro.textContent = 'Оставьте контакты и количество гостей. Название события, дата, время и стоимость уже добавлены в заявку.';
+      if (intro) intro.textContent = 'Оставьте контакты и количество гостей. Данные события уже добавлены в заявку.';
       if (eyebrow) eyebrow.textContent = 'Событие';
-      if (eventSummary) eventSummary.value = `${eventName}\n${date} · ${time}\nСтоимость: ${price}`;
       if (eventInputs.name) eventInputs.name.value = eventName;
       if (eventInputs.date) eventInputs.date.value = date;
       if (eventInputs.time) eventInputs.time.value = time;
@@ -48,10 +45,12 @@ export function initModal() {
       if (title) title.textContent = 'Расскажите, какой вечер вы хотите провести';
       if (intro) intro.textContent = 'Оставьте заявку - администратор уточнит свободное время, формат встречи и ответит на вопросы.';
       if (eyebrow) eyebrow.textContent = 'Бронирование';
-      if (eventSummary) eventSummary.value = '';
       Object.values(eventInputs).forEach(input => { if (input) input.value = ''; });
       const ceremony = button.dataset.ceremony || '';
-      if (ceremonySelect && ceremony && ceremony !== 'event') ceremonySelect.value = ceremony;
+      if (ceremonySelect && ceremony && ceremony !== 'event') {
+        ceremonySelect.value = ceremony;
+        ceremonySelect.dispatchEvent(new Event('change', { bubbles: true }));
+      }
     }
   };
 
