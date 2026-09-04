@@ -77,6 +77,8 @@
 .faq-page .accordion{width:100%}
 .faq-page .accordion__item button{grid-template-columns:minmax(0,1fr) 24px}
 .breadcrumbs{margin:0 0 34px;padding-top:4px}.breadcrumbs ol{display:flex;flex-wrap:wrap;gap:8px 12px;margin:0;padding:0;list-style:none;color:var(--color-muted);font-size:14px}.breadcrumbs li{display:flex;align-items:center;gap:12px}.breadcrumbs li:not(:last-child)::after{content:'/' ;opacity:.45}.breadcrumbs a{text-decoration:none}.breadcrumbs a:hover{color:var(--color-walnut)}
+.breadcrumbs--hero{margin:0 0 24px;padding-top:0}.breadcrumbs--hero ol{color:rgba(255,255,255,.6);font-size:13px}.breadcrumbs--hero a{color:rgba(255,255,255,.72)}.breadcrumbs--hero a:hover{color:var(--color-gold)}.breadcrumbs--hero [aria-current='page']{color:rgba(255,255,255,.9)}
+#catalog{scroll-margin-top:calc(var(--header-height) + 18px)}
 .filter-bar{display:flex;flex-wrap:wrap;gap:10px;margin:-20px 0 34px}.filter-chip{min-height:44px;padding:10px 18px;border:1px solid var(--color-line);border-radius:999px;background:transparent;color:var(--color-muted);cursor:pointer;transition:background .25s,color .25s,border-color .25s}.filter-chip[aria-pressed='true']{background:var(--color-walnut);border-color:var(--color-walnut);color:#fff}.menu-card[hidden]{display:none!important}
 .button--outline-walnut{border-color:rgba(95,70,48,.45);background:transparent;color:var(--color-walnut)}.button--outline-walnut:hover{background:var(--color-walnut);color:#fff}
 .event-card__price{color:var(--color-walnut);font-weight:800}

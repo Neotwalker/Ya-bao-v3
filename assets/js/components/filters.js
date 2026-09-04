@@ -20,6 +20,12 @@ export function initFilters() {
     if (requested && buttons.some(btn => btn.dataset.filter === requested)) active = requested;
     apply(active);
 
+    if (requested) {
+      requestAnimationFrame(() => {
+        document.querySelector('#catalog')?.scrollIntoView({ block: 'start' });
+      });
+    }
+
     document.addEventListener('catalog:updated', () => apply(active));
   });
 }
