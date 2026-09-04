@@ -365,16 +365,16 @@ const CATEGORY_LABELS = Object.freeze({
 const CATEGORY_IMAGES = Object.freeze({
   'dark-oolong': 'assets/images/tea-category-dark-oolong-real.webp',
   'red-tea': 'assets/images/tea-category-red-tea-real.webp',
-  'gaba': 'assets/images/tea-category-gaba.webp',
-  'white-tea': 'assets/images/tea-category-white.webp',
+  'gaba': 'assets/images/tea-category-gaba-real.webp',
+  'white-tea': 'assets/images/tea-category-white-real.webp',
   'light-oolong': 'assets/images/tea-category-light-oolong-real.webp',
   'sheng-puer': 'assets/images/tea-category-sheng-puer-real.webp',
   'shu-puer': 'assets/images/tea-category-shu-puer-real.webp',
   'yellow-tea': 'assets/images/tea-category-yellow-tea-real.webp',
   'hei-cha': 'assets/images/tea-category-hei-cha-real.webp',
-  'lemonades': 'assets/images/menu-lemonade.webp',
-  'bubble-tea': 'assets/images/menu-bubble.webp',
-  'author-tea': 'assets/images/menu-yabao.webp',
+  'lemonades': 'assets/images/tea-category-lemonades-real.webp',
+  'bubble-tea': 'assets/images/tea-category-bubble-tea-real.webp',
+  'author-tea': 'assets/images/tea-category-author-tea-real.webp',
 });
 
 function escapeHtml(value = '') {
