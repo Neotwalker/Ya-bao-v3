@@ -363,11 +363,11 @@ const CATEGORY_LABELS = Object.freeze({
 });
 
 const CATEGORY_IMAGES = Object.freeze({
-  'dark-oolong': 'assets/images/tea-category-oolong.webp',
-  'red-tea': 'assets/images/menu-red.webp',
+  'dark-oolong': 'assets/images/tea-category-dark-oolong-real.webp',
+  'red-tea': 'assets/images/tea-category-red-tea-real.webp',
   'gaba': 'assets/images/tea-category-gaba.webp',
   'white-tea': 'assets/images/tea-category-white.webp',
-  'light-oolong': 'assets/images/tea-category-oolong.webp',
+  'light-oolong': 'assets/images/tea-category-light-oolong-real.webp',
   'sheng-puer': 'assets/images/tea-category-puer.webp',
   'shu-puer': 'assets/images/tea-category-puer.webp',
   'yellow-tea': 'assets/images/menu-yabao.webp',
