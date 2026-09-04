@@ -65,3 +65,14 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - Open Graph URL/site name и Twitter Card metadata;
 - hero-видео перекодировано в H.264 1920×1080 с faststart для меньшего веса;
 - визуальная структура и тексты не менялись.
+
+## v4.38 technical SEO
+
+- индексируемые страницы: главная, меню, о чайной, контакты;
+- `booking`, `privacy`, `consent` и `404` сохраняют `noindex,follow`;
+- sitemap содержит только индексируемые canonical URL;
+- добавлены `CafeOrCoffeeShop`, `WebSite`, `WebPage` и `BreadcrumbList` в JSON-LD;
+- бизнес-схема дополнена телефоном, изображением и ссылками на карты;
+- Open Graph image metadata дополнена type/width/height/alt;
+- улучшены SEO title/description у страниц «О чайной» и «Контакты»;
+- canonical-схема и robots-политика не меняют структуру сайта.
