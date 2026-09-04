@@ -1,3 +1,89 @@
+/* Local fonts.
+   Put the matching .woff2 / .ttf / .eot files into assets/fonts/.
+   WOFF2 is preferred by modern browsers; TTF and EOT are fallbacks. */
+
+@font-face{
+  font-family:"PT Sans";
+  src:url("../fonts/PTSans-Regular.eot");
+  src:url("../fonts/PTSans-Regular.eot?#iefix") format("embedded-opentype"),
+      url("../fonts/PTSans-Regular.woff2") format("woff2"),
+      url("../fonts/PTSans-Regular.ttf") format("truetype");
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+}
+@font-face{
+  font-family:"PT Sans";
+  src:url("../fonts/PTSans-Italic.eot");
+  src:url("../fonts/PTSans-Italic.eot?#iefix") format("embedded-opentype"),
+      url("../fonts/PTSans-Italic.woff2") format("woff2"),
+      url("../fonts/PTSans-Italic.ttf") format("truetype");
+  font-style:italic;
+  font-weight:400;
+  font-display:swap;
+}
+@font-face{
+  font-family:"PT Sans";
+  src:url("../fonts/PTSans-Bold.eot");
+  src:url("../fonts/PTSans-Bold.eot?#iefix") format("embedded-opentype"),
+      url("../fonts/PTSans-Bold.woff2") format("woff2"),
+      url("../fonts/PTSans-Bold.ttf") format("truetype");
+  font-style:normal;
+  font-weight:700;
+  font-display:swap;
+}
+@font-face{
+  font-family:"PT Sans";
+  src:url("../fonts/PTSans-BoldItalic.eot");
+  src:url("../fonts/PTSans-BoldItalic.eot?#iefix") format("embedded-opentype"),
+      url("../fonts/PTSans-BoldItalic.woff2") format("woff2"),
+      url("../fonts/PTSans-BoldItalic.ttf") format("truetype");
+  font-style:italic;
+  font-weight:700;
+  font-display:swap;
+}
+
+@font-face{
+  font-family:"PT Serif";
+  src:url("../fonts/PTSerif-Regular.eot");
+  src:url("../fonts/PTSerif-Regular.eot?#iefix") format("embedded-opentype"),
+      url("../fonts/PTSerif-Regular.woff2") format("woff2"),
+      url("../fonts/PTSerif-Regular.ttf") format("truetype");
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+}
+@font-face{
+  font-family:"PT Serif";
+  src:url("../fonts/PTSerif-Italic.eot");
+  src:url("../fonts/PTSerif-Italic.eot?#iefix") format("embedded-opentype"),
+      url("../fonts/PTSerif-Italic.woff2") format("woff2"),
+      url("../fonts/PTSerif-Italic.ttf") format("truetype");
+  font-style:italic;
+  font-weight:400;
+  font-display:swap;
+}
+@font-face{
+  font-family:"PT Serif";
+  src:url("../fonts/PTSerif-Bold.eot");
+  src:url("../fonts/PTSerif-Bold.eot?#iefix") format("embedded-opentype"),
+      url("../fonts/PTSerif-Bold.woff2") format("woff2"),
+      url("../fonts/PTSerif-Bold.ttf") format("truetype");
+  font-style:normal;
+  font-weight:700;
+  font-display:swap;
+}
+@font-face{
+  font-family:"PT Serif";
+  src:url("../fonts/PTSerif-BoldItalic.eot");
+  src:url("../fonts/PTSerif-BoldItalic.eot?#iefix") format("embedded-opentype"),
+      url("../fonts/PTSerif-BoldItalic.woff2") format("woff2"),
+      url("../fonts/PTSerif-BoldItalic.ttf") format("truetype");
+  font-style:italic;
+  font-weight:700;
+  font-display:swap;
+}
+
 :root {
   --color-ink:#17130f;--color-ink-soft:#241d16;--color-olive:#7f7a55;--color-olive-dark:#5d5a3d;--color-walnut:#67492f;--color-walnut-dark:#3b281b;--color-paper:#efe5d6;--color-ivory:#f8f2e8;--color-bronze:#a86f33;--color-gold:#d3aa66;--color-white:#fffdf8;--color-muted:#766b5f;--color-line:rgba(91,68,46,.18);--color-line-light:rgba(255,255,255,.16);--color-success:#506d48;--color-error:#9b453d;
   --font-display:"PT Serif",Georgia,serif;--font-ui:"PT Sans",Arial,sans-serif;

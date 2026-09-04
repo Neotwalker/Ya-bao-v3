@@ -233,3 +233,12 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - удалены накопившиеся повторные `<!DOCTYPE html>` во всех HTML-файлах;
 - каждый HTML-файл теперь содержит ровно один doctype в первой строке;
 - причина была в промежуточных скриптах сборки: BeautifulSoup сохранял существующий doctype, а сериализация дополнительно дописывала новый.
+
+## v4.42.5 local fonts
+
+- Google Fonts (`fonts.googleapis.com` / `fonts.gstatic.com`) полностью удалён из HTML;
+- PT Sans и PT Serif подключаются локально через `@font-face` в `assets/css/tokens.css`;
+- для каждой гарнитуры подключены Regular, Italic, Bold и Bold Italic;
+- источники: EOT + WOFF2 + TTF;
+- в `assets/fonts/README.txt` указан полный список ожидаемых имён файлов;
+- сами font-файлы в этот архив не включены: их нужно добавить в `assets/fonts/` перед публикацией.
