@@ -35,8 +35,8 @@ export function initHeader() {
       : openMenu();
   });
 
-  mobileNav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => closeMenu());
+  mobileNav.querySelectorAll('a, [data-modal-open]').forEach(control => {
+    control.addEventListener('click', () => closeMenu());
   });
 
   document.addEventListener('keydown', event => {
@@ -61,15 +61,3 @@ export function initHeader() {
   desktopQuery.addEventListener?.('change', handleDesktopChange);
 }
 
-export function initMobileCta() {
-  const cta = document.querySelector('[data-mobile-cta]');
-  const anchor = document.querySelector('.hero-v4, .inner-hero, .not-found');
-  if (!cta || !anchor || cta.dataset.mobileCtaReady === 'true') return;
-  cta.dataset.mobileCtaReady = 'true';
-
-  const observer = new IntersectionObserver(([entry]) => {
-    cta.classList.toggle('is-visible', !entry.isIntersecting);
-  }, { threshold: .1 });
-
-  observer.observe(anchor);
-}

@@ -9,7 +9,7 @@
   .section-heading{grid-template-columns:1fr}
 }
 @media (max-width:767px){
-  body{padding-bottom:78px;font-size:16px}
+  body{font-size:16px}
   .brand img{width:42px;height:42px}
   .brand strong{font-size:19px}
   .brand small{font-size:8px}
@@ -17,7 +17,6 @@
   .field--full{grid-column:auto}
   .footer-grid{grid-template-columns:1fr;gap:34px}
   .footer-bottom{flex-direction:column}
-  .mobile-cta{display:block}
 }
 @media (max-width:390px){
   .brand small{display:none}

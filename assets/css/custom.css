@@ -24,7 +24,6 @@
 @media (max-width: 860px){
   .site-nav,.header-actions>.button,.header-meta{display:none}
   .menu-toggle{display:block}
-  .mobile-cta{display:block}
 }
 @media (max-width: 600px){
   .brand strong{font-size:20px}
@@ -137,6 +136,7 @@
   .mobile-nav__socials .social-link{display:grid!important;place-items:center;width:38px;height:38px;padding:0!important;border:1px solid rgba(255,255,255,.2);border-radius:50%;font-size:0!important}
   .mobile-nav__socials .social-link img,.mobile-nav__socials .social-link svg{width:17px;height:17px}
   .mobile-nav__meta{margin-top:20px;gap:7px;font-size:11px;line-height:1.35}
+  .mobile-nav__booking{width:100%;margin-top:20px}
 }
 @media (max-width:767px){
   .header-inner{grid-template-columns:minmax(0,1fr) auto;gap:12px}

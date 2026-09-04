@@ -1,4 +1,4 @@
-import { initHeader, initMobileCta } from './components/header.js';
+import { initHeader } from './components/header.js';
 import { initModal } from './components/modal.js';
 import { initForms } from './components/forms.js';
 import { initAccordion } from './components/accordion.js';
@@ -16,7 +16,6 @@ function initCurrentYear() {
 
 runInitializers(
   initHeader,
-  initMobileCta,
   initModal,
   initForms,
   initAccordion,
