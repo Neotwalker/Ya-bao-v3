@@ -499,15 +499,15 @@
   outline-offset:6px;
 }
 
-.events-pagination{
+.pagination{
   display:flex;
   flex-wrap:wrap;
   align-items:center;
   gap:8px;
   margin-top:42px;
 }
-.events-pagination__item,
-.events-pagination__next{
+.pagination__item,
+.pagination__next{
   display:grid;
   text-decoration:none;
   min-width:44px;
@@ -520,30 +520,30 @@
   font-size:13px;
   font-weight:700;
 }
-.events-pagination__item.is-current{
+.pagination__item.is-current{
   border-color:var(--color-walnut);
   background:var(--color-walnut);
   color:#fff;
 }
-.events-pagination__ellipsis{
+.pagination__ellipsis{
   padding-inline:4px;
   color:var(--color-muted);
 }
-.events-pagination__next{padding-inline:18px}
+.pagination__next{padding-inline:18px}
 
-.events-pagination a.events-pagination__item,
-.events-pagination a.events-pagination__next{
+.pagination a.pagination__item,
+.pagination a.pagination__next{
   transition:transform .2s ease,background .2s ease,border-color .2s ease,color .2s ease;
 }
-.events-pagination a.events-pagination__item:hover,
-.events-pagination a.events-pagination__next:hover{
+.pagination a.pagination__item:hover,
+.pagination a.pagination__next:hover{
   transform:translateX(3px);
   border-color:var(--color-walnut);
   background:var(--color-walnut);
   color:#fff;
 }
-.events-pagination a.events-pagination__item:focus-visible,
-.events-pagination a.events-pagination__next:focus-visible{
+.pagination a.pagination__item:focus-visible,
+.pagination a.pagination__next:focus-visible{
   outline:2px solid var(--color-walnut);
   outline-offset:3px;
 }
@@ -615,72 +615,35 @@
     transform:translateX(4px);
   }
   .event-list-card__meta{font-size:10px}
-  .events-pagination{
+  .pagination{
     gap:5px;
     margin-top:30px;
   }
-  .events-pagination__item,
-  .events-pagination__next{
+  .pagination__item,
+  .pagination__next{
     min-width:38px;
     min-height:38px;
     padding:6px 10px;
     font-size:12px;
   }
-  .events-pagination__next{padding-inline:12px}
+  .pagination__next{padding-inline:12px}
 }
 @media(max-width:480px){
-  .events-pagination{gap:4px}
-  .events-pagination__item,
-  .events-pagination__next{
+  .pagination{gap:4px}
+  .pagination__item,
+  .pagination__next{
     min-width:34px;
     min-height:34px;
     padding:5px 8px;
     font-size:11px;
   }
-  .events-pagination__ellipsis{padding-inline:1px}
-  .events-pagination__next{padding-inline:9px}
+  .pagination__ellipsis{padding-inline:1px}
+  .pagination__next{padding-inline:9px}
 }
 
 /* Blog */
 .blog-list{display:grid;border-top:1px solid var(--color-line)}
-.blog-list-card{border-bottom:1px solid var(--color-line)}
-.blog-list-card__link{
-  display:grid;
-  grid-template-columns:74px minmax(0,1fr);
-  gap:clamp(22px,4vw,56px);
-  align-items:start;
-  padding:clamp(28px,4vw,46px) 0;
-  color:inherit;
-  text-decoration:none;
-}
-.blog-list-card__index{
-  color:rgba(42,31,22,.28);
-  font-family:var(--font-serif);
-  font-size:clamp(34px,4vw,54px);
-  line-height:1;
-}
-.blog-list-card__category{
-  display:block;
-  margin-bottom:9px;
-  color:var(--color-muted);
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-.blog-list-card h2{margin:0 0 10px;font-size:clamp(30px,3.2vw,48px)}
-.blog-list-card p{max-width:760px;margin:0;color:var(--color-muted)}
-.blog-list-card__more{
-  display:inline-flex;
-  gap:8px;
-  margin-top:16px;
-  color:var(--color-walnut);
-  font-size:13px;
-  font-weight:700;
-}
-.blog-list-card__link:hover .blog-list-card__more{transform:translateX(4px)}
-.blog-list-card__more{transition:transform .2s ease}
-.blog-list-card__link:focus-visible{outline:2px solid var(--color-walnut);outline-offset:6px}
+.blog-list .event-list-card:last-child{border-bottom:1px solid var(--color-line)}
 
 .article-page__grid{
   display:grid;
@@ -697,11 +660,7 @@
   top:calc(var(--header-height) + 28px);
 }
 .article-page__aside .button{width:100%}
-
 @media(max-width:900px){
   .article-page__grid{grid-template-columns:1fr}
   .article-page__aside{position:static}
-}
-@media(max-width:700px){
-  .blog-list-card__link{grid-template-columns:46px minmax(0,1fr);gap:16px}
 }
