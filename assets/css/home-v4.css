@@ -737,19 +737,6 @@ button.format-card-v4{width:100%;font:inherit}
     font-size:13px;
   }
 
-  .page-home-v4 .site-header .brand img,
-  .page-home-v4 .mobile-nav .brand img{
-    width:50px;
-    height:50px;
-  }
-  .page-home-v4 .site-header .brand strong,
-  .page-home-v4 .mobile-nav .brand strong{font-size:23px}
-  .page-home-v4 .site-header .brand small,
-  .page-home-v4 .mobile-nav .brand small{
-    margin-top:5px;
-    font-size:9px;
-  }
-
   .hero-v4__copy{
     padding-top:calc(var(--header-height) + 24px);
     padding-bottom:48px;
@@ -1181,35 +1168,13 @@ button.format-card-v4{width:100%;font:inherit}
   justify-content:center;
   margin-top:28px;
 }
-.guides-v4__blog-action{
-  display:inline-flex;
-  min-height:44px;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-  padding:9px 16px;
-  border:1px solid var(--color-line);
-  border-radius:999px;
-  color:var(--color-ink);
-  font-size:13px;
-  font-weight:700;
-  line-height:1;
-  text-decoration:none;
-  transition:transform .2s ease,background .2s ease,border-color .2s ease,color .2s ease;
-}
-.guides-v4__blog-action:hover{
-  transform:translateX(4px);
-  border-color:var(--color-walnut);
-  background:var(--color-walnut);
-  color:#fff;
-}
-.guides-v4__blog-action:focus-visible{
-  outline:2px solid var(--color-walnut);
-  outline-offset:3px;
+
+.guides-v4__tail{
+  margin-top:28px;
 }
 @media(max-width:560px){
   .guides-v4__tail,
-  .guides-v4__blog-action{
+  .guides-v4__tail .button{
     width:100%;
   }
 }

@@ -210,6 +210,7 @@
 .page-menu .catalog-notice{
   min-height:24px;
   margin:12px 0 22px;
+  align-items:center;
   font-size:13px;
 }
 .catalog-notice::before{
@@ -420,6 +421,7 @@
     align-items:flex-start;
     font-size:13px;
   }
+  .page-menu .catalog-notice{align-items:center}
   .stock-badge{margin-bottom:14px}
 }
 .catalog-notice{min-height:1.5em}
@@ -663,4 +665,89 @@
 @media(max-width:900px){
   .article-page__grid{grid-template-columns:1fr}
   .article-page__aside{position:static}
+}
+
+/* Related articles */
+.related-articles{overflow:hidden}
+.related-articles__slider{overflow:hidden}
+.related-articles__slider .swiper-wrapper{align-items:stretch}
+.related-articles__slider .swiper-slide{height:auto}
+.related-article-card{
+  display:flex;
+  height:100%;
+  min-height:300px;
+  flex-direction:column;
+  padding:28px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:24px;
+  color:#fff;
+  text-decoration:none;
+  background:rgba(255,255,255,.06);
+  transition:border-color .2s ease,background .2s ease;
+}
+.related-article-card:hover{
+  border-color:rgba(255,255,255,.34);
+  background:rgba(255,255,255,.09);
+}
+.related-article-card>span{
+  color:rgba(255,255,255,.62);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.related-article-card h3{
+  margin:42px 0 14px;
+  color:#fff;
+  font-size:clamp(26px,2.2vw,34px);
+}
+.related-article-card p{
+  margin:0;
+  color:rgba(255,255,255,.66);
+}
+.related-article-card strong{
+  display:inline-flex;
+  gap:8px;
+  margin-top:auto;
+  padding-top:24px;
+  color:var(--color-gold);
+  font-size:13px;
+}
+.related-articles__controls{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  margin-top:24px;
+}
+.related-articles__button{
+  display:grid;
+  width:46px;
+  height:46px;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:50%;
+  background:transparent;
+  color:#fff;
+  cursor:pointer;
+}
+.related-articles__button svg{width:19px;height:19px}
+.related-articles__button.swiper-button-disabled{opacity:.3;cursor:default}
+.related-articles__pagination{
+  display:flex;
+  width:auto!important;
+  align-items:center;
+  gap:7px;
+}
+.related-articles__pagination .swiper-pagination-bullet{
+  width:7px;
+  height:7px;
+  margin:0!important;
+  background:#fff;
+  opacity:.28;
+}
+.related-articles__pagination .swiper-pagination-bullet-active{opacity:1}
+@media(max-width:560px){
+  .related-article-card{min-height:260px;padding:24px}
+  .related-articles__button{display:none}
 }
