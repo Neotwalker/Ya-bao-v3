@@ -233,3 +233,17 @@
 .footer-bottom__links a{color:inherit;text-decoration:none;transition:color var(--duration)}
 .footer-bottom__links a:hover{color:rgba(255,255,255,.8)}
 @media(max-width:767px){.footer-bottom__links{justify-content:flex-start}}
+
+
+/* v4.25 mobile header placement */
+@media(max-width:767px){
+  .header-inner{grid-template-columns:auto auto 1fr;gap:14px}
+  .header-actions{grid-column:2;justify-self:start;justify-content:flex-start}
+  .header-actions>.button,.header-meta{display:none}
+  .menu-toggle{display:block;width:40px;height:40px}
+  .menu-toggle span:not(.visually-hidden){left:11px;width:18px}
+  .menu-toggle span:nth-child(1){top:13px}
+  .menu-toggle span:nth-child(2){top:19px}
+  .menu-toggle span:nth-child(3){top:25px}
+  .menu-toggle[aria-expanded="true"] span:nth-child(1),.menu-toggle[aria-expanded="true"] span:nth-child(3){top:19px}
+}
