@@ -1,7 +1,7 @@
 /* Shared components: header, navigation, buttons, footer, forms, modal and accordion. */
 .site-header{position:fixed;z-index:var(--z-header);inset:0 0 auto;height:var(--header-height);color:var(--color-white);transition:background var(--duration),box-shadow var(--duration)}
 .site-header::after{content:"";position:absolute;inset:auto 0 0;height:1px;background:var(--color-line-light)}
-.site-header.is-scrolled,.page-ceremonies .site-header,.page-spaces .site-header,.page-menu .site-header,.page-events .site-header,.page-about .site-header,.page-contacts .site-header,.page-booking .site-header,.page-certificates .site-header,.page-faq .site-header,.page-reviews .site-header,.page-privacy .site-header,.page-consent .site-header,.page-404 .site-header{background:rgba(23,19,15,.95);box-shadow:0 14px 44px rgba(0,0,0,.16);backdrop-filter:blur(18px)}
+.site-header.is-scrolled,.page-inner .site-header{background:rgba(23,19,15,.95);box-shadow:0 14px 44px rgba(0,0,0,.16);backdrop-filter:blur(18px)}
 .header-inner{height:100%;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(28px,4vw,76px)}
 .brand{display:inline-flex;align-items:center;gap:14px;text-decoration:none;min-width:max-content}
 .brand img{width:56px;height:56px}
