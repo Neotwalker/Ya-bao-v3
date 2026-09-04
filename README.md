@@ -183,3 +183,11 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - заголовок блока изменён на «События и встречи»;
 - на первом фото галереи при ширине до 768px появляется подсказка «Нажмите — открыть галерею»;
 - на ширине до 560px галерея сохраняет двухколоночную композицию: 100px + 100px, gap 10px, radius 12px, большая фотография остаётся на две строки.
+
+## v4.41.7 homepage slider/gallery/mobile map patch
+
+- у `.event-card--link:hover` полностью убран `transform: translateY(-4px)`, поэтому карточка больше не может обрезаться сверху;
+- на ширине до 1480px расширение по gutter перенесено с `.events-slider-shell` на `.events-slider.swiper` по той же логике, что у `.guide-grid-v4.swiper`;
+- `.events-slider-shell` больше не режет края и остаётся `overflow: visible`;
+- подсказка на первом фото сокращена до «Открыть галерею»;
+- на ширине до 560px `.local-v4__map iframe` и `.local-v4__visual` получают `min-height: 300px` и `border-radius: 12px`.

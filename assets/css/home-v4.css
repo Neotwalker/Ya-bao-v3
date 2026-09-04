@@ -686,18 +686,18 @@ button.format-card-v4{width:100%;font:inherit}
   .guides-v4 .container,
   .events-home-v4 .container{overflow:visible}
   .guide-grid-v4.swiper,
-  .events-slider-shell{
+  .events-slider.swiper{
     width:calc(100% + (var(--gutter) * 2));
     margin-inline:calc(var(--gutter) * -1);
     padding-inline:var(--gutter);
-  }
-  .guide-grid-v4.swiper{overflow:hidden}
-  .events-slider-shell{
     overflow:hidden;
-    padding-top:6px;
-    margin-top:-6px;
   }
-  .events-slider{overflow:visible}
+  .events-slider-shell{
+    width:auto;
+    margin-inline:0;
+    padding-inline:0;
+    overflow:visible;
+  }
 }
 
 /* Laptop composition */
@@ -1158,5 +1158,12 @@ button.format-card-v4{width:100%;font:inherit}
 }
 /* Events */
 .events-home-v4{overflow:hidden}
-.events-home-v4 .events-slider-shell{padding-bottom:2px}
 .events-home-v4 .section-tail{margin-top:28px}
+
+@media(max-width:560px){
+  .local-v4__map iframe,
+  .local-v4__visual{
+    min-height:300px;
+    border-radius:12px;
+  }
+}

@@ -116,7 +116,7 @@ textarea{resize:none}
 .button:focus-visible,.menu-toggle:focus-visible,.modal__close:focus-visible,.custom-select__trigger:focus-visible,.custom-select__option:focus-visible,.accordion__item button:focus-visible,.site-nav a:focus-visible,.mobile-nav a:focus-visible,.footer-links a:focus-visible,.social-link:focus-visible{outline:2px solid var(--color-gold);outline-offset:4px}
 /* Events slider */
 .events-slider-shell{position:relative}
-.events-slider{overflow:visible;padding-top:6px;margin-top:-6px}
+.events-slider{overflow:hidden}
 .events-slider .swiper-wrapper{align-items:stretch}
 .events-slider .swiper-slide{height:auto}
 .event-card{
@@ -219,7 +219,6 @@ textarea{resize:none}
   transition:transform .25s ease,border-color .25s ease,background .25s ease;
 }
 .event-card--link:hover{
-  transform:translateY(-4px);
   border-color:rgba(255,255,255,.32);
   background:rgba(255,255,255,.09);
 }
