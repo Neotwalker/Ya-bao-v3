@@ -238,3 +238,21 @@ button.format-card-v4{width:100%;font:inherit}
   .page-home-v4 .space-gallery-v4__large{grid-row:auto}
   .page-home-v4 .footer-bottom__links{display:grid;gap:6px}
 }
+
+/* v4.26 mobile action layout */
+@media(max-width:767px){
+  .ceremony-v4__actions{display:grid;grid-template-columns:1fr;width:100%;gap:10px}
+  .ceremony-v4__actions .button{width:100%}
+
+  .beginner-v4__copy>.button{display:flex;width:100%}
+  .space-v4 .section-tail{width:100%;justify-content:stretch}
+  .space-v4 .section-tail .button{width:100%}
+
+  .local-v4__actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:8px}
+  .local-v4__actions .button{width:100%;min-width:0;padding-inline:8px}
+
+  .final-cta-v4__actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:8px}
+  .final-cta-v4__actions .button{width:100%;min-width:0;padding-inline:8px}
+
+  .faq-home-v4 .accordion__item button{font-size:18px;line-height:1.18;padding:17px 0}
+}
