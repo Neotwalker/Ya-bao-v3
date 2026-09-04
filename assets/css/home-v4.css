@@ -504,10 +504,29 @@ button.format-card-v4{width:100%;font:inherit}
 }
 .space-gallery-v4__large{grid-row:1/3}
 .space-gallery-v4 a{
+  position:relative;
   display:block;
   width:100%;
   height:100%;
   cursor:zoom-in;
+}
+.space-gallery-v4__hint{
+  position:absolute;
+  z-index:2;
+  left:14px;
+  bottom:14px;
+  display:none;
+  max-width:calc(100% - 28px);
+  padding:9px 12px;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;
+  background:rgba(20,16,13,.68);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.2;
+  backdrop-filter:blur(8px);
+  pointer-events:none;
 }
 .space-gallery-v4 img{
   width:100%;
@@ -664,13 +683,21 @@ button.format-card-v4{width:100%;font:inherit}
 
 /* Slider breathing room */
 @media(max-width:1480px){
-  .guides-v4 .container{overflow:visible}
-  .guide-grid-v4.swiper{
+  .guides-v4 .container,
+  .events-home-v4 .container{overflow:visible}
+  .guide-grid-v4.swiper,
+  .events-slider-shell{
     width:calc(100% + (var(--gutter) * 2));
     margin-inline:calc(var(--gutter) * -1);
     padding-inline:var(--gutter);
-    overflow:hidden;
   }
+  .guide-grid-v4.swiper{overflow:hidden}
+  .events-slider-shell{
+    overflow:hidden;
+    padding-top:6px;
+    margin-top:-6px;
+  }
+  .events-slider{overflow:visible}
 }
 
 /* Laptop composition */
@@ -927,7 +954,9 @@ button.format-card-v4{width:100%;font:inherit}
     grid-template-rows:220px 220px;
     gap:14px;
   }
+  .space-gallery-v4 figure{border-radius:16px}
   .space-gallery-v4__large{grid-row:1/3}
+  .space-gallery-v4__hint{display:block}
 }
 
 /* Mobile */
@@ -1052,6 +1081,12 @@ button.format-card-v4{width:100%;font:inherit}
   }
   .space-v4 .section-tail .button{width:100%}
 
+  .events-home-v4 .section-tail{
+    width:100%;
+    justify-content:stretch;
+  }
+  .events-home-v4 .section-tail .button{width:100%}
+
   .local-v4__actions{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -1108,12 +1143,20 @@ button.format-card-v4{width:100%;font:inherit}
   .tea-card-grid{grid-template-columns:1fr}
 
   .space-gallery-v4{
-    grid-template-columns:1fr;
-    grid-template-rows:260px 150px 150px;
-    gap:12px;
+    grid-template-rows:100px 100px;
+    gap:10px;
   }
-  .space-gallery-v4__large{grid-row:auto}
+  .space-gallery-v4 figure{border-radius:12px}
+  .space-gallery-v4__hint{
+    left:8px;
+    bottom:8px;
+    max-width:calc(100% - 16px);
+    padding:7px 9px;
+    border-radius:10px;
+    font-size:10px;
+  }
 }
 /* Events */
 .events-home-v4{overflow:hidden}
+.events-home-v4 .events-slider-shell{padding-bottom:2px}
 .events-home-v4 .section-tail{margin-top:28px}
