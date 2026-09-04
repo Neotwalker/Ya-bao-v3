@@ -1,5 +1,7 @@
 export function initFilters() {
   document.querySelectorAll('[data-filter-group]').forEach(group => {
+    if (group.dataset.filtersReady === 'true') return;
+    group.dataset.filtersReady = 'true';
     const targetSelector = group.dataset.filterTarget;
     const buttons = [...group.querySelectorAll('[data-filter]')];
     let active = 'all';

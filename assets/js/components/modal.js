@@ -2,7 +2,8 @@ let lastFocused = null;
 
 export function initModal() {
   const dialog = document.querySelector('#booking-modal');
-  if (!dialog) return;
+  if (!dialog || dialog.dataset.modalReady === 'true') return;
+  dialog.dataset.modalReady = 'true';
 
   const closeButton = dialog.querySelector('[data-modal-close]');
   const form = dialog.querySelector('form');

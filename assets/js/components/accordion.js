@@ -1,8 +1,9 @@
 export function initAccordion() {
   document.querySelectorAll('[data-accordion]').forEach(accordion => {
-    const buttons = accordion.querySelectorAll('.accordion__item > button');
+    if (accordion.dataset.accordionReady === 'true') return;
+    accordion.dataset.accordionReady = 'true';
 
-    buttons.forEach(button => {
+    accordion.querySelectorAll('.accordion__item > button').forEach(button => {
       button.addEventListener('click', () => {
         const expanded = button.getAttribute('aria-expanded') === 'true';
         button.setAttribute('aria-expanded', String(!expanded));

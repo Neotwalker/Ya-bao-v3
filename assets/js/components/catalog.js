@@ -440,7 +440,8 @@ function showCatalogNotice(state, message) {
 
 export async function initCatalog() {
   const root = document.querySelector('[data-live-catalog]');
-  if (!root) return;
+  if (!root || root.dataset.catalogReady === 'true') return;
+  root.dataset.catalogReady = 'true';
 
   showCatalogNotice('loading', 'Проверяем актуальное наличие…');
   root.setAttribute('aria-busy', 'true');

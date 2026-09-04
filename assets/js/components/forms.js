@@ -29,14 +29,24 @@ function initCustomSelect(select){if(select.dataset.customSelectReady==='true')r
   trigger.addEventListener('click',()=>{const open=!root.classList.contains('is-open');document.querySelectorAll('.custom-select.is-open').forEach(other=>{if(other!==root){other.classList.remove('is-open');other.querySelector('.custom-select__trigger')?.setAttribute('aria-expanded','false')}});root.classList.toggle('is-open',open);trigger.setAttribute('aria-expanded',open?'true':'false')});
   trigger.addEventListener('keydown',event=>{if(event.key==='Escape'){close();trigger.focus()}});
   select.addEventListener('change',()=>{sync();setError(select,'')});
-  document.addEventListener('click',event=>{if(!root.contains(event.target))close()});
   sync();
 }
 
-function initCustomSelects(){document.querySelectorAll('select').forEach(initCustomSelect)}
+function initCustomSelects(){
+  document.querySelectorAll('select').forEach(initCustomSelect);
+  document.addEventListener('click',event=>{
+    document.querySelectorAll('.custom-select.is-open').forEach(root=>{
+      if(root.contains(event.target))return;
+      root.classList.remove('is-open');
+      root.querySelector('.custom-select__trigger')?.setAttribute('aria-expanded','false');
+    });
+  });
+}
 
 async function initFlatpickrFields(){try{const flatpickr=await ensureFlatpickr();const locale=window.flatpickr?.l10ns?.ru||'default';document.querySelectorAll('input[type="date"], input[data-flatpickr-date]').forEach(input=>{if(input._flatpickr)return;input.type='text';input.dataset.flatpickrDate='';input.placeholder='Выберите дату';flatpickr(input,{locale,dateFormat:'d.m.Y',minDate:'today',disableMobile:true,allowInput:false,clickOpens:true,static:true});});document.querySelectorAll('input[type="time"], input[data-flatpickr-time]').forEach(input=>{if(input._flatpickr)return;input.type='text';input.dataset.flatpickrTime='';input.placeholder='Выберите время';flatpickr(input,{locale,enableTime:true,noCalendar:true,dateFormat:'H:i',time_24hr:true,minuteIncrement:15,disableMobile:true,allowInput:false,clickOpens:true,static:true,defaultHour:10,defaultMinute:0,onChange(selectedDates,dateStr,instance){if(!dateStr||isOpenTime(dateStr)){setError(input,'');return}const [hours,minutes]=dateStr.split(':').map(Number);const total=hours*60+minutes;const replacement=total>OPEN_END_MINUTES&&total<OPEN_START_MINUTES?(total<5*60?'01:00':'10:00'):'10:00';instance.setDate(replacement,false,'H:i');input.dispatchEvent(new Event('input',{bubbles:true}));setError(input,'')}});});}catch(error){console.error('flatpickr failed',error)}}
 
 function syncFormControls(form){form.querySelectorAll('select').forEach(select=>select.dispatchEvent(new Event('change',{bubbles:true})));form.querySelectorAll('[data-flatpickr-date],[data-flatpickr-time]').forEach(input=>input._flatpickr?.clear(false))}
 
-export function initForms(){document.querySelectorAll('input[type="tel"]').forEach(input=>input.addEventListener('input',()=>{input.value=formatPhone(input.value)}));initCustomSelects();initFlatpickrFields();document.querySelectorAll('[data-demo-form]').forEach(form=>{form.addEventListener('submit',async event=>{event.preventDefault();const status=form.querySelector('[data-form-status]');if(!validate(form)){if(status){status.textContent='Проверьте выделенные поля.';status.className='form-status is-error'}return}const submit=form.querySelector('[type="submit"]');submit?.classList.add('is-loading');submit?.setAttribute('disabled','');if(status){status.textContent='Отправляем заявку…';status.className='form-status'}await new Promise(resolve=>setTimeout(resolve,700));if(status){status.textContent='Демо-режим: форма проверена, но отправка пока не подключена.';status.className='form-status is-success'}form.reset();syncFormControls(form);submit?.classList.remove('is-loading');submit?.removeAttribute('disabled')});form.addEventListener('reset',()=>requestAnimationFrame(()=>syncFormControls(form)));form.querySelectorAll('input,select,textarea').forEach(field=>field.addEventListener('input',()=>setError(field,'')))})}
+let formsInitialized=false;
+
+export function initForms(){if(formsInitialized)return;formsInitialized=true;document.querySelectorAll('input[type="tel"]').forEach(input=>input.addEventListener('input',()=>{input.value=formatPhone(input.value)}));initCustomSelects();initFlatpickrFields();document.querySelectorAll('[data-demo-form]').forEach(form=>{form.addEventListener('submit',async event=>{event.preventDefault();const status=form.querySelector('[data-form-status]');if(!validate(form)){if(status){status.textContent='Проверьте выделенные поля.';status.className='form-status is-error'}return}const submit=form.querySelector('[type="submit"]');submit?.classList.add('is-loading');submit?.setAttribute('disabled','');if(status){status.textContent='Отправляем заявку…';status.className='form-status'}await new Promise(resolve=>setTimeout(resolve,700));if(status){status.textContent='Демо-режим: форма проверена, но отправка пока не подключена.';status.className='form-status is-success'}form.reset();syncFormControls(form);submit?.classList.remove('is-loading');submit?.removeAttribute('disabled')});form.addEventListener('reset',()=>requestAnimationFrame(()=>syncFormControls(form)));form.querySelectorAll('input,select,textarea').forEach(field=>field.addEventListener('input',()=>setError(field,'')))})}

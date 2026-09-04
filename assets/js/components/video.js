@@ -1,7 +1,8 @@
 export function initHeroVideo() {
   const media = document.querySelector('[data-hero-media]');
   const video = media?.querySelector('video');
-  if (!media || !video) return;
+  if (!media || !video || media.dataset.heroVideoReady === 'true') return;
+  media.dataset.heroVideoReady = 'true';
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData = navigator.connection?.saveData;
