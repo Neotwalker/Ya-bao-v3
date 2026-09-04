@@ -35,3 +35,9 @@
 - Удалены старые прототипы `events`, `event-single`, `certificates`, `reviews`, `faq`.
 
 - `menu.html` - единая страница меню и каталога: чай, напитки и будущие категории.
+
+## Правки v4.20
+- размер `.lead` изменён глобально в `assets/css/base.css`, а не только в блоке церемонии;
+- Fancybox подключён локально из `assets/vendor/fancybox/` и используется для `.space-gallery-v4`;
+- Swiper подключён локально из `assets/vendor/swiper/`;
+- CDN для Fancybox и Swiper не используется.

@@ -21,6 +21,8 @@
   <link rel="stylesheet" href="assets/css/responsive.css" />
   <link rel="stylesheet" href="assets/css/custom.css" />
   <link rel="stylesheet" href="assets/css/home-v4.css" />
+  <link rel="stylesheet" href="assets/vendor/fancybox/fancybox.min.css" />
+  <link rel="stylesheet" href="assets/vendor/swiper/swiper-bundle.min.css" />
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -35,6 +37,8 @@
     ]
   }
   </script>
+  <script src="assets/vendor/fancybox/fancybox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/js/app.js" type="module"></script>
 </head>
 <body class="page-home page-home-v4">
@@ -272,9 +276,21 @@
           <p>Тёмное дерево, детали чайного стола, живое общение и китайский андеграунд. Здесь одинаково уместны первый визит и привычная встреча за чаем.</p>
         </div>
         <div class="space-gallery-v4">
-          <figure class="space-gallery-v4__large reveal"><img src="assets/images/real-hall.webp" alt="Интерьер чайной Я Бао Завари" loading="lazy" /></figure>
-          <figure class="reveal"><img src="assets/images/real-corner.webp" alt="Детали интерьера Я Бао Завари" loading="lazy" /></figure>
-          <figure class="reveal"><img src="assets/images/gallery-2.webp" alt="Чайный стол" loading="lazy" /></figure>
+          <figure class="space-gallery-v4__large reveal">
+            <a href="assets/images/real-hall.webp" data-fancybox="space-gallery" aria-label="Открыть фото интерьера чайной">
+              <img src="assets/images/real-hall.webp" alt="Интерьер чайной Я Бао Завари" loading="lazy" />
+            </a>
+          </figure>
+          <figure class="reveal">
+            <a href="assets/images/real-corner.webp" data-fancybox="space-gallery" aria-label="Открыть фото деталей интерьера">
+              <img src="assets/images/real-corner.webp" alt="Детали интерьера Я Бао Завари" loading="lazy" />
+            </a>
+          </figure>
+          <figure class="reveal">
+            <a href="assets/images/gallery-2.webp" data-fancybox="space-gallery" aria-label="Открыть фото чайного стола">
+              <img src="assets/images/gallery-2.webp" alt="Чайный стол" loading="lazy" />
+            </a>
+          </figure>
         </div>
         <div class="section-tail reveal"><a class="button button--ghost" href="about.html">О чайной <span aria-hidden="true">→</span></a></div>
       </div>
