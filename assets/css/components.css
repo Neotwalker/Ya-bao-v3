@@ -1,5 +1,11 @@
 /* Shared components: header, navigation, buttons, footer, forms, modal and accordion. */
 .site-header{position:fixed;z-index:var(--z-header);inset:0 0 auto;height:var(--header-height);color:var(--color-white);transition:background var(--duration),box-shadow var(--duration)}
+body.is-locked .site-header{
+  padding-right:var(--scrollbar-compensation,0px);
+}
+body.is-locked .top-scroll{
+  margin-right:var(--scrollbar-compensation,0px);
+}
 .site-header::after{content:"";position:absolute;inset:auto 0 0;height:1px;background:var(--color-line-light)}
 .site-header.is-scrolled,.page-inner .site-header{background:rgba(23,19,15,.95);box-shadow:0 14px 44px rgba(0,0,0,.16);backdrop-filter:blur(18px)}
 .header-inner{height:100%;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(28px,4vw,76px)}

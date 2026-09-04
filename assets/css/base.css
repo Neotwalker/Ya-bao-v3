@@ -3,7 +3,7 @@
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;color-scheme:light;scrollbar-width:thin;scrollbar-color:rgba(95,70,48,.42) transparent}
 body{margin:0;min-width:320px;background:var(--color-ivory);color:var(--color-ink);font-family:var(--font-ui);font-size:17px;line-height:1.65;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
-body.is-locked{overflow:hidden}
+body.is-locked{overflow:hidden;padding-right:var(--scrollbar-compensation,0px)}
 img,video,svg{display:block;max-width:100%}
 img{height:auto}
 button,input,select,textarea{font:inherit}
