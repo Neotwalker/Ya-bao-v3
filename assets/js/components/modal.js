@@ -126,11 +126,12 @@ export function initModal() {
     }, 420);
   };
 
-  document.querySelectorAll('[data-modal-open]').forEach(button => {
-    button.addEventListener('click', () => {
-      lastFocused = button;
-      setEventMode(button);
-      if (sourceInput) sourceInput.value = button.dataset.source || location.pathname;
+  document.querySelectorAll('[data-modal-open]').forEach(trigger => {
+    trigger.addEventListener('click', event => {
+      event.preventDefault();
+      lastFocused = trigger;
+      setEventMode(trigger);
+      if (sourceInput) sourceInput.value = trigger.dataset.source || location.pathname;
       openDialog();
     });
   });
