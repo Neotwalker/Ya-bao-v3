@@ -230,3 +230,26 @@ textarea{resize:none}
   outline:2px solid var(--color-gold);
   outline-offset:4px;
 }
+
+.page-event .modal input[readonly],
+.page-event .modal textarea[readonly],
+.page-event .modal select:disabled,
+.page-event .modal input:disabled,
+.page-event .modal textarea:disabled,
+.page-event .modal .custom-select__trigger:disabled{
+  background:#e2e2e2;
+  border-color:#c9c9c9;
+  color:var(--color-ink);
+  cursor:not-allowed;
+  opacity:1;
+}
+.page-event .modal input[readonly]:focus,
+.page-event .modal textarea[readonly]:focus,
+.page-event .modal select:disabled:focus,
+.page-event .modal input:disabled:focus,
+.page-event .modal textarea:disabled:focus,
+.page-event .modal .custom-select__trigger:disabled:focus{
+  border-color:#c9c9c9;
+  box-shadow:none;
+  outline:none;
+}
