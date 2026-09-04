@@ -195,7 +195,7 @@
 .footer-contact-list svg{flex:0 0 20px;width:20px;height:20px;margin-top:1px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .footer-socials--home{margin-top:18px}
 .footer-socials--home .social-link img{width:20px;height:20px;object-fit:contain}
-@media(max-width:860px){.top-scroll{right:16px;bottom:92px}}
+@media(max-width:860px){.top-scroll{right:16px;bottom:24px}}
 @media(max-width:600px){.top-scroll{width:48px;height:48px}.footer-contact-list a{font-size:13px}}
 
 /* v4.22 header layout at laptop widths */
