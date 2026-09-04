@@ -1167,3 +1167,20 @@ button.format-card-v4{width:100%;font:inherit}
     border-radius:12px;
   }
 }
+
+.guide-card-v4--link{
+  color:inherit;
+  text-decoration:none;
+}
+.guide-card-v4--link:hover{
+  border-color:rgba(42,31,22,.28);
+}
+.guides-v4__tail{
+  margin-top:28px;
+}
+@media(max-width:560px){
+  .guides-v4__tail,
+  .guides-v4__tail .button{
+    width:100%;
+  }
+}
