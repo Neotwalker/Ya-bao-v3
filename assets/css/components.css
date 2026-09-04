@@ -107,3 +107,4 @@ textarea{resize:none}
 .custom-select__menu::-webkit-scrollbar-thumb:hover{background:rgba(95,70,48,.62)}
 .checkbox a{color:inherit;transition:color .25s ease}
 .checkbox a:hover{color:var(--color-walnut)}
+.button:focus-visible,.menu-toggle:focus-visible,.modal__close:focus-visible,.custom-select__trigger:focus-visible,.custom-select__option:focus-visible,.accordion__item button:focus-visible,.site-nav a:focus-visible,.mobile-nav a:focus-visible,.footer-links a:focus-visible,.social-link:focus-visible{outline:2px solid var(--color-gold);outline-offset:4px}

@@ -1,3 +1,5 @@
+import { lockBody, unlockBody } from '../utils/body-lock.js';
+
 let lastFocused = null;
 
 export function initModal() {
@@ -67,8 +69,9 @@ export function initModal() {
   };
 
   const openDialog = () => {
+    if (dialog.open) return;
     dialog.showModal();
-    document.body.classList.add('is-locked');
+    lockBody('booking-modal');
     dialog.classList.remove('is-closing');
 
     if (reduceMotion) {
@@ -88,7 +91,7 @@ export function initModal() {
   const finishClose = () => {
     dialog.classList.remove('is-visible', 'is-closing');
     if (dialog.open) dialog.close();
-    document.body.classList.remove('is-locked');
+    unlockBody('booking-modal');
     form?.reset();
     isClosing = false;
     lastFocused?.focus();

@@ -9,14 +9,43 @@ export function isOpenTime(value) {
   return total >= OPEN_START_MINUTES || total <= OPEN_END_MINUTES;
 }
 
+export function getFieldError(field) {
+  return field.closest('.field, .checkbox')?.querySelector('.field__error') || null;
+}
+
 export function setFieldError(field, message) {
   field.setAttribute('aria-invalid', message ? 'true' : 'false');
-  const error = field.closest('.field, .checkbox')?.querySelector('.field__error');
+  const error = getFieldError(field);
   if (error) error.textContent = message;
 }
 
+export function wireFieldError(field, index) {
+  const error = getFieldError(field);
+  if (!error) return;
+
+  if (!error.id) {
+    const base = field.id || field.name || `field-${index + 1}`;
+    error.id = `${base}-error`;
+  }
+
+  const describedBy = new Set(
+    String(field.getAttribute('aria-describedby') || '')
+      .split(/\s+/)
+      .filter(Boolean),
+  );
+  describedBy.add(error.id);
+  field.setAttribute('aria-describedby', [...describedBy].join(' '));
+}
+
+export function wireFormErrors(form) {
+  form.querySelectorAll('input, select, textarea').forEach((field, index) => {
+    if (field.type === 'hidden') return;
+    wireFieldError(field, index);
+  });
+}
+
 export function validateForm(form) {
-  let valid = true;
+  let firstInvalid = null;
 
   form.querySelectorAll('[required]').forEach(field => {
     let message = '';
@@ -32,8 +61,11 @@ export function validateForm(form) {
     }
 
     setFieldError(field, message);
-    if (message) valid = false;
+    if (message && !firstInvalid) firstInvalid = field;
   });
 
-  return valid;
+  return {
+    valid: !firstInvalid,
+    firstInvalid,
+  };
 }

@@ -76,3 +76,13 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - Open Graph image metadata дополнена type/width/height/alt;
 - улучшены SEO title/description у страниц «О чайной» и «Контакты»;
 - canonical-схема и robots-политика не меняют структуру сайта.
+
+## v4.39 interaction accessibility
+
+- единый body-lock для мобильного меню и booking modal;
+- мобильная навигация удерживает клавиатурный фокус внутри открытого overlay и закрывается при переходе на desktop;
+- accordion автоматически получает `aria-controls`, `aria-labelledby` и region semantics;
+- ошибки форм связаны с полями через `aria-describedby`;
+- при невалидной отправке фокус переводится к первому проблемному полю;
+- custom select получил полноценную клавиатурную навигацию и больше не создаёт скрытый дублирующий Tab-stop;
+- добавлены заметные `:focus-visible` состояния без изменения обычного визуала.

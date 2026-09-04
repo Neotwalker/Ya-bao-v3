@@ -1,4 +1,8 @@
-import { validateForm, setFieldError } from './validation.js';
+import {
+  validateForm,
+  setFieldError,
+  wireFormErrors,
+} from './validation.js';
 import { syncCustomSelects } from './custom-select.js';
 import { syncDateTimeFields } from './date-time.js';
 
@@ -11,18 +15,34 @@ function setStatus(status, text, state = '') {
   if (!status) return;
   status.textContent = text;
   status.className = `form-status${state ? ` ${state}` : ''}`;
+  status.setAttribute('aria-live', state === 'is-error' ? 'assertive' : 'polite');
+}
+
+function focusInvalid(field) {
+  if (!field) return;
+
+  if (field.matches('select.custom-select__native')) {
+    field.nextElementSibling?.querySelector('.custom-select__trigger')?.focus();
+    return;
+  }
+
+  field.focus();
 }
 
 function initDemoForm(form) {
   if (form.dataset.demoFormReady === 'true') return;
   form.dataset.demoFormReady = 'true';
+  wireFormErrors(form);
 
   form.addEventListener('submit', async event => {
     event.preventDefault();
 
     const status = form.querySelector('[data-form-status]');
-    if (!validateForm(form)) {
+    const validation = validateForm(form);
+
+    if (!validation.valid) {
       setStatus(status, 'Проверьте выделенные поля.', 'is-error');
+      focusInvalid(validation.firstInvalid);
       return;
     }
 
