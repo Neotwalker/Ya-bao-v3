@@ -54,3 +54,14 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - удалены мёртвые lightbox/tag/price-line/feature-list стили;
 - удалены 10 неиспользуемых legacy-изображений;
 - выполнен полный статический QA проекта; браузерный smoke-тест нужно повторить после загрузки на GitHub Pages, потому что локальный Chromium в текущей среде блокирует localhost/file navigation.
+
+## v4.37 production hardening
+
+- доступность: skip-link на всех страницах;
+- прямое подключение Google Fonts без CSS `@import`;
+- intrinsic width/height для статических и динамических изображений;
+- preload hero poster + preconnect для внешних ресурсов по месту использования;
+- autocomplete для имени и телефона;
+- Open Graph URL/site name и Twitter Card metadata;
+- hero-видео перекодировано в H.264 1920×1080 с faststart для меньшего веса;
+- визуальная структура и тексты не менялись.

@@ -80,7 +80,7 @@ export function renderMenuItems(rows, stockProducts) {
       : '';
 
     return `<article class="card menu-card is-visible" data-category="${item.slug}" data-stock-state="${state}" data-stock-visibility="${catalogConfig.outOfStockMode}"${hidden ? ' hidden' : ''}>
-      <div class="card__image"><img alt="${escapeHtml(item.name)}" loading="lazy" src="${CATEGORY_IMAGES[item.slug]}"/></div>
+      <div class="card__image"><img alt="${escapeHtml(item.name)}" width="1074" height="669" loading="lazy" decoding="async" src="${CATEGORY_IMAGES[item.slug]}"/></div>
       <div class="card__body">
         <div class="card__meta">
           <span>${CATEGORY_LABELS[item.slug]}</span>

@@ -44,3 +44,5 @@ html::-webkit-scrollbar{width:6px;height:6px}
 html::-webkit-scrollbar-track{background:transparent}
 html::-webkit-scrollbar-thumb{background:rgba(95,70,48,.42);border-radius:999px}
 html::-webkit-scrollbar-thumb:hover{background:rgba(95,70,48,.62)}
+.skip-link{position:fixed;z-index:200;top:10px;left:10px;padding:10px 14px;border-radius:10px;background:var(--color-white);color:var(--color-ink);font-weight:700;text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,.22);transform:translateY(-160%);transition:transform .2s ease}
+.skip-link:focus{transform:translateY(0)}
