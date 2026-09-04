@@ -70,6 +70,7 @@ button.format-card-v4{width:100%;font:inherit}
 .ceremony-v4__media,.beginner-v4__media,.local-v4__visual{overflow:hidden;border-radius:30px;box-shadow:var(--shadow-soft)}
 .ceremony-v4__media{display:block;aspect-ratio:4/3;background:#d8d0c1}.ceremony-v4__media img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}.beginner-v4__media img,.local-v4__visual>img{display:block;width:100%;height:100%;object-fit:cover}
 .ceremony-v4__copy h2,.beginner-v4__copy h2,.local-v4__copy h2{margin-bottom:26px}
+.ceremony-v4__copy .lead{max-width:720px;font-size:clamp(20px,1.55vw,26px);line-height:1.48}
 .ceremony-steps-v4{display:grid;gap:22px;margin:34px 0;padding:0;list-style:none}
 .ceremony-steps-v4 li{display:grid;grid-template-columns:48px 1fr;gap:16px}.ceremony-steps-v4 li>span{display:grid;place-items:center;width:48px;height:48px;border:1px solid var(--color-line);border-radius:50%;color:var(--color-bronze);font-family:var(--font-display)}.ceremony-steps-v4 strong{font-size:17px}.ceremony-steps-v4 p{margin:5px 0 0;color:var(--color-muted);font-size:14px}
 .ceremony-v4__actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.ceremony-v4__secondary{border-color:rgba(95,70,48,.16);background:rgba(255,255,255,.72);color:var(--color-ink);box-shadow:0 16px 34px rgba(55,36,22,.08)}.ceremony-v4__secondary:hover{border-color:rgba(95,70,48,.28);background:rgba(255,255,255,.92);box-shadow:0 20px 40px rgba(55,36,22,.12)}.data-note{margin:24px 0 0;color:#8a7c6f;font-size:12px;line-height:1.5}
