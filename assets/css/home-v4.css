@@ -86,7 +86,6 @@ button.format-card-v4{width:100%;font:inherit}
 .faq-home-v4 .faq-layout{grid-template-columns:.72fr 1.28fr}
 
 .final-cta-v4{padding-top:0;background:#efe5d6}.final-cta-v4__panel{display:grid;grid-template-columns:1fr auto;align-items:end;gap:50px;padding:clamp(42px,6vw,82px);border-radius:34px;background:linear-gradient(135deg,#67492f,#3b281b);color:var(--color-white);box-shadow:var(--shadow-dark)}.final-cta-v4__panel .eyebrow{color:var(--color-gold)}.final-cta-v4__panel h2{max-width:850px;margin-bottom:18px}.final-cta-v4__panel p{max-width:760px;margin:0;color:rgba(255,255,255,.68)}.final-cta-v4__actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
-.footer-grid-v4{grid-template-columns:1.4fr repeat(3,.7fr)}
 
 /* v4.22: laptop composition and slider edge breathing room */
 @media(max-width:1480px){
@@ -141,7 +140,6 @@ button.format-card-v4{width:100%;font:inherit}
 @media(max-width:1240px){
   .hero-v4__copy{left:var(--gutter);width:min(700px,58vw);min-width:560px;padding:calc(var(--header-height) + 32px) 0 56px}
   .hero-v4 h1{font-size:clamp(58px,6.2vw,88px)}
-  .footer-grid-v4{grid-template-columns:1fr 1fr}
 }
 @media(max-width:980px){
   .hero-v4{min-height:max(720px,100svh)}
@@ -169,7 +167,7 @@ button.format-card-v4{width:100%;font:inherit}
   .hero-v4__lead{max-width:560px;font-size:17px;line-height:1.4}
   .hero-v4__actions{display:grid;grid-template-columns:1fr;margin-top:20px;gap:10px}.hero-v4__actions .button{width:100%}
   .hero-v4__note{margin-top:14px;font-size:11px}
-  .quick-trust{padding:22px 0 42px}.quick-trust__layout{grid-template-columns:1fr}.quick-trust__intro{padding:8px 0}.quick-trust__reviews{grid-template-columns:1fr 1fr}.format-grid-v4,.tea-card-grid{grid-template-columns:1fr}.format-card-v4:last-child{grid-column:auto}.format-card-v4{min-height:290px;padding:22px}.format-card-v4 h3{margin-top:42px}.format-card-v4__link{padding:8px 10px}.tea-card-v4 p{min-height:0}.ceremony-v4__media,.beginner-v4__media{aspect-ratio:4/3;border-radius:22px}.beginner-v4__media{min-height:0}.local-v4__visual{min-height:390px;border-radius:22px}.local-v4__map iframe{min-height:390px}.space-gallery-v4{grid-template-columns:1fr;grid-template-rows:420px 260px 260px}.space-gallery-v4__large{grid-row:auto}.local-v4__pin{left:14px;bottom:14px}.final-cta-v4__panel{padding:28px 22px;border-radius:24px}.final-cta-v4__actions{display:grid;width:100%;gap:10px}.final-cta-v4__actions .button{width:100%}.footer-grid-v4{grid-template-columns:1fr}
+  .quick-trust{padding:22px 0 42px}.quick-trust__layout{grid-template-columns:1fr}.quick-trust__intro{padding:8px 0}.quick-trust__reviews{grid-template-columns:1fr 1fr}.format-grid-v4,.tea-card-grid{grid-template-columns:1fr}.format-card-v4:last-child{grid-column:auto}.format-card-v4{min-height:290px;padding:22px}.format-card-v4 h3{margin-top:42px}.format-card-v4__link{padding:8px 10px}.tea-card-v4 p{min-height:0}.ceremony-v4__media,.beginner-v4__media{aspect-ratio:4/3;border-radius:22px}.beginner-v4__media{min-height:0}.local-v4__visual{min-height:390px;border-radius:22px}.local-v4__map iframe{min-height:390px}.space-gallery-v4{grid-template-columns:1fr;grid-template-rows:420px 260px 260px}.space-gallery-v4__large{grid-row:auto}.local-v4__pin{left:14px;bottom:14px}.final-cta-v4__panel{padding:28px 22px;border-radius:24px}.final-cta-v4__actions{display:grid;width:100%;gap:10px}.final-cta-v4__actions .button{width:100%}
   .faq-home-v4 .accordion__item button{padding:19px 0;font-size:21px;gap:14px}
   .guide-card-v4__meta{gap:8px 14px;padding-top:22px;font-size:11px}
 }
@@ -219,8 +217,6 @@ button.format-card-v4{width:100%;font:inherit}
 
 @media(max-width:860px){
   .page-home-v4 .top-scroll{right:16px;bottom:24px}
-  .page-home-v4 .footer-bottom{display:grid;grid-template-columns:1fr;justify-items:start;gap:10px;margin-top:38px;text-align:left}
-  .page-home-v4 .footer-bottom__links{justify-content:flex-start;gap:7px 16px}
 }
 
 @media(max-width:768px){
@@ -236,7 +232,6 @@ button.format-card-v4{width:100%;font:inherit}
   .page-home-v4 .tea-card-grid{grid-template-columns:1fr}
   .page-home-v4 .space-gallery-v4{grid-template-columns:1fr;grid-template-rows:260px 150px 150px;gap:12px}
   .page-home-v4 .space-gallery-v4__large{grid-row:auto}
-  .page-home-v4 .footer-bottom__links{display:grid;gap:6px}
 }
 
 /* v4.26 mobile action layout */
@@ -256,3 +251,5 @@ button.format-card-v4{width:100%;font:inherit}
 
   .faq-home-v4 .accordion__item button{font-size:18px;line-height:1.18;padding:17px 0}
 }
+
+

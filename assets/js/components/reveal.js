@@ -12,6 +12,6 @@ export function initReveal() {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: .14, rootMargin: '0px 0px -5% 0px' });
+  }, { threshold: .08, rootMargin: '0px 0px -2% 0px' });
   elements.forEach(el => observer.observe(el));
 }

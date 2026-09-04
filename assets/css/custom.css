@@ -265,8 +265,6 @@
   .mobile-nav__socials .social-link{display:grid!important;place-items:center;width:38px;height:38px;padding:0!important;border:1px solid rgba(255,255,255,.2);border-radius:50%;font-size:0!important}
   .mobile-nav__socials .social-link img,.mobile-nav__socials .social-link svg{width:17px;height:17px}
   .mobile-nav__meta{margin-top:20px;font-size:12px;gap:7px}
-
-  .site-footer h3{font-size:10px;letter-spacing:.13em;margin-bottom:13px}
 }
 
 /* v4.27 mobile header, tea CTA, footer and mobile navigation refinements */
@@ -280,12 +278,28 @@
   .tea-showcase .section-tail{width:100%;justify-content:stretch}
   .tea-showcase .section-tail .button{width:100%}
 
-  /* more compact footer section headings */
-  .site-footer h3{font-size:9px;line-height:1.25;letter-spacing:.12em;margin-bottom:12px}
-
   /* keep address and map links visually equal and compact */
   .mobile-nav__meta{font-size:11px;line-height:1.35}
   .mobile-nav__meta strong,
   .mobile-nav__meta a{font-family:var(--font-ui);font-size:11px!important;font-weight:500;line-height:1.35;padding:3px 0;color:rgba(255,255,255,.64)}
   .mobile-nav__meta strong{font-weight:600}
+}
+
+
+/* v4.29: one canonical footer on every page */
+.footer-grid.footer-grid-v4{grid-template-columns:1.4fr repeat(3,.7fr)}
+body .site-footer h3{margin-bottom:18px;color:var(--color-gold);font-family:var(--font-ui);font-size:12px;font-weight:800;line-height:1.25;letter-spacing:.14em;text-transform:uppercase}
+@media(max-width:1240px){
+  .footer-grid.footer-grid-v4{grid-template-columns:1fr 1fr}
+}
+@media(max-width:860px){
+  .footer-bottom{display:grid;grid-template-columns:1fr;justify-items:start;gap:10px;margin-top:38px;text-align:left}
+  .footer-bottom__links{justify-content:flex-start;gap:7px 16px}
+}
+@media(max-width:767px){
+  .footer-grid.footer-grid-v4{grid-template-columns:1fr;gap:34px}
+  body .site-footer h3{font-size:9px;line-height:1.25;letter-spacing:.12em;margin-bottom:12px}
+}
+@media(max-width:560px){
+  .footer-bottom__links{display:grid;gap:6px}
 }
