@@ -65,7 +65,9 @@ export function initModal() {
   };
 
   const focusFirstField = () => {
-    dialog.querySelector('input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button')?.focus();
+    dialog.querySelector(
+      'input:not([type="hidden"]):not([disabled]), textarea:not([disabled]), .custom-select__trigger:not([disabled]), button:not([disabled])'
+    )?.focus();
   };
 
   const openDialog = () => {

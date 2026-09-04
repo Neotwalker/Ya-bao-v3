@@ -11,11 +11,41 @@ function syncFormControls(form) {
   syncDateTimeFields(form);
 }
 
+function getStatus(form) {
+  return form.querySelector('[data-form-status]');
+}
+
 function setStatus(status, text, state = '') {
   if (!status) return;
   status.textContent = text;
   status.className = `form-status${state ? ` ${state}` : ''}`;
   status.setAttribute('aria-live', state === 'is-error' ? 'assertive' : 'polite');
+}
+
+function clearStatus(form) {
+  const status = getStatus(form);
+  if (!status) return;
+  setStatus(status, '');
+}
+
+function clearErrors(form) {
+  form.querySelectorAll('input, select, textarea').forEach(field => {
+    if (field.type === 'hidden') return;
+    setFieldError(field, '');
+  });
+}
+
+function restoreSubmit(form) {
+  const submit = form.querySelector('[type="submit"]');
+  submit?.classList.remove('is-loading');
+  submit?.removeAttribute('disabled');
+}
+
+function resetVisualState(form, { keepStatus = false } = {}) {
+  clearErrors(form);
+  syncFormControls(form);
+  restoreSubmit(form);
+  if (!keepStatus) clearStatus(form);
 }
 
 function focusInvalid(field) {
@@ -37,7 +67,7 @@ function initDemoForm(form) {
   form.addEventListener('submit', async event => {
     event.preventDefault();
 
-    const status = form.querySelector('[data-form-status]');
+    const status = getStatus(form);
     const validation = validateForm(form);
 
     if (!validation.valid) {
@@ -59,18 +89,29 @@ function initDemoForm(form) {
       'is-success',
     );
 
+    form.dataset.keepStatusOnReset = 'true';
     form.reset();
-    syncFormControls(form);
-    submit?.classList.remove('is-loading');
-    submit?.removeAttribute('disabled');
+    restoreSubmit(form);
   });
 
   form.addEventListener('reset', () => {
-    requestAnimationFrame(() => syncFormControls(form));
+    const keepStatus = form.dataset.keepStatusOnReset === 'true';
+    delete form.dataset.keepStatusOnReset;
+
+    requestAnimationFrame(() => {
+      resetVisualState(form, { keepStatus });
+    });
   });
 
   form.querySelectorAll('input, select, textarea').forEach(field => {
-    field.addEventListener('input', () => setFieldError(field, ''));
+    field.addEventListener('input', () => {
+      setFieldError(field, '');
+
+      const status = getStatus(form);
+      if (status?.classList.contains('is-error')) {
+        clearStatus(form);
+      }
+    });
   });
 }
 
