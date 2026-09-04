@@ -9,6 +9,9 @@ const HEADER_ALIASES = Object.freeze({
     'категория', 'раздел', 'группа', 'тип', 'вид', 'категория товара',
     'категория позиции', 'подкатегория',
   ],
+  subcategory: ['подкатегория'],
+  price: ['цена', 'цена ₽', 'цена (₽)', 'стоимость'],
+  description: ['описание'],
   stock: [
     'наличие', 'остаток', 'количество', 'кол-во', 'остаток на складе', 'склад',
     'в наличии', 'доступно', 'доступный остаток', 'фактический остаток',
@@ -16,9 +19,18 @@ const HEADER_ALIASES = Object.freeze({
 });
 
 const CATEGORY_RULES = Object.freeze([
-  { slug: 'tea', pattern: /(чай|пуэр|улун|габа|да хун|те гуань|матча|сенча|я бао|бай му|лунцзин)/i },
-  { slug: 'drinks', pattern: /(лимонад|напит|бабл|bubble|смузи|коктейл|морс|холодн)/i },
-  { slug: 'desserts', pattern: /(десерт|блин|слад|пирог|торт|чизкейк|печенье|вафл)/i },
+  { slug: 'dark-oolong', pattern: /(темн.*улун|да хун пао|фен хуан|шуй сян)/i },
+  { slug: 'red-tea', pattern: /(красн.*чай|дянь?\s*хун|дян\s*хун)/i },
+  { slug: 'gaba', pattern: /(^|\s)габа(\s|$)/i },
+  { slug: 'white-tea', pattern: /(бел.*чай|бай хао|юэ гуан|я бао)/i },
+  { slug: 'light-oolong', pattern: /(светл.*улун|тегуан|те гуань|дун дин|молочн.*улун|ганпаудер|вулканическ.*улун)/i },
+  { slug: 'sheng-puer', pattern: /(ш[эе]н.*пуэр|ш[эе]н\s|да сюэ шань|сэн линь|шэй цун)/i },
+  { slug: 'shu-puer', pattern: /(шу.*пуэр|смола.*пуэр|долина мастера|красный дракон|хитрый дед)/i },
+  { slug: 'yellow-tea', pattern: /(желт.*чай|жёлт.*чай|хо шань хуан)/i },
+  { slug: 'hei-cha', pattern: /(хэй\s*ча)/i },
+  { slug: 'bubble-tea', pattern: /(бабл|bubble)/i },
+  { slug: 'lemonades', pattern: /(лимонад)/i },
+  { slug: 'author-tea', pattern: /(авторск.*чай|холодн.*чай)/i },
 ]);
 
 const AVAILABLE_VALUES = new Set([
@@ -273,10 +285,13 @@ function findStockProduct(card, products) {
   return bestScore >= 0.72 ? best : null;
 }
 
-function categorySlug(category, fallback) {
-  const source = normalizeText(category);
-  const match = CATEGORY_RULES.find(rule => rule.pattern.test(source));
-  return match?.slug || fallback || 'tea';
+function categorySlug(category, fallback, name = '', subcategory = '') {
+  const sources = [subcategory, category, name].map(normalizeText).filter(Boolean);
+  for (const source of sources) {
+    const match = CATEGORY_RULES.find(rule => rule.pattern.test(source));
+    if (match) return match.slug;
+  }
+  return fallback || '';
 }
 
 function setCardState(card, state, label) {
@@ -308,7 +323,7 @@ function applyProductsToCards(products) {
 
     if (product.name && title) title.textContent = product.name;
     if (product.category && categoryLabel) categoryLabel.textContent = product.category;
-    card.dataset.category = categorySlug(product.category, card.dataset.category);
+    card.dataset.category = categorySlug(product.category, card.dataset.category, product.name, product.subcategory || '');
 
     if (!product.availability.known) {
       setCardState(card, 'unknown', 'Наличие уточняется');
@@ -329,6 +344,91 @@ function applyProductsToCards(products) {
   });
 
   return { total: cards.length, availableCount, outCount };
+}
+
+
+const CATEGORY_LABELS = Object.freeze({
+  'dark-oolong': 'Темные улуны',
+  'red-tea': 'Красный чай',
+  'gaba': 'Габа',
+  'white-tea': 'Белый чай',
+  'light-oolong': 'Светлые улуны',
+  'sheng-puer': 'Шэн пуэры',
+  'shu-puer': 'Шу Пуэры',
+  'yellow-tea': 'Желтый чай',
+  'hei-cha': 'Хэй Ча',
+  'lemonades': 'Лимонады',
+  'bubble-tea': 'Бабл ти',
+  'author-tea': 'Авторский чай',
+});
+
+const CATEGORY_IMAGES = Object.freeze({
+  'dark-oolong': 'assets/images/tea-category-oolong.webp',
+  'red-tea': 'assets/images/menu-red.webp',
+  'gaba': 'assets/images/tea-category-gaba.webp',
+  'white-tea': 'assets/images/tea-category-white.webp',
+  'light-oolong': 'assets/images/tea-category-oolong.webp',
+  'sheng-puer': 'assets/images/tea-category-puer.webp',
+  'shu-puer': 'assets/images/tea-category-puer.webp',
+  'yellow-tea': 'assets/images/menu-yabao.webp',
+  'hei-cha': 'assets/images/tea-category-puer.webp',
+  'lemonades': 'assets/images/menu-lemonade.webp',
+  'bubble-tea': 'assets/images/menu-bubble.webp',
+  'author-tea': 'assets/images/menu-yabao.webp',
+});
+
+function escapeHtml(value = '') {
+  return String(value).replace(/[&<>'"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' })[char]);
+}
+
+function menuRowsToItems(rows) {
+  if (!rows.length) return [];
+  const headers = [...new Set(rows.flatMap(row => Object.keys(row)))];
+  const nameColumn = inferNameColumn(rows, headers);
+  const categoryColumn = findColumn(headers, HEADER_ALIASES.category);
+  const subcategoryColumn = findColumn(headers, HEADER_ALIASES.subcategory);
+  const priceColumn = findColumn(headers, HEADER_ALIASES.price);
+  const descriptionColumn = findColumn(headers, HEADER_ALIASES.description);
+  if (!nameColumn) return [];
+
+  return rows.map(row => {
+    const name = String(row[nameColumn] ?? '').trim();
+    const category = categoryColumn ? String(row[categoryColumn] ?? '').trim() : '';
+    const subcategory = subcategoryColumn ? String(row[subcategoryColumn] ?? '').trim() : '';
+    const priceRaw = priceColumn ? row[priceColumn] : '';
+    const description = descriptionColumn ? String(row[descriptionColumn] ?? '').trim() : '';
+    const normalized = normalizeText(`${category} ${subcategory} ${name}`);
+    if (!name || /кальян|табак|никотин/i.test(normalized)) return null;
+    const slug = categorySlug(category, '', name, subcategory);
+    if (!slug || !CATEGORY_LABELS[slug]) return null;
+    const numeric = Number(String(priceRaw ?? '').replace(/\s/g, '').replace(',', '.'));
+    const price = Number.isFinite(numeric) && numeric > 0 ? `${numeric.toLocaleString('ru-RU')} ₽` : String(priceRaw ?? '').trim();
+    return { name, category, subcategory, description, price, slug, key: normalizeText(name) };
+  }).filter(Boolean);
+}
+
+function renderMenuItems(rows, stockProducts) {
+  const grid = document.querySelector('[data-menu-grid]');
+  if (!grid) return null;
+  const items = menuRowsToItems(rows);
+  const stockMap = new Map(stockProducts.map(product => [product.key, product]));
+  grid.innerHTML = items.map(item => {
+    const stock = stockMap.get(item.key);
+    let state = 'unknown';
+    let stockLabel = 'Наличие уточняется';
+    let hidden = false;
+    if (stock?.sources?.includes('Склад') && stock.availability?.known) {
+      if (stock.availability.available) { state = 'available'; stockLabel = 'В наличии'; }
+      else { state = 'out'; stockLabel = 'Закончился'; hidden = catalogConfig.outOfStockMode === 'hide'; }
+    }
+    const description = item.description ? `<p>${escapeHtml(item.description)}</p>` : '';
+    return `<article class="card menu-card is-visible" data-category="${item.slug}" data-stock-state="${state}" data-stock-visibility="${catalogConfig.outOfStockMode}"${hidden ? ' hidden' : ''}>
+      <div class="card__image"><img alt="${escapeHtml(item.name)}" loading="lazy" src="${CATEGORY_IMAGES[item.slug]}"/></div>
+      <div class="card__body"><div class="card__meta"><span>${CATEGORY_LABELS[item.slug]}</span>${item.price ? `<strong>${escapeHtml(item.price)}</strong>` : ''}</div>
+      <span class="stock-badge stock-badge--${state}"><span aria-hidden="true"></span>${stockLabel}</span><h3>${escapeHtml(item.name)}</h3>${description}</div>
+    </article>`;
+  }).join('');
+  return { total: items.length };
 }
 
 function showCatalogNotice(state, message) {
@@ -356,10 +456,11 @@ export async function initCatalog() {
 
     const products = mergeProducts(sheets);
     if (!products.length) throw new Error('В таблице не найдены позиции каталога.');
-    const stats = applyProductsToCards(products);
+    const rendered = renderMenuItems(sheets['Меню'] || [], products);
+    const stats = rendered || applyProductsToCards(products);
     showCatalogNotice(
       'success',
-      `${fromCache ? 'Наличие загружено из кеша' : 'Наличие обновлено'}: доступно ${stats.availableCount} из ${stats.total}.`,
+      `${fromCache ? 'Меню загружено из кеша' : 'Меню обновлено'}: ${stats.total} позиций.`,
     );
     root.dispatchEvent(new CustomEvent('catalog:updated', { bubbles: true }));
   } catch (error) {
