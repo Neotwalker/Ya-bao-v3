@@ -3,6 +3,7 @@ let lastFocused = null;
 export function initModal() {
   const dialog = document.querySelector('#booking-modal');
   if (!dialog) return;
+
   const closeButton = dialog.querySelector('[data-modal-close]');
   const form = dialog.querySelector('form');
   const title = dialog.querySelector('[data-modal-title]');
@@ -11,6 +12,9 @@ export function initModal() {
   const generalFields = [...dialog.querySelectorAll('[data-general-field]')];
   const ceremonySelect = dialog.querySelector('[name="ceremony"]');
   const sourceInput = dialog.querySelector('[name="source"]');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let isClosing = false;
+
   const eventInputs = {
     name: dialog.querySelector('[name="event_name"]'),
     date: dialog.querySelector('[name="event_date"]'),
@@ -22,6 +26,7 @@ export function initModal() {
     const eventName = button.dataset.event || '';
     const isEvent = Boolean(eventName);
     dialog.classList.toggle('modal--event', isEvent);
+
     generalFields.forEach(field => {
       field.hidden = isEvent;
       field.querySelectorAll('input, select, textarea').forEach(control => {
@@ -45,7 +50,9 @@ export function initModal() {
       if (title) title.textContent = 'Расскажите, какой вечер вы хотите провести';
       if (intro) intro.textContent = 'Оставьте заявку - администратор уточнит свободное время, формат встречи и ответит на вопросы.';
       if (eyebrow) eyebrow.textContent = 'Бронирование';
-      Object.values(eventInputs).forEach(input => { if (input) input.value = ''; });
+      Object.values(eventInputs).forEach(input => {
+        if (input) input.value = '';
+      });
       const ceremony = button.dataset.ceremony || '';
       if (ceremonySelect && ceremony && ceremony !== 'event') {
         ceremonySelect.value = ceremony;
@@ -54,28 +61,82 @@ export function initModal() {
     }
   };
 
+  const focusFirstField = () => {
+    dialog.querySelector('input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button')?.focus();
+  };
+
+  const openDialog = () => {
+    dialog.showModal();
+    document.body.classList.add('is-locked');
+    dialog.classList.remove('is-closing');
+
+    if (reduceMotion) {
+      dialog.classList.add('is-visible');
+      focusFirstField();
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        dialog.classList.add('is-visible');
+        focusFirstField();
+      });
+    });
+  };
+
+  const finishClose = () => {
+    dialog.classList.remove('is-visible', 'is-closing');
+    if (dialog.open) dialog.close();
+    document.body.classList.remove('is-locked');
+    form?.reset();
+    isClosing = false;
+    lastFocused?.focus();
+  };
+
+  const close = () => {
+    if (!dialog.open || isClosing) return;
+
+    if (reduceMotion) {
+      finishClose();
+      return;
+    }
+
+    isClosing = true;
+    dialog.classList.remove('is-visible');
+    dialog.classList.add('is-closing');
+
+    const handleTransitionEnd = (event) => {
+      if (event.target !== dialog || event.propertyName !== 'opacity') return;
+      dialog.removeEventListener('transitionend', handleTransitionEnd);
+      finishClose();
+    };
+
+    dialog.addEventListener('transitionend', handleTransitionEnd);
+    window.setTimeout(() => {
+      if (isClosing) {
+        dialog.removeEventListener('transitionend', handleTransitionEnd);
+        finishClose();
+      }
+    }, 420);
+  };
+
   document.querySelectorAll('[data-modal-open]').forEach(button => {
     button.addEventListener('click', () => {
       lastFocused = button;
       setEventMode(button);
       if (sourceInput) sourceInput.value = button.dataset.source || location.pathname;
-      dialog.showModal();
-      document.body.classList.add('is-locked');
-      dialog.querySelector('input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button')?.focus();
+      openDialog();
     });
   });
 
-  const close = () => {
-    dialog.close();
-    document.body.classList.remove('is-locked');
-    form?.reset();
-    lastFocused?.focus();
-  };
   closeButton?.addEventListener('click', close);
   dialog.addEventListener('click', event => {
     const rect = dialog.getBoundingClientRect();
     const outside = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
     if (outside) close();
   });
-  dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
+  dialog.addEventListener('cancel', event => {
+    event.preventDefault();
+    close();
+  });
 }

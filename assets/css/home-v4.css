@@ -68,11 +68,11 @@ button.format-card-v4{width:100%;font:inherit}
 
 .ceremony-v4__grid,.beginner-v4__grid,.local-v4__grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(50px,7vw,110px);align-items:center}
 .ceremony-v4__media,.beginner-v4__media,.local-v4__visual{overflow:hidden;border-radius:30px;box-shadow:var(--shadow-soft)}
-.ceremony-v4__media{min-height:690px}.ceremony-v4__media img,.beginner-v4__media img,.local-v4__visual>img{width:100%;height:100%;object-fit:cover}
+.ceremony-v4__media{display:block;aspect-ratio:4/3;background:#d8d0c1}.ceremony-v4__media img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}.beginner-v4__media img,.local-v4__visual>img{display:block;width:100%;height:100%;object-fit:cover}
 .ceremony-v4__copy h2,.beginner-v4__copy h2,.local-v4__copy h2{margin-bottom:26px}
 .ceremony-steps-v4{display:grid;gap:22px;margin:34px 0;padding:0;list-style:none}
 .ceremony-steps-v4 li{display:grid;grid-template-columns:48px 1fr;gap:16px}.ceremony-steps-v4 li>span{display:grid;place-items:center;width:48px;height:48px;border:1px solid var(--color-line);border-radius:50%;color:var(--color-bronze);font-family:var(--font-display)}.ceremony-steps-v4 strong{font-size:17px}.ceremony-steps-v4 p{margin:5px 0 0;color:var(--color-muted);font-size:14px}
-.ceremony-v4__actions{display:flex;align-items:center;gap:22px;flex-wrap:wrap}.text-link{font-size:14px;font-weight:800;text-decoration:none}.data-note{margin:24px 0 0;color:#8a7c6f;font-size:12px;line-height:1.5}
+.ceremony-v4__actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.ceremony-v4__secondary{border-color:rgba(95,70,48,.16);background:rgba(255,255,255,.72);color:var(--color-ink);box-shadow:0 16px 34px rgba(55,36,22,.08)}.ceremony-v4__secondary:hover{border-color:rgba(95,70,48,.28);background:rgba(255,255,255,.92);box-shadow:0 20px 40px rgba(55,36,22,.12)}.data-note{margin:24px 0 0;color:#8a7c6f;font-size:12px;line-height:1.5}
 
 .beginner-v4{background:#d7d2b0}.beginner-v4__grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}.beginner-v4__media{min-height:620px}.plain-checks{display:grid;gap:14px;margin:32px 0;padding:0;list-style:none}.plain-checks li{position:relative;padding-left:32px}.plain-checks li::before{content:"";position:absolute;left:0;top:.72em;width:16px;height:1px;background:var(--color-walnut)}
 
@@ -99,7 +99,7 @@ button.format-card-v4{width:100%;font:inherit}
   .hero-v4__shade{background:linear-gradient(90deg,rgba(10,8,6,.9) 0%,rgba(10,8,6,.77) 44%,rgba(10,8,6,.34) 78%,rgba(10,8,6,.12) 100%),linear-gradient(180deg,rgba(0,0,0,.05) 38%,rgba(0,0,0,.34) 100%)}
   .ceremony-v4__grid,.beginner-v4__grid,.local-v4__grid{grid-template-columns:1fr}
   .format-grid-v4,.tea-card-grid,.guide-grid-v4{grid-template-columns:1fr 1fr}.format-card-v4:last-child,.guide-card-v4:last-child{grid-column:1/-1}
-  .ceremony-v4__media,.beginner-v4__media,.local-v4__visual{min-height:520px}.ceremony-v4__copy{max-width:820px}.local-v4__visual{order:-1}.faq-home-v4 .faq-layout{grid-template-columns:1fr}.final-cta-v4__panel{grid-template-columns:1fr;align-items:start}.final-cta-v4__actions{justify-content:flex-start}
+  .beginner-v4__media,.local-v4__visual{min-height:520px}.ceremony-v4__media{aspect-ratio:4/3}.ceremony-v4__copy{max-width:820px}.local-v4__visual{order:-1}.faq-home-v4 .faq-layout{grid-template-columns:1fr}.final-cta-v4__panel{grid-template-columns:1fr;align-items:start}.final-cta-v4__actions{justify-content:flex-start}
 }
 @media(max-width:767px){
   .page-home-v4{padding-bottom:78px}.page-home-v4 .brand small{display:block}
@@ -114,7 +114,7 @@ button.format-card-v4{width:100%;font:inherit}
   .hero-v4__lead{max-width:560px;font-size:19px;line-height:1.4}
   .hero-v4__actions{display:grid;grid-template-columns:1fr;margin-top:26px}.hero-v4__actions .button{width:100%}
   .hero-v4__note{margin-top:18px;font-size:13px}
-  .quick-trust{padding:22px 0 42px}.quick-trust__layout{grid-template-columns:1fr}.quick-trust__intro{padding:8px 0}.quick-trust__reviews{grid-template-columns:1fr 1fr}.format-grid-v4,.tea-card-grid,.guide-grid-v4{grid-template-columns:1fr}.format-card-v4:last-child,.guide-card-v4:last-child{grid-column:auto}.format-card-v4{min-height:310px;padding:26px}.format-card-v4 h3{margin-top:52px}.tea-card-v4 p{min-height:0}.ceremony-v4__media,.beginner-v4__media,.local-v4__visual{min-height:390px;border-radius:22px}.space-gallery-v4{grid-template-columns:1fr;grid-template-rows:420px 260px 260px}.space-gallery-v4__large{grid-row:auto}.local-v4__pin{left:14px;bottom:14px}.final-cta-v4__panel{padding:34px 26px;border-radius:26px}.final-cta-v4__actions{display:grid;width:100%}.final-cta-v4__actions .button{width:100%}.footer-grid-v4{grid-template-columns:1fr}
+  .quick-trust{padding:22px 0 42px}.quick-trust__layout{grid-template-columns:1fr}.quick-trust__intro{padding:8px 0}.quick-trust__reviews{grid-template-columns:1fr 1fr}.format-grid-v4,.tea-card-grid,.guide-grid-v4{grid-template-columns:1fr}.format-card-v4:last-child,.guide-card-v4:last-child{grid-column:auto}.format-card-v4{min-height:310px;padding:26px}.format-card-v4 h3{margin-top:52px}.tea-card-v4 p{min-height:0}.ceremony-v4__media{aspect-ratio:4/3;border-radius:22px}.beginner-v4__media,.local-v4__visual{min-height:390px;border-radius:22px}.space-gallery-v4{grid-template-columns:1fr;grid-template-rows:420px 260px 260px}.space-gallery-v4__large{grid-row:auto}.local-v4__pin{left:14px;bottom:14px}.final-cta-v4__panel{padding:34px 26px;border-radius:26px}.final-cta-v4__actions{display:grid;width:100%}.final-cta-v4__actions .button{width:100%}.footer-grid-v4{grid-template-columns:1fr}
 }
 @media(max-width:560px){
   .quick-trust__reviews{grid-template-columns:1fr}

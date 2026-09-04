@@ -174,3 +174,11 @@
   .page-menu .menu-card h3{font-size:26px}
 }
 
+
+
+/* Smooth booking modal */
+.modal{opacity:0;transform:translateY(22px) scale(.985);transition:opacity .24s ease,transform .36s var(--ease);will-change:opacity,transform}
+.modal::backdrop{background:rgba(0,0,0,0);backdrop-filter:blur(0);transition:background .28s ease,backdrop-filter .28s ease}
+.modal[open].is-visible{opacity:1;transform:none}
+.modal[open].is-visible::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(7px)}
+.modal.is-closing{opacity:0;transform:translateY(18px) scale(.985)}
