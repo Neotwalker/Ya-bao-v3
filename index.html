@@ -304,13 +304,12 @@
           <p class="lead">Я Бао Завари находится на улице Кирова, 94. Можно зайти во время прогулки по центру или приехать специально на чайную церемонию.</p>
           <div class="local-v4__actions">
             <a class="button button--walnut" href="https://2gis.ru/chelyabinsk/firm/70000001110715460" rel="noopener" target="_blank">Открыть в 2ГИС</a>
-            <a class="button button--ghost-ink" href="https://yandex.ru/maps/org/ya_bao_zavari/112754832500/" rel="noopener" target="_blank">Яндекс Карты</a>
+            <a class="button button--walnut" href="https://yandex.ru/maps/org/ya_bao_zavari/112754832500/" rel="noopener" target="_blank">Яндекс Карты</a>
           </div>
           <p class="data-note">Перед production-запуском нужно унифицировать адрес в карточках: в проекте и 2ГИС указан Кирова, 94, в Яндекс Картах ранее отображался 94А.</p>
         </div>
-        <div class="local-v4__visual reveal">
-          <img src="assets/images/about-interior.webp" alt="Интерьер чайной Я Бао Завари" loading="lazy" />
-          <div class="local-v4__pin"><span>Я Бао Завари</span><strong>Кирова, 94</strong><small>Челябинск</small></div>
+        <div class="local-v4__visual local-v4__map reveal">
+          <iframe allowfullscreen loading="lazy" src="https://yandex.ru/map-widget/v1/?ll=61.402655%2C55.164081&amp;mode=search&amp;oid=112754832500&amp;ol=biz&amp;z=17" title="Я Бао Завари на карте"></iframe>
         </div>
       </div>
     </section>
@@ -321,10 +320,20 @@
           <div><p class="eyebrow">Полезно</p><h2>Разобраться в чае без лекции на три часа</h2></div>
           <p>Это направления будущего блога из SEO-архитектуры. В этой версии они показаны как контентные карточки, без публикации пустых страниц.</p>
         </div>
-        <div class="guide-grid-v4">
-          <article class="guide-card-v4 reveal"><span>Выбор чая</span><h3>Как выбрать китайский чай</h3><p>С чего начать новичку и как описать мастеру вкусы, которые уже нравятся.</p><small>Планируется в MVP</small></article>
-          <article class="guide-card-v4 reveal"><span>Заваривание</span><h3>Как заваривать пуэр</h3><p>Базовая логика проливов, посуды и времени без перегруженных таблиц.</p><small>Планируется в MVP</small></article>
-          <article class="guide-card-v4 reveal"><span>Челябинск</span><h3>Куда сходить на свидание</h3><p>Сценарии встречи в городе, где чайная будет одним из вариантов маршрута.</p><small>Планируется в MVP</small></article>
+        <div class="guide-grid-v4 swiper" data-guides-swiper>
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><article class="guide-card-v4 reveal"><span>Выбор чая</span><h3>Как выбрать китайский чай</h3><p>С чего начать новичку и как описать мастеру вкусы, которые уже нравятся.</p><small>Материал в подготовке</small></article></div>
+            <div class="swiper-slide"><article class="guide-card-v4 reveal"><span>Заваривание</span><h3>Как заваривать пуэр</h3><p>Базовая логика проливов, посуды и времени без перегруженных таблиц.</p><small>Материал в подготовке</small></article></div>
+            <div class="swiper-slide"><article class="guide-card-v4 reveal"><span>Челябинск</span><h3>Куда сходить на свидание</h3><p>Сценарии встречи в центре города, где чайная может стать частью маршрута.</p><small>Материал в подготовке</small></article></div>
+            <div class="swiper-slide"><article class="guide-card-v4 reveal"><span>Улуны</span><h3>Чем отличаются светлые и тёмные улуны</h3><p>Как ориентироваться по вкусу, аромату и степени обработки без лишней терминологии.</p><small>Материал в подготовке</small></article></div>
+            <div class="swiper-slide"><article class="guide-card-v4 reveal"><span>Проливы</span><h3>Что значит заваривать чай проливами</h3><p>Зачем чай заваривают короткими подходами и что меняется от пролива к проливу.</p><small>Материал в подготовке</small></article></div>
+            <div class="swiper-slide"><article class="guide-card-v4 reveal"><span>Церемония</span><h3>Как проходит чайная церемония для двоих</h3><p>Как устроена встреча за чайным столом и что полезно знать перед первым визитом.</p><small>Материал в подготовке</small></article></div>
+          </div>
+        </div>
+        <div class="guide-slider-v4__controls reveal" aria-label="Навигация по материалам">
+          <button class="guide-slider-v4__button guide-slider-v4__button--prev" type="button" aria-label="Предыдущие статьи"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg></button>
+          <div class="guide-slider-v4__pagination" aria-hidden="true"></div>
+          <button class="guide-slider-v4__button guide-slider-v4__button--next" type="button" aria-label="Следующие статьи"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg></button>
         </div>
       </div>
     </section>
@@ -379,13 +388,27 @@
           <a class="brand" href="index.html"><img src="assets/icons/logo-mark.svg" width="52" height="52" alt="" /><span><strong>Я Бао Завари</strong><small>чайная на Кировке</small></span></a>
           <p>Китайский чай, чайные церемонии и живые встречи в центре Челябинска.</p>
         </div>
-        <div><h3>Посетить</h3><ul class="footer-links"><li><a href="menu.html">Меню</a></li><li><a href="#ceremony">Церемония</a></li><li><a href="contacts.html">Контакты</a></li></ul></div>
-        <div><h3>О чайной</h3><ul class="footer-links"><li><a href="about.html">Пространство</a></li><li><a href="#guides">Материалы</a></li><li><a href="https://vk.ru/yabaozavary" rel="noopener" target="_blank">ВКонтакте</a></li></ul></div>
+        <div><h3>Посетить</h3><ul class="footer-links"><li><a href="menu.html">Меню</a></li><li><a href="#ceremony">Церемония</a></li><li><a href="about.html">О чайной</a></li><li><a href="contacts.html">Контакты</a></li></ul></div>
+        <div>
+          <h3>Связаться</h3>
+          <ul class="footer-contact-list">
+            <li><a href="https://yandex.ru/maps/org/ya_bao_zavari/112754832500/" rel="noopener" target="_blank"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg><span>Челябинск, Кирова, 94</span></a></li>
+            <li><a href="tel:+79995847290"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 10.8a15.4 15.4 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.4.6 3.7.6.6 0 1 .4 1 1V21c0 .6-.4 1-1 1C10.6 22 2 13.4 2 3c0-.6.4-1 1-1h4.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.4 0 .8-.3 1.1l-2.2 2.2Z"/></svg><span>+7 999 584-72-90</span></a></li>
+          </ul>
+          <div class="footer-socials footer-socials--home">
+            <a aria-label="ВКонтакте" class="social-link" href="https://vk.ru/yabaozavary" rel="noopener" target="_blank"><img src="assets/icons/vk.svg" alt="" aria-hidden="true" /></a>
+            <a aria-label="Телеграм" class="social-link" href="https://t.me/yabaozavari" rel="noopener" target="_blank"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.7 4.3 3.9 10.8c-.9.4-.8 1.6.1 1.8l4.3 1.3 1.6 4.8c.3.9 1.5 1 1.9.2l2.3-4.1 4.1 3.3c.7.6 1.8.2 2-.7l2.4-11.7c.2-1-.8-1.9-1.9-1.4ZM9.5 13.4l8-6.1-6.3 7.4-.5 2.5-1.2-3.8Z" fill="currentColor"/></svg></a>
+          </div>
+        </div>
         <div><h3>Информация</h3><ul class="footer-links"><li><a href="privacy.html">Политика</a></li><li><a href="consent.html">Согласие на обработку данных</a></li><li><a href="https://2gis.ru/chelyabinsk/firm/70000001110715460" rel="noopener" target="_blank">2ГИС</a></li><li><a href="https://yandex.ru/maps/org/ya_bao_zavari/112754832500/" rel="noopener" target="_blank">Яндекс Карты</a></li></ul></div>
       </div>
       <div class="footer-bottom"><span>© <span data-current-year></span> «Я Бао Завари».</span><span>Челябинск, Кирова, 94</span></div>
     </div>
   </footer>
+
+  <button class="top-scroll" data-top-scroll type="button" aria-label="Наверх">
+    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 15 6-6 6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+  </button>
 
   <div class="mobile-cta" data-mobile-cta><button class="button button--primary" data-modal-open data-source="mobile-sticky" type="button">Забронировать</button></div>
 
