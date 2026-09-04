@@ -197,3 +197,14 @@
 .footer-socials--home .social-link img{width:20px;height:20px;object-fit:contain}
 @media(max-width:860px){.top-scroll{right:16px;bottom:92px}}
 @media(max-width:600px){.top-scroll{width:48px;height:48px}.footer-contact-list a{font-size:13px}}
+
+/* v4.22 header layout at laptop widths */
+@media (min-width:861px) and (max-width:1240px){
+  .header-actions{justify-self:end;justify-content:flex-end;width:100%;gap:10px}
+  .header-actions>.button{display:none}
+  .header-meta{display:contents}
+  .header-phone{order:1;display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(255,255,255,.22);border-radius:50%}
+  .header-phone span{display:none}
+  .menu-toggle{display:block;order:2}
+  .header-socials{order:3}
+}
