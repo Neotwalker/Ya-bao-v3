@@ -1114,3 +1114,6 @@ button.format-card-v4{width:100%;font:inherit}
   }
   .space-gallery-v4__large{grid-row:auto}
 }
+/* Events */
+.events-home-v4{overflow:hidden}
+.events-home-v4 .section-tail{margin-top:28px}

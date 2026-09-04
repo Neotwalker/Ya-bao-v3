@@ -1,4 +1,5 @@
 import { initHeroVideo } from './components/video.js';
+import { initEventsSwipers } from './components/events-swiper.js';
 import { runInitializers } from './utils/init.js';
 import { onScroll } from './utils/scroll.js';
 
@@ -53,6 +54,7 @@ function initSpaceGalleryFancybox() {
 runInitializers(
   initHeroVideo,
   initSpaceGalleryFancybox,
+  initEventsSwipers,
   initGuidesSwiper,
   initTopScroll,
 );
