@@ -626,6 +626,7 @@ button.format-card-v4{width:100%;font:inherit}
 .guide-slider-v4__pagination .swiper-pagination-bullet-active{opacity:1}
 
 /* FAQ */
+.faq-layout{display:grid;grid-template-columns:.65fr 1.35fr;gap:clamp(50px,8vw,120px);align-items:start}
 .faq-home-v4 .faq-layout{grid-template-columns:.72fr 1.28fr}
 
 /* Final CTA */
@@ -907,12 +908,6 @@ button.format-card-v4{width:100%;font:inherit}
   }
 }
 
-@media(max-width:860px){
-  .top-scroll{
-    right:16px;
-    bottom:24px;
-  }
-}
 
 /* Up to 768px: final tablet/mobile grid composition */
 @media(max-width:768px){

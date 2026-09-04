@@ -1,2 +1,0 @@
-/* Shared section patterns still used by more than one page type. */
-.faq-layout{display:grid;grid-template-columns:.65fr 1.35fr;gap:clamp(50px,8vw,120px);align-items:start}

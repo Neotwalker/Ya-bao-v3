@@ -25,7 +25,7 @@ h3{font-size:clamp(28px,2.1vw,38px)}
 :focus-visible{outline:3px solid var(--color-gold);outline-offset:4px}
 .eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:20px;color:var(--color-bronze);font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase}
 .eyebrow::before{content:"";width:40px;height:1px;background:currentColor}
-.section--dark .eyebrow,.section--olive .eyebrow,.page-hero .eyebrow,.hero .eyebrow{color:var(--color-gold)}
+.section--dark .eyebrow,.section--olive .eyebrow{color:var(--color-gold)}
 .lead{max-width:800px;color:var(--color-muted);font-family:var(--font-display);font-size:clamp(20px,1.55vw,26px);line-height:1.48}
 .section--dark .lead,.section--olive .lead{color:rgba(255,255,255,.76)}
 .section-heading{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.72fr);align-items:end;gap:clamp(36px,6vw,96px);margin-bottom:clamp(44px,5vw,74px)}

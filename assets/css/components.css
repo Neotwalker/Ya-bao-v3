@@ -37,8 +37,6 @@
 .mobile-nav ul{margin:0;padding:0;list-style:none}
 .mobile-nav a{display:block;padding:10px 0;font-family:var(--font-display);font-size:clamp(34px,9vw,58px);line-height:1.05;text-decoration:none}
 .mobile-nav__meta{display:grid;gap:10px;margin-top:34px;color:rgba(255,255,255,.64);font-size:14px}
-.tag{display:inline-flex;align-items:center;min-height:32px;padding:6px 11px;border:1px solid currentColor;border-radius:var(--radius-pill);font-size:11px;letter-spacing:.03em}
-.tag--light{color:var(--color-white);background:rgba(23,19,15,.35);backdrop-filter:blur(10px)}
 .card{position:relative;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--color-line);border-radius:var(--radius-md);background:rgba(255,255,255,.5);box-shadow:var(--shadow-soft)}
 .card__image{overflow:hidden;aspect-ratio:4/3}
 .card__image img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
@@ -47,12 +45,6 @@
 .card__meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:18px;color:var(--color-muted);font-size:13px}
 .card h2,.card h3{margin-bottom:16px}
 .card p{color:var(--color-muted)}
-.card__footer{display:flex;flex-wrap:wrap;gap:12px;margin-top:auto;padding-top:26px}
-.price-line{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-top:auto;padding-top:22px;border-top:1px solid var(--color-line)}
-.price-line strong{font-family:var(--font-display);font-size:28px}
-.price-line span{color:var(--color-muted);font-size:12px}
-.feature-list{margin:0 0 24px;padding-left:20px;color:var(--color-muted)}
-.feature-list li+li{margin-top:8px}
 .site-footer{padding:74px 0 26px;background:#100d0a;color:var(--color-white)}
 .footer-grid{display:grid;grid-template-columns:1.4fr repeat(3,.7fr);gap:clamp(36px,6vw,88px)}
 .footer-brand p{max-width:420px;margin-top:24px;color:rgba(255,255,255,.58)}
@@ -81,10 +73,6 @@
 .form-status{font-size:14px}
 .form-status.is-success{color:var(--color-success)}
 .form-status.is-error{color:var(--color-error)}
-.lightbox{max-width:min(1200px,94vw);padding:0;border:0;background:transparent}
-.lightbox::backdrop{background:rgba(0,0,0,.9)}
-.lightbox img{max-height:90vh;border-radius:14px}
-.lightbox__close{position:fixed;top:20px;right:20px;width:48px;height:48px;border:1px solid rgba(255,255,255,.4);border-radius:50%;background:rgba(0,0,0,.35);color:white;font-size:28px}
 .accordion{border-top:1px solid var(--color-line)}
 .accordion__item{border-bottom:1px solid var(--color-line)}
 .accordion__item button{display:grid;grid-template-columns:1fr 24px;align-items:center;gap:20px;width:100%;padding:24px 0;border:0;background:transparent;text-align:left;font-family:var(--font-display);font-size:26px;cursor:pointer}
@@ -113,37 +101,9 @@ textarea{resize:none}
 .custom-select__option{width:100%;padding:11px 12px;border:0;border-radius:8px;background:transparent;color:var(--color-ink);font:inherit;text-align:left;cursor:pointer}
 .custom-select__option:hover,.custom-select__option.is-selected{background:rgba(95,70,48,.09)}
 .field select[aria-invalid="true"]+.custom-select .custom-select__trigger{border-color:var(--color-error)}
-.flatpickr-input[readonly]{cursor:pointer}
-.flatpickr-calendar{font-family:var(--font-ui);border:1px solid rgba(95,70,48,.18);box-shadow:0 18px 50px rgba(41,31,23,.18)}
-.flatpickr-day.selected,.flatpickr-day.startRange,.flatpickr-day.endRange,.flatpickr-day.selected:hover{border-color:var(--color-walnut);background:var(--color-walnut)}
-.flatpickr-day.today{border-color:var(--color-gold)}
-.flatpickr-time input:hover,.flatpickr-time .flatpickr-am-pm:hover{background:rgba(95,70,48,.06)}
 .custom-select__menu::-webkit-scrollbar{width:6px}
 .custom-select__menu::-webkit-scrollbar-track{background:transparent}
 .custom-select__menu::-webkit-scrollbar-thumb{background:rgba(95,70,48,.42);border-radius:999px}
 .custom-select__menu::-webkit-scrollbar-thumb:hover{background:rgba(95,70,48,.62)}
-.modal .flatpickr-calendar{z-index:100000}
-.field .flatpickr-wrapper{position:relative;display:block;width:100%;min-width:0}
-.field .flatpickr-calendar.static{left:0!important;right:auto!important;top:calc(100% + 8px)!important;width:307.875px;max-width:min(307.875px,calc(100vw - 48px));z-index:100000}
-.modal .flatpickr-calendar.static{z-index:100000}
-.field .flatpickr-calendar{overflow:hidden;border-radius:12px;background:#fff}
-.field .flatpickr-calendar .flatpickr-months{position:relative;height:52px!important;min-height:52px!important;align-items:center}
-.field .flatpickr-calendar .flatpickr-month{height:52px!important;min-height:52px!important}
-.field .flatpickr-calendar .flatpickr-current-month{top:0!important;left:40px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px;width:calc(100% - 80px)!important;height:52px!important;padding:0!important;line-height:1!important}
-.field .flatpickr-calendar .flatpickr-current-month .flatpickr-monthDropdown-months{height:40px!important;min-height:40px!important;margin:0!important;padding:0 24px 0 8px!important;border:0!important;border-radius:8px!important;background-color:transparent!important;font-family:var(--font-ui)!important;font-size:16px!important;line-height:40px!important;vertical-align:middle!important}
-.field .flatpickr-calendar .flatpickr-current-month .numInputWrapper{display:flex!important;align-items:center!important;width:72px!important;height:40px!important}
-.field .flatpickr-calendar .flatpickr-current-month input.cur-year{width:100%!important;height:40px!important;min-height:0!important;margin:0!important;padding:0 4px!important;border:0!important;border-radius:0!important;background:transparent!important;font-family:var(--font-ui)!important;font-size:16px!important;line-height:40px!important;text-align:center!important}
-.field .flatpickr-calendar .flatpickr-prev-month, .field .flatpickr-calendar .flatpickr-next-month{top:0!important;display:flex!important;align-items:center!important;justify-content:center!important;width:40px!important;height:52px!important;padding:0!important}
-.field .flatpickr-calendar .flatpickr-prev-month{left:0!important}
-.field .flatpickr-calendar .flatpickr-next-month{right:0!important}
-.field .flatpickr-calendar .flatpickr-prev-month svg, .field .flatpickr-calendar .flatpickr-next-month svg{width:14px!important;height:14px!important}
-.field .flatpickr-calendar .flatpickr-weekdays{height:32px!important}
-.field .flatpickr-calendar .flatpickr-weekday{display:flex!important;align-items:center!important;justify-content:center!important;height:32px!important;line-height:1!important}
-.field .flatpickr-calendar .numInputWrapper>span.arrowUp, .field .flatpickr-calendar .numInputWrapper>span.arrowDown{display:none!important}
-.field .flatpickr-calendar.hasTime.noCalendar.static{width:100%!important;max-width:none!important;border-radius:10px!important}
-.field .flatpickr-calendar.hasTime.noCalendar .flatpickr-time{display:flex!important;align-items:center!important;height:58px!important;max-height:58px!important;border-top:0!important;border-radius:10px!important;background:#fff!important;overflow:hidden!important}
-.field .flatpickr-calendar.hasTime.noCalendar .flatpickr-time .numInputWrapper{display:flex!important;align-items:center!important;flex:1 1 0!important;width:auto!important;height:58px!important}
-.field .flatpickr-calendar.hasTime.noCalendar .flatpickr-time input{width:100%!important;height:58px!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:#fff!important;font-family:var(--font-ui)!important;font-size:16px!important;font-weight:400!important;line-height:58px!important;text-align:center!important;box-shadow:none!important}
-.field .flatpickr-calendar.hasTime.noCalendar .flatpickr-time .flatpickr-time-separator{display:flex!important;align-items:center!important;justify-content:center!important;width:24px!important;height:58px!important;line-height:1!important;background:#fff!important}
 .checkbox a{color:inherit;transition:color .25s ease}
 .checkbox a:hover{color:var(--color-walnut)}
