@@ -19,6 +19,5 @@
   .footer-bottom{flex-direction:column}
 }
 @media (max-width:390px){
-  .brand small{display:none}
   .button{padding-inline:17px}
 }

@@ -949,9 +949,6 @@ button.format-card-v4{width:100%;font:inherit}
 /* Mobile */
 @media(max-width:767px){
   .page-home-v4{padding-bottom:0}
-  .page-home-v4 .site-header .brand small,
-  .page-home-v4 .mobile-nav .brand small{display:block}
-
   .page-home-v4 :where(main) h2{font-size:clamp(34px,9vw,42px)}
   .page-home-v4 :where(main) h3{font-size:clamp(23px,6.8vw,29px)}
   .page-home-v4 :where(main) .button{
@@ -1164,13 +1161,11 @@ button.format-card-v4{width:100%;font:inherit}
 }
 
 .guides-v4__tail{
-  display:flex;
-  justify-content:center;
+  justify-content:flex-end;
   margin-top:28px;
 }
-
-.guides-v4__tail{
-  margin-top:28px;
+.guides-v4__tail .button{
+  border:1px solid var(--color-line);
 }
 @media(max-width:560px){
   .guides-v4__tail,
