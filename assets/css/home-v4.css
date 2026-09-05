@@ -653,6 +653,7 @@ button.format-card-v4{width:100%;font:inherit}
   padding-top:0;
   background:#efe5d6;
 }
+.page-ceremony .final-cta-v4{padding-top:var(--section-space)}
 .final-cta-v4__panel{
   display:grid;
   grid-template-columns:1fr auto;

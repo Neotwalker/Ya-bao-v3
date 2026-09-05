@@ -747,6 +747,15 @@
   opacity:.28;
 }
 .related-articles__pagination .swiper-pagination-bullet-active{opacity:1}
+@media(max-width:1480px){
+  .related-articles .container{overflow:visible}
+  .related-articles__slider.swiper{
+    width:calc(100% + (var(--gutter) * 2));
+    margin-inline:calc(var(--gutter) * -1);
+    padding-inline:var(--gutter);
+    overflow:hidden;
+  }
+}
 @media(max-width:560px){
   .related-article-card{min-height:260px;padding:24px}
   .related-articles__button{display:none}
