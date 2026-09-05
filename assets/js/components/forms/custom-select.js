@@ -55,6 +55,15 @@ function initCustomSelect(select, index) {
   select.tabIndex = -1;
   select.setAttribute('aria-hidden', 'true');
 
+  const field = select.closest('.field');
+  const pairRole = select.name === 'guests'
+    ? 'guests'
+    : (select.name === 'ceremony' || select.name === 'format' ? 'format' : '');
+
+  if (field && pairRole) {
+    field.classList.add('field--select-pair', `field--select-pair-${pairRole}`);
+  }
+
   const root = document.createElement('div');
   root.className = 'custom-select';
 

@@ -78,7 +78,9 @@
   .modal .form-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 8px;margin-top:12px}
   .modal .form-grid>*,
   .modal .field--full{grid-column:1/-1}
-  .modal .field--date-time{grid-column:auto}
+  .modal .field--date-time,
+  .modal .field--select-pair{grid-column:auto}
+  .modal .field--select-pair-single{grid-column:1/-1}
   .modal .form-grid,.modal .field,.modal .custom-select,.modal .date-time-control{min-width:0;max-width:100%}
   .modal .field,.modal .checkbox{gap:3px}
   .modal .field label,.modal .field>label{font-size:11px}
@@ -99,7 +101,16 @@
 }
 @media (max-width:359px){
   .modal .form-grid{grid-template-columns:1fr}
-  .modal .field--date-time{grid-column:1/-1}
+  .modal .field--date-time,
+  .modal .field--select-pair{grid-column:1/-1}
+}
+
+/* iOS/iPadOS Safari zooms focused form controls whose computed font size is
+   below 16px. Keep touch form controls at 16px instead of disabling page zoom. */
+@media (hover:none) and (pointer:coarse){
+  .booking-form input:not([type="checkbox"]):not([type="radio"]),
+  .booking-form textarea,
+  .booking-form select{font-size:16px}
 }
 .modal::backdrop{background:rgba(0,0,0,0);backdrop-filter:blur(0);transition:background .28s ease,backdrop-filter .28s ease}
 .modal[open].is-visible{opacity:1;transform:none}

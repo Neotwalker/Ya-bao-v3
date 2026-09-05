@@ -14,6 +14,7 @@ export function initModal() {
   const eyebrow = dialog.querySelector('[data-modal-eyebrow]');
   const generalFields = [...dialog.querySelectorAll('[data-general-field]')];
   const ceremonySelect = dialog.querySelector('[name="ceremony"]');
+  const guestsField = dialog.querySelector('[name="guests"]')?.closest('.field');
   const sourceInput = dialog.querySelector('[name="source"]');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let isClosing = false;
@@ -29,6 +30,7 @@ export function initModal() {
     const eventName = button.dataset.event || '';
     const isEvent = Boolean(eventName);
     dialog.classList.toggle('modal--event', isEvent);
+    guestsField?.classList.toggle('field--select-pair-single', isEvent);
 
     generalFields.forEach(field => {
       field.hidden = isEvent;
