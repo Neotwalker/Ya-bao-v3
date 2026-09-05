@@ -7,6 +7,33 @@ function toLocalDateValue(date) {
   return `${year}-${month}-${day}`;
 }
 
+function enhanceDateTimeField(input) {
+  if (input.closest('.date-time-control')) return input.closest('.date-time-control');
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'date-time-control';
+  input.before(wrapper);
+  wrapper.append(input);
+
+  const placeholder = document.createElement('span');
+  placeholder.className = 'date-time-control__placeholder';
+  placeholder.setAttribute('aria-hidden', 'true');
+  placeholder.textContent = input.type === 'date' ? 'Выберите дату' : 'Выберите время';
+  wrapper.append(placeholder);
+
+  const sync = () => wrapper.classList.toggle('has-value', Boolean(input.value));
+  input.addEventListener('input', sync);
+  input.addEventListener('change', sync);
+  input.addEventListener('focus', () => wrapper.classList.add('is-focused'));
+  input.addEventListener('blur', () => {
+    wrapper.classList.remove('is-focused');
+    sync();
+  });
+  sync();
+
+  return wrapper;
+}
+
 export function initDateTimeFields(root = document) {
   const today = toLocalDateValue(new Date());
 
@@ -15,6 +42,7 @@ export function initDateTimeFields(root = document) {
     input.dataset.dateReady = 'true';
 
     if (!input.min) input.min = today;
+    enhanceDateTimeField(input);
     input.addEventListener('change', () => setFieldError(input, ''));
   });
 
@@ -23,6 +51,7 @@ export function initDateTimeFields(root = document) {
     input.dataset.timeReady = 'true';
 
     if (!input.step) input.step = String(15 * 60);
+    enhanceDateTimeField(input);
     input.addEventListener('change', () => setFieldError(input, ''));
   });
 }
@@ -30,5 +59,7 @@ export function initDateTimeFields(root = document) {
 export function syncDateTimeFields(form) {
   form.querySelectorAll('input[type="date"], input[type="time"]').forEach(input => {
     setFieldError(input, '');
+    const wrapper = input.closest('.date-time-control');
+    wrapper?.classList.toggle('has-value', Boolean(input.value));
   });
 }
