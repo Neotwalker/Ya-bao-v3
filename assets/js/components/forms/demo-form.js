@@ -6,6 +6,8 @@ import {
 import { syncCustomSelects } from './custom-select.js';
 import { syncDateTimeFields } from './date-time.js';
 
+const FEEDBACK_HIDE_MS = 2600;
+
 function syncFormControls(form) {
   syncCustomSelects(form);
   syncDateTimeFields(form);
@@ -15,10 +17,10 @@ function getStatus(form) {
   return form.querySelector('[data-form-status]');
 }
 
-function setStatus(status, text, state = '') {
+function setStatus(status, text, state = '', { overlay = false } = {}) {
   if (!status) return;
   status.textContent = text;
-  status.className = `form-status${state ? ` ${state}` : ''}`;
+  status.className = `form-status${state ? ` ${state}` : ''}${overlay ? ' is-overlay' : ''}`;
   status.setAttribute('aria-live', state === 'is-error' ? 'assertive' : 'polite');
 }
 
@@ -26,6 +28,33 @@ function clearStatus(form) {
   const status = getStatus(form);
   if (!status) return;
   setStatus(status, '');
+}
+
+function showOverlayStatus(form, text, state = '') {
+  const status = getStatus(form);
+  if (!status) return;
+  window.clearTimeout(Number(form.dataset.feedbackTimer || 0));
+  setStatus(status, text, state, { overlay: true });
+  form.classList.add('has-form-feedback');
+}
+
+function hideOverlayStatus(form, { delay = 0 } = {}) {
+  window.clearTimeout(Number(form.dataset.feedbackTimer || 0));
+
+  const hide = () => {
+    const status = getStatus(form);
+    status?.classList.remove('is-overlay');
+    form.classList.remove('has-form-feedback');
+    delete form.dataset.feedbackTimer;
+  };
+
+  if (!delay) {
+    hide();
+    return;
+  }
+
+  const timer = window.setTimeout(hide, delay);
+  form.dataset.feedbackTimer = String(timer);
 }
 
 function clearErrors(form) {
@@ -41,11 +70,12 @@ function restoreSubmit(form) {
   submit?.removeAttribute('disabled');
 }
 
-function resetVisualState(form, { keepStatus = false } = {}) {
+function resetVisualState(form) {
   clearErrors(form);
   syncFormControls(form);
   restoreSubmit(form);
-  if (!keepStatus) clearStatus(form);
+  clearStatus(form);
+  form.classList.remove('has-form-feedback');
 }
 
 function focusInvalid(field) {
@@ -67,50 +97,47 @@ function initDemoForm(form) {
   form.addEventListener('submit', async event => {
     event.preventDefault();
 
-    const status = getStatus(form);
     const validation = validateForm(form);
 
     if (!validation.valid) {
-      setStatus(status, 'Проверьте выделенные поля.', 'is-error');
-      focusInvalid(validation.firstInvalid);
+      showOverlayStatus(form, 'Проверьте выделенные поля.', 'is-error');
+      window.setTimeout(() => {
+        hideOverlayStatus(form);
+        focusInvalid(validation.firstInvalid);
+      }, 1800);
       return;
     }
 
     const submit = form.querySelector('[type="submit"]');
     submit?.classList.add('is-loading');
     submit?.setAttribute('disabled', '');
-    setStatus(status, 'Отправляем заявку…');
+    showOverlayStatus(form, 'Отправляем заявку…');
 
     await new Promise(resolve => setTimeout(resolve, 700));
 
-    setStatus(
-      status,
+    showOverlayStatus(
+      form,
       'Демо-режим: форма проверена, но отправка пока не подключена.',
       'is-success',
     );
 
-    form.dataset.keepStatusOnReset = 'true';
-    form.reset();
-    restoreSubmit(form);
+    window.setTimeout(() => {
+      form.reset();
+      restoreSubmit(form);
+      hideOverlayStatus(form);
+    }, FEEDBACK_HIDE_MS);
   });
 
   form.addEventListener('reset', () => {
-    const keepStatus = form.dataset.keepStatusOnReset === 'true';
-    delete form.dataset.keepStatusOnReset;
-
     requestAnimationFrame(() => {
-      resetVisualState(form, { keepStatus });
+      clearErrors(form);
+      syncFormControls(form);
     });
   });
 
   form.querySelectorAll('input, select, textarea').forEach(field => {
     field.addEventListener('input', () => {
       setFieldError(field, '');
-
-      const status = getStatus(form);
-      if (status?.classList.contains('is-error')) {
-        clearStatus(form);
-      }
     });
   });
 }

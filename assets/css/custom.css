@@ -112,6 +112,59 @@
   .booking-form textarea,
   .booking-form select{font-size:16px}
 }
+
+/* iPhone/iPad Safari may still zoom textareas when the primary pointer media
+   query changes (for example with a connected trackpad). Keep textarea text at
+   Safari's 16px zoom threshold without disabling user scaling. */
+@supports (-webkit-touch-callout:none){
+  .booking-form textarea{font-size:16px!important}
+}
+
+/* Submission feedback covers the whole form so the state cannot be missed. */
+.booking-form{position:relative}
+.booking-form .form-status.is-overlay{
+  position:absolute;
+  z-index:80;
+  inset:0;
+  display:grid;
+  place-items:center;
+  min-width:0;
+  padding:clamp(24px,6vw,56px);
+  border:1px solid rgba(95,70,48,.16);
+  border-radius:18px;
+  background:rgba(239,230,214,.78);
+  color:var(--color-ink);
+  font-size:clamp(18px,2vw,24px);
+  font-weight:700;
+  line-height:1.35;
+  text-align:center;
+  box-shadow:0 18px 54px rgba(41,31,23,.12);
+  -webkit-backdrop-filter:blur(4px);
+  backdrop-filter:blur(4px);
+}
+.booking-form .form-status.is-overlay.is-success{color:var(--color-ink)}
+.booking-form .form-status.is-overlay.is-error{color:var(--color-error)}
+.booking-form.has-form-feedback{isolation:isolate}
+@media (max-width:767px){
+  .booking-form .form-status.is-overlay{
+    padding:24px 18px;
+    border-radius:14px;
+    font-size:18px;
+  }
+}
+
+/* The native date/time input is transparent for consistent rendering.
+   A fine-pointer click is forwarded to showPicker() in date-time.js. */
+@media (hover:hover) and (pointer:fine){
+  .date-time-control,
+  .date-time-control input[type="date"],
+  .date-time-control input[type="time"]{cursor:pointer}
+  .date-time-control input[type="date"],
+  .date-time-control input[type="time"]{
+    -webkit-appearance:auto;
+    appearance:auto;
+  }
+}
 .modal::backdrop{background:rgba(0,0,0,0);backdrop-filter:blur(0);transition:background .28s ease,backdrop-filter .28s ease}
 .modal[open].is-visible{opacity:1;transform:none}
 .modal[open].is-visible::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(7px)}

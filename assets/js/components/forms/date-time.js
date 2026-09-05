@@ -58,6 +58,35 @@ function enhanceDateTimeField(input) {
       : placeholder;
   };
 
+  let openingPicker = false;
+
+  const openNativePicker = event => {
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!finePointer || openingPicker) return;
+
+    if (event) event.preventDefault();
+    input.focus({ preventScroll: true });
+
+    if (typeof input.showPicker === 'function') {
+      try {
+        input.showPicker();
+        return;
+      } catch {
+        // Fall through to the native click path for browsers without showPicker support.
+      }
+    }
+
+    openingPicker = true;
+    input.click();
+    openingPicker = false;
+  };
+
+  wrapper.addEventListener('click', event => {
+    if (event.target === input || event.target === display || event.target === wrapper) {
+      openNativePicker(event);
+    }
+  });
+
   input.addEventListener('input', sync);
   input.addEventListener('change', sync);
   input.addEventListener('blur', sync);
