@@ -30,6 +30,11 @@ function formatTimeValue(value) {
 }
 
 function enhanceDateTimeField(input) {
+  const field = input.closest('.field');
+  if (field) {
+    field.classList.add('field--date-time', `field--${input.type}`);
+  }
+
   if (input.closest('.date-time-control')) return input.closest('.date-time-control');
 
   const wrapper = document.createElement('div');

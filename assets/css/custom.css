@@ -59,16 +59,28 @@
 .modal .checkbox{font-size:14px;line-height:1.45}
 .modal .form-submit{gap:12px}
 @media (max-width:767px){
-  .modal{width:calc(100% - 16px);max-height:calc(100svh - 16px);overflow-x:hidden;border-radius:18px}
-  .modal__inner{padding:18px 14px 14px}
+  .modal{
+    position:fixed;
+    inset:0;
+    width:100vw;
+    max-width:none;
+    height:100dvh;
+    max-height:100dvh;
+    margin:0;
+    overflow-x:hidden;
+    border-radius:0;
+  }
+  .modal__inner{min-height:100%;padding:18px 14px 14px}
   .modal__close{top:10px;right:10px;width:36px;height:36px;font-size:21px}
   .modal .eyebrow{margin-bottom:7px;font-size:10px}
-  .modal h2{max-width:calc(100% - 42px);margin-bottom:7px;font-size:clamp(25px,8vw,30px);line-height:1}
+  .modal #booking-modal-title{max-width:calc(100% - 44px);margin-bottom:7px;font-size:clamp(22px,6.4vw,26px);line-height:1.02}
   .modal__intro{font-size:13px;line-height:1.35}
-  .modal .form-grid{grid-template-columns:1fr;gap:7px;margin-top:12px}
+  .modal .form-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 8px;margin-top:12px}
+  .modal .form-grid>*,
+  .modal .field--full{grid-column:1/-1}
+  .modal .field--date-time{grid-column:auto}
   .modal .form-grid,.modal .field,.modal .custom-select,.modal .date-time-control{min-width:0;max-width:100%}
   .modal .field,.modal .checkbox{gap:3px}
-  .modal .field--full{grid-column:auto}
   .modal .field label,.modal .field>label{font-size:11px}
   .modal .field input,.modal .field select,.modal .field textarea{min-height:42px;padding:8px 10px;font-size:14px}
   .modal .custom-select__trigger{min-height:42px;padding:8px 10px;font-size:14px}
@@ -84,6 +96,10 @@
   .modal .form-submit{gap:8px}
   .modal .form-submit .button{width:100%;min-height:42px;padding:9px 14px;font-size:12px}
   .modal .form-status{font-size:11px}
+}
+@media (max-width:359px){
+  .modal .form-grid{grid-template-columns:1fr}
+  .modal .field--date-time{grid-column:1/-1}
 }
 .modal::backdrop{background:rgba(0,0,0,0);backdrop-filter:blur(0);transition:background .28s ease,backdrop-filter .28s ease}
 .modal[open].is-visible{opacity:1;transform:none}
