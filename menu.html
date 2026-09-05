@@ -14,7 +14,7 @@
 <meta content="ru_RU" property="og:locale"/>
 <link href="assets/icons/favicon.svg" rel="icon" type="image/svg+xml"/>
 <link href="site.webmanifest" rel="manifest"/>
-<link href="https://docs.google.com" rel="preconnect"/><link href="assets/css/base.css" rel="stylesheet"/>
+<link href="assets/css/base.css" rel="stylesheet"/>
 <link href="assets/css/components.css" rel="stylesheet"/>
 <link href="assets/css/pages.css" rel="stylesheet"/>
 <link href="assets/css/responsive.css" rel="stylesheet"/>
@@ -22,7 +22,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CafeOrCoffeeShop","@id":"https://neotwalker.github.io/Ya-bao-v3/#business","name":"Я Бао Завари","url":"https://neotwalker.github.io/Ya-bao-v3/","image":"https://neotwalker.github.io/Ya-bao-v3/assets/images/hero-poster.webp","telephone":"+7 999 584-72-90","address":{"@type":"PostalAddress","streetAddress":"ул. Кирова, 94","addressLocality":"Челябинск","addressCountry":"RU"},"sameAs":["https://vk.ru/yabaozavary","https://2gis.ru/chelyabinsk/firm/70000001110715460","https://yandex.ru/maps/org/ya_bao_zavari/112754832500/"],"hasMap":["https://2gis.ru/chelyabinsk/firm/70000001110715460","https://yandex.ru/maps/org/ya_bao_zavari/112754832500/"]},{"@type":"WebSite","@id":"https://neotwalker.github.io/Ya-bao-v3/#website","url":"https://neotwalker.github.io/Ya-bao-v3/","name":"Я Бао Завари","inLanguage":"ru-RU","publisher":{"@id":"https://neotwalker.github.io/Ya-bao-v3/#business"}},{"@type":"WebPage","@id":"https://neotwalker.github.io/Ya-bao-v3/menu.html#webpage","url":"https://neotwalker.github.io/Ya-bao-v3/menu.html","name":"Меню и каталог в Челябинске - Я Бао Завари","description":"Меню и каталог Я Бао Завари: китайский чай, напитки и другие актуальные позиции, доступные в заведении. Челябинск, Кирова, 94.","isPartOf":{"@id":"https://neotwalker.github.io/Ya-bao-v3/#website"},"about":{"@id":"https://neotwalker.github.io/Ya-bao-v3/#business"},"inLanguage":"ru-RU","primaryImageOfPage":{"@type":"ImageObject","url":"https://neotwalker.github.io/Ya-bao-v3/assets/images/hero-poster.webp","width":1920,"height":1080}},{"@type":"BreadcrumbList","@id":"https://neotwalker.github.io/Ya-bao-v3/menu.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://neotwalker.github.io/Ya-bao-v3/"},{"@type":"ListItem","position":2,"name":"Меню","item":"https://neotwalker.github.io/Ya-bao-v3/menu.html"}]}]}</script><script src="assets/js/app.js" type="module"></script>
 <script src="assets/js/menu.js" type="module"></script>
 </head>
-<body class="page-menu page-inner"><a class="skip-link" href="#main-content">К основному содержанию</a><noscript><div class="no-js-note">Для работы меню и формы включите JavaScript.</div></noscript>
+<body class="page-menu page-inner"><a class="skip-link" href="#main-content">К основному содержанию</a><noscript><div class="no-js-note">Для работы фильтров меню и формы включите JavaScript.</div></noscript>
 <header class="site-header" data-header="">
 <div class="container header-inner">
 <a aria-label="Я Бао Завари - главная" class="brand" href="index.html">
@@ -72,11 +72,11 @@
 <nav aria-label="Хлебные крошки" class="breadcrumbs breadcrumbs--hero"><ol><li><a href="index.html">Главная</a></li><li><span aria-current="page">Меню</span></li></ol></nav>
 <h1>Меню и каталог Я Бао Завари</h1>
 </div>
-<p class="inner-hero__text">Единый каталог всего, что доступно к продаже: актуальные категории, позиции и наличие обновляются по данным системы учёта.</p>
+<p class="inner-hero__text">Единый каталог позиций Я Бао Завари. Актуальность ассортимента можно уточнить у администратора.</p>
 </div>
 </section>
 <section class="section section--paper" id="catalog">
-<div aria-busy="true" class="container" data-live-catalog="">
+<div class="container">
 <div class="section-heading reveal"><div><p class="eyebrow">Что есть в меню</p><h2>Чай и напитки</h2></div><p>Фильтры помогают быстро перейти к нужной категории меню.</p></div><div class="filter-bar" data-filter-group="" data-filter-target=".menu-card">
 <button aria-pressed="true" class="filter-chip" data-filter="all" type="button">Всё</button>
 <button aria-pressed="false" class="filter-chip" data-filter="dark-oolong" type="button">Темные улуны</button>
@@ -91,8 +91,742 @@
 <button aria-pressed="false" class="filter-chip" data-filter="lemonades" type="button">Лимонады</button>
 <button aria-pressed="false" class="filter-chip" data-filter="bubble-tea" type="button">Бабл ти</button>
 <button aria-pressed="false" class="filter-chip" data-filter="author-tea" type="button">Авторский чай</button>
-</div><p aria-live="polite" class="catalog-notice" data-catalog-notice="" role="status">Проверяем актуальное наличие…</p>
-<div class="cards-grid menu-catalog-grid" data-menu-grid=""></div>
+</div><div class="cards-grid menu-catalog-grid">
+<article class="card menu-card is-visible" data-category="lemonades">
+      <div class="card__image"><img alt="Лимонад виноград" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-lemonades-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Лимонады</span>
+          <strong>300 ₽</strong>
+        </div>
+        <h3>Лимонад виноград</h3>
+        <p>Лимонад из винограда и розмарина. Лёгкий и ароматный.</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="lemonades">
+      <div class="card__image"><img alt="Лимонад смородина кинза" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-lemonades-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Лимонады</span>
+          <strong>300 ₽</strong>
+        </div>
+        <h3>Лимонад смородина кинза</h3>
+        <p>Яркий лимонад из чёрной смородины, кинзой</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="lemonades">
+      <div class="card__image"><img alt="Лимонад мандарин пихта" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-lemonades-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Лимонады</span>
+          <strong>300 ₽</strong>
+        </div>
+        <h3>Лимонад мандарин пихта</h3>
+        <p>Лимонад с мандарином и веткой пихты.</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="lemonades">
+      <div class="card__image"><img alt="Лимонад киви мята" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-lemonades-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Лимонады</span>
+          <strong>300 ₽</strong>
+        </div>
+        <h3>Лимонад киви мята</h3>
+        <p>Освежающий лимонад из киви и мяты.</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="lemonades">
+      <div class="card__image"><img alt="Лимонад клюква тимьян" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-lemonades-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Лимонады</span>
+          <strong>300 ₽</strong>
+        </div>
+        <h3>Лимонад клюква тимьян</h3>
+        <p>Клюква с допами на выбор</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="lemonades">
+      <div class="card__image"><img alt="Лимонад крыжовник" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-lemonades-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Лимонады</span>
+          <strong>300 ₽</strong>
+        </div>
+        <h3>Лимонад крыжовник</h3>
+        <p>Освежающий лимонад из крыжовника и мяты.</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="lemonades">
+      <div class="card__image"><img alt="Лимонад яблоко розмарин" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-lemonades-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Лимонады</span>
+          <strong>300 ₽</strong>
+        </div>
+        <h3>Лимонад яблоко розмарин</h3>
+        <p>Сладкий лимонад из яблока и розмарина.</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="lemonades">
+      <div class="card__image"><img alt="Лимонад малина мята" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-lemonades-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Лимонады</span>
+          <strong>300 ₽</strong>
+        </div>
+        <h3>Лимонад малина мята</h3>
+        <p>Освежающий лимонад с малиновым пюре и мятой.</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="bubble-tea">
+      <div class="card__image"><img alt="Бабл Ти смородина кинза" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-bubble-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Бабл ти</span>
+          <strong>400 ₽</strong>
+        </div>
+        <h3>Бабл Ти смородина кинза</h3>
+        <p>Баблти со смородиной кинзой</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="bubble-tea">
+      <div class="card__image"><img alt="Бабл Ти клюква пихта" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-bubble-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Бабл ти</span>
+          <strong>400 ₽</strong>
+        </div>
+        <h3>Бабл Ти клюква пихта</h3>
+        <p>Клюква пихта джусболы</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="bubble-tea">
+      <div class="card__image"><img alt="Бабл Ти малина мята" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-bubble-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Бабл ти</span>
+          <strong>400 ₽</strong>
+        </div>
+        <h3>Бабл Ти малина мята</h3>
+        <p>Мята малина джусболы</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="bubble-tea">
+      <div class="card__image"><img alt="Бабл ти виноград тимьян" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-bubble-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Бабл ти</span>
+          <strong>400 ₽</strong>
+        </div>
+        <h3>Бабл ти виноград тимьян</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="bubble-tea">
+      <div class="card__image"><img alt="Бабл ти киви" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-bubble-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Бабл ти</span>
+          <strong>400 ₽</strong>
+        </div>
+        <h3>Бабл ти киви</h3>
+        <p>Киви с жасминовым чаем</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="bubble-tea">
+      <div class="card__image"><img alt="Бабл ти мандарин пихта" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-bubble-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Бабл ти</span>
+          <strong>400 ₽</strong>
+        </div>
+        <h3>Бабл ти мандарин пихта</h3>
+        <p>Мандарин пихта</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="bubble-tea">
+      <div class="card__image"><img alt="Бабл ти яблоко розмарин" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-bubble-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Бабл ти</span>
+          <strong>400 ₽</strong>
+        </div>
+        <h3>Бабл ти яблоко розмарин</h3>
+        <p>Яблоко розмарин</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="lemonades">
+      <div class="card__image"><img alt="Лимонад абрикос" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-lemonades-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Лимонады</span>
+          <strong>300 ₽</strong>
+        </div>
+        <h3>Лимонад абрикос</h3>
+        <p>Чистый абрикос</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="bubble-tea">
+      <div class="card__image"><img alt="Бабл ти абрикос" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-bubble-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Бабл ти</span>
+          <strong>400 ₽</strong>
+        </div>
+        <h3>Бабл ти абрикос</h3>
+        <p>С чистым абрикосом</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="dark-oolong">
+      <div class="card__image"><img alt="Шуй Сянь" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-dark-oolong-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Темные улуны</span>
+          <strong>20 ₽</strong>
+        </div>
+        <h3>Шуй Сянь</h3>
+        <p>Темный улун</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="hei-cha">
+      <div class="card__image"><img alt="Хэй Ча" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-hei-cha-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Хэй Ча</span>
+          <strong>25 ₽</strong>
+        </div>
+        <h3>Хэй Ча</h3>
+        <p>С золотой плесенью</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="light-oolong">
+      <div class="card__image"><img alt="Улун Молочный" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-light-oolong-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Светлые улуны</span>
+          <strong>25 ₽</strong>
+        </div>
+        <h3>Улун Молочный</h3>
+        <p>Но ми сян рисовый улун</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="light-oolong">
+      <div class="card__image"><img alt="Ганпаудер" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-light-oolong-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Светлые улуны</span>
+          <strong>25 ₽</strong>
+        </div>
+        <h3>Ганпаудер</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="light-oolong">
+      <div class="card__image"><img alt="Тегуанинь" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-light-oolong-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Светлые улуны</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Тегуанинь</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="white-tea">
+      <div class="card__image"><img alt="Бай Хао Инь Жэнь (Серебряные иглы)" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-white-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Белый чай</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Бай Хао Инь Жэнь (Серебряные иглы)</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="white-tea">
+      <div class="card__image"><img alt="Юэ Гуан Бай (Фудин, Шоумэй)" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-white-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Белый чай</span>
+          <strong>20 ₽</strong>
+        </div>
+        <h3>Юэ Гуан Бай (Фудин, Шоумэй)</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="white-tea">
+      <div class="card__image"><img alt="Я бао" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-white-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Белый чай</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Я бао</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="dark-oolong">
+      <div class="card__image"><img alt="Фен Хуан Дань Цун" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-dark-oolong-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Темные улуны</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Фен Хуан Дань Цун</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="sheng-puer">
+      <div class="card__image"><img alt="Да Сюэ Шань" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-sheng-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шэн пуэры</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Да Сюэ Шань</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="yellow-tea">
+      <div class="card__image"><img alt="Хо Шань Хуан Я" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-yellow-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Желтый чай</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Хо Шань Хуан Я</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="sheng-puer">
+      <div class="card__image"><img alt="Сэн Линь" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-sheng-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шэн пуэры</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Сэн Линь</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="sheng-puer">
+      <div class="card__image"><img alt="Шэй Цун" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-sheng-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шэн пуэры</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Шэй Цун</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="light-oolong">
+      <div class="card__image"><img alt="Дун Дин" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-light-oolong-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Светлые улуны</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Дун Дин</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Топаз" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Габа Топаз</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Тегуанинь" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Габа Тегуанинь</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Базальт" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Габа Базальт</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Вулканик" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Габа Вулканик</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Алишань" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Габа Алишань</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="sheng-puer">
+      <div class="card__image"><img alt="Шэн Дунго" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-sheng-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шэн пуэры</span>
+          <strong>25 ₽</strong>
+        </div>
+        <h3>Шэн Дунго</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="sheng-puer">
+      <div class="card__image"><img alt="Шэн Бао Янь" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-sheng-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шэн пуэры</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Шэн Бао Янь</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="sheng-puer">
+      <div class="card__image"><img alt="Шэн Да И" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-sheng-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шэн пуэры</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Шэн Да И</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="white-tea">
+      <div class="card__image"><img alt="Я Бао Пурпурный" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-white-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Белый чай</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Я Бао Пурпурный</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="shu-puer">
+      <div class="card__image"><img alt="Шу Пуэр Тигр" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-shu-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шу Пуэры</span>
+          <strong>20 ₽</strong>
+        </div>
+        <h3>Шу Пуэр Тигр</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="red-tea">
+      <div class="card__image"><img alt="Дян Хун Фэнцзинь золотые иглы" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-red-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Красный чай</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Дян Хун Фэнцзинь золотые иглы</h3>
+        <p>Красный прем</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="red-tea">
+      <div class="card__image"><img alt="Дян Хун Золотая королева" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-red-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Красный чай</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Дян Хун Золотая королева</h3>
+        <p>Золотая королева  (брови мед)</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="red-tea">
+      <div class="card__image"><img alt="Дян Хун Золотая королева" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-red-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Красный чай</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Дян Хун Золотая королева</h3>
+        <p>Золотая королева  (брови мед)</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="red-tea">
+      <div class="card__image"><img alt="Дян Хун Ноу Сян" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-red-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Красный чай</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Дян Хун Ноу Сян</h3>
+        <p>Рисовый</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Опал" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>45 ₽</strong>
+        </div>
+        <h3>Габа Опал</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="author-tea">
+      <div class="card__image"><img alt="Холодный чай травяной" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-author-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Авторский чай</span>
+          <strong>250 ₽</strong>
+        </div>
+        <h3>Холодный чай травяной</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Медовая" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>25 ₽</strong>
+        </div>
+        <h3>Габа Медовая</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Изумруд" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>45 ₽</strong>
+        </div>
+        <h3>Габа Изумруд</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="shu-puer">
+      <div class="card__image"><img alt="Смола Шу Пуэр" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-shu-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шу Пуэры</span>
+          <strong>25 ₽</strong>
+        </div>
+        <h3>Смола Шу Пуэр</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="sheng-puer">
+      <div class="card__image"><img alt="Шэн Бин Дао" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-sheng-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шэн пуэры</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Шэн Бин Дао</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="shu-puer">
+      <div class="card__image"><img alt="Шу Бин Дао Гун Ча 2003" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-shu-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шу Пуэры</span>
+          <strong>25 ₽</strong>
+        </div>
+        <h3>Шу Бин Дао Гун Ча 2003</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Медовые соты" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Габа Медовые соты</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="shu-puer">
+      <div class="card__image"><img alt="Шу Мэнхай Юнань" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-shu-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шу Пуэры</span>
+          <strong>25 ₽</strong>
+        </div>
+        <h3>Шу Мэнхай Юнань</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="light-oolong">
+      <div class="card__image"><img alt="Тегуанинь Жасмин" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-light-oolong-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Светлые улуны</span>
+          <strong>25 ₽</strong>
+        </div>
+        <h3>Тегуанинь Жасмин</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="red-tea">
+      <div class="card__image"><img alt="Дянь Хун Гу Шу" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-red-tea-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Красный чай</span>
+          <strong>20 ₽</strong>
+        </div>
+        <h3>Дянь Хун Гу Шу</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="shu-puer">
+      <div class="card__image"><img alt="Долина Мастера" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-shu-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шу Пуэры</span>
+          <strong>60 ₽</strong>
+        </div>
+        <h3>Долина Мастера</h3>
+        <p>Габа и Шу, купаж</p>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="shu-puer">
+      <div class="card__image"><img alt="Красный Дракон" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-shu-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шу Пуэры</span>
+          <strong>30 ₽</strong>
+        </div>
+        <h3>Красный Дракон</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="shu-puer">
+      <div class="card__image"><img alt="Красный Дракон Блин" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-shu-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шу Пуэры</span>
+          <strong>3 000 ₽</strong>
+        </div>
+        <h3>Красный Дракон Блин</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="shu-puer">
+      <div class="card__image"><img alt="Красный Дракон Кирпич" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-shu-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шу Пуэры</span>
+          <strong>2 500 ₽</strong>
+        </div>
+        <h3>Красный Дракон Кирпич</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="shu-puer">
+      <div class="card__image"><img alt="Красный Дракон Блинчик" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-shu-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шу Пуэры</span>
+          <strong>1 000 ₽</strong>
+        </div>
+        <h3>Красный Дракон Блинчик</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="shu-puer">
+      <div class="card__image"><img alt="Хитрый Дед" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-shu-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шу Пуэры</span>
+          <strong>60 ₽</strong>
+        </div>
+        <h3>Хитрый Дед</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="dark-oolong">
+      <div class="card__image"><img alt="Да Хун Пао Орхидея" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-dark-oolong-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Темные улуны</span>
+          <strong>300 ₽</strong>
+        </div>
+        <h3>Да Хун Пао Орхидея</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="dark-oolong">
+      <div class="card__image"><img alt="Да Хун Пао Шоколадка" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-dark-oolong-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Темные улуны</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Да Хун Пао Шоколадка</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Да Хун Пао" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>60 ₽</strong>
+        </div>
+        <h3>Габа Да Хун Пао</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа 999" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>60 ₽</strong>
+        </div>
+        <h3>Габа 999</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Бирюза" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>60 ₽</strong>
+        </div>
+        <h3>Габа Бирюза</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="hei-cha">
+      <div class="card__image"><img alt="Хэй Ча Бирманский &quot;Коканг&quot;" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-hei-cha-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Хэй Ча</span>
+          <strong>40 ₽</strong>
+        </div>
+        <h3>Хэй Ча Бирманский &quot;Коканг&quot;</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="shu-puer">
+      <div class="card__image"><img alt="Габа Шу Пуэр" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-shu-puer-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Шу Пуэры</span>
+          <strong>45 ₽</strong>
+        </div>
+        <h3>Габа Шу Пуэр</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="light-oolong">
+      <div class="card__image"><img alt="Вулканический Улун" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-light-oolong-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Светлые улуны</span>
+          <strong>300 ₽</strong>
+        </div>
+        <h3>Вулканический Улун</h3>
+      </div>
+    </article>
+<article class="card menu-card is-visible" data-category="gaba">
+      <div class="card__image"><img alt="Габа Пушонг" width="1074" height="669" loading="lazy" decoding="async" src="assets/images/tea-category-gaba-real.webp"/></div>
+      <div class="card__body">
+        <div class="card__meta">
+          <span>Габа</span>
+          <strong>35 ₽</strong>
+        </div>
+        <h3>Габа Пушонг</h3>
+      </div>
+    </article>
+</div>
 </div>
 </section>
 </main>

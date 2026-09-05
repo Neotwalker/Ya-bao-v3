@@ -6,7 +6,7 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 
 ### Страницы
 - `index.html` — главная;
-- `menu.html` — меню/каталог с данными Google Sheets;
+- `menu.html` — статический снимок меню/каталога;
 - `about.html` — о чайной;
 - `contacts.html` — контакты;
 - `booking.html` — интерфейс бронирования (noindex);
@@ -27,9 +27,8 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 ### JavaScript
 - `app.js` — глобальная инициализация;
 - `home.js` — только главная: hero video, Fancybox, Swiper, top-scroll;
-- `menu.js` — только меню: фильтры и каталог;
+- `menu.js` — только меню: фильтры;
 - `components/forms/` — телефон, select, дата/время, validation и demo-form;
-- `components/catalog/` — cache, Google Sheets transport, schema, products и render;
 - `utils/` — общий initializer и единый scroll dispatcher.
 
 ## Зависимости
@@ -37,7 +36,7 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - Swiper — локально в `assets/vendor/swiper/`;
 - дата и время — нативные `input[type="date"]` / `input[type="time"]`;
 - Flatpickr не используется;
-- каталог читает публичные данные Google Sheets через GViz endpoint;
+- каталог в GitHub Pages хранится статически; серверную синхронизацию с учётными данными планируется подключить на этапе WordPress;
 - Google Fonts остаются внешней web-font зависимостью в `tokens.css`.
 
 ## Важное перед production
@@ -242,3 +241,15 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - источники: EOT + WOFF2 + TTF;
 - в `assets/fonts/README.txt` указан полный список ожидаемых имён файлов;
 - сами font-файлы в этот архив не включены: их нужно добавить в `assets/fonts/` перед публикацией.
+
+## v4.43 static menu snapshot
+
+- клиентское чтение Google Sheets через GViz полностью отключено;
+- из `menu.html` удалён preconnect к `docs.google.com`;
+- текущие 71 позиции каталога зафиксированы в HTML как статический снимок;
+- позиции, связанные с кальяном/табаком/никотином, в публичный каталог не добавлены;
+- бейджи наличия удалены, чтобы статическая версия не показывала устаревающие остатки;
+- фильтры категорий продолжают работать локально через `menu.js`;
+- исправлен уже существующий фильтр «Бабл ти»: соответствующие текущие позиции теперь относятся к нему, а не к «Лимонадам»;
+- удалены неиспользуемые `config.catalog.js`, `components/catalog.js` и `components/catalog/`;
+- серверную синхронизацию каталога и наличия следует подключать уже при интеграции на WordPress.
