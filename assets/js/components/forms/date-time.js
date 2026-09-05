@@ -7,6 +7,28 @@ function toLocalDateValue(date) {
   return `${year}-${month}-${day}`;
 }
 
+function formatDateValue(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return value;
+
+  const [, year, month, day] = match;
+  const date = new Date(Number(year), Number(month) - 1, Number(day));
+
+  try {
+    return new Intl.DateTimeFormat('ru-RU', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    }).format(date);
+  } catch {
+    return `${day}.${month}.${year}`;
+  }
+}
+
+function formatTimeValue(value) {
+  return /^\d{2}:\d{2}/.test(value) ? value.slice(0, 5) : value;
+}
+
 function enhanceDateTimeField(input) {
   if (input.closest('.date-time-control')) return input.closest('.date-time-control');
 
@@ -15,20 +37,25 @@ function enhanceDateTimeField(input) {
   input.before(wrapper);
   wrapper.append(input);
 
-  const placeholder = document.createElement('span');
-  placeholder.className = 'date-time-control__placeholder';
-  placeholder.setAttribute('aria-hidden', 'true');
-  placeholder.textContent = input.type === 'date' ? 'Выберите дату' : 'Выберите время';
-  wrapper.append(placeholder);
+  const display = document.createElement('span');
+  display.className = 'date-time-control__display';
+  display.setAttribute('aria-hidden', 'true');
+  wrapper.append(display);
 
-  const sync = () => wrapper.classList.toggle('has-value', Boolean(input.value));
+  const placeholder = input.type === 'date' ? 'Выберите дату' : 'Выберите время';
+
+  const sync = () => {
+    const hasValue = Boolean(input.value);
+    wrapper.classList.toggle('has-value', hasValue);
+    display.classList.toggle('is-placeholder', !hasValue);
+    display.textContent = hasValue
+      ? (input.type === 'date' ? formatDateValue(input.value) : formatTimeValue(input.value))
+      : placeholder;
+  };
+
   input.addEventListener('input', sync);
   input.addEventListener('change', sync);
-  input.addEventListener('focus', () => wrapper.classList.add('is-focused'));
-  input.addEventListener('blur', () => {
-    wrapper.classList.remove('is-focused');
-    sync();
-  });
+  input.addEventListener('blur', sync);
   sync();
 
   return wrapper;
@@ -59,7 +86,6 @@ export function initDateTimeFields(root = document) {
 export function syncDateTimeFields(form) {
   form.querySelectorAll('input[type="date"], input[type="time"]').forEach(input => {
     setFieldError(input, '');
-    const wrapper = input.closest('.date-time-control');
-    wrapper?.classList.toggle('has-value', Boolean(input.value));
+    input.dispatchEvent(new Event('input', { bubbles: true }));
   });
 }

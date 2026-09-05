@@ -49,8 +49,11 @@
 .modal .field label,.modal .field>label{font-size:12px}
 .modal .field input,.modal .field select,.modal .field textarea{min-height:48px;padding:10px 13px}
 .modal .custom-select__trigger{min-height:48px;padding:10px 13px}
-.modal .date-time-control input[type="date"],.modal .date-time-control input[type="time"]{height:48px;min-height:48px;padding:10px 13px}
-.modal .date-time-control__placeholder{left:13px}
+.modal .date-time-control{height:48px;min-height:48px}
+.modal .date-time-control input[type="date"],.modal .date-time-control input[type="time"]{min-height:0;padding:0}
+.modal .date-time-control__display{padding:10px 13px}
+.modal .custom-select__menu{max-height:220px;padding:5px}
+.modal .custom-select__option{min-height:36px;padding:7px 9px;font-size:13px;line-height:1.2}
 .modal .field textarea{min-height:86px}
 .modal .field__error{min-height:12px;font-size:11px}
 .modal .checkbox{font-size:14px;line-height:1.45}
@@ -63,13 +66,16 @@
   .modal h2{max-width:calc(100% - 42px);margin-bottom:7px;font-size:clamp(25px,8vw,30px);line-height:1}
   .modal__intro{font-size:13px;line-height:1.35}
   .modal .form-grid{grid-template-columns:1fr;gap:7px;margin-top:12px}
+  .modal .form-grid,.modal .field,.modal .custom-select,.modal .date-time-control{min-width:0;max-width:100%}
   .modal .field,.modal .checkbox{gap:3px}
   .modal .field--full{grid-column:auto}
   .modal .field label,.modal .field>label{font-size:11px}
   .modal .field input,.modal .field select,.modal .field textarea{min-height:42px;padding:8px 10px;font-size:14px}
   .modal .custom-select__trigger{min-height:42px;padding:8px 10px;font-size:14px}
-  .modal .date-time-control input[type="date"],.modal .date-time-control input[type="time"]{height:42px;min-height:42px;padding:8px 10px;font-size:14px}
-  .modal .date-time-control__placeholder{left:10px;font-size:14px}
+  .modal .date-time-control{height:42px;min-height:42px}
+  .modal .date-time-control__display{padding:8px 10px;font-size:14px}
+  .modal .custom-select__menu{top:calc(100% + 6px);max-height:198px;padding:4px}
+  .modal .custom-select__option{min-height:32px;padding:6px 8px;font-size:13px;line-height:1.2}
   .modal .field textarea{min-height:62px}
   .modal .field__error{min-height:8px;font-size:10px;line-height:1.15}
   .modal .checkbox{grid-template-columns:17px 1fr;font-size:11px;line-height:1.3}
