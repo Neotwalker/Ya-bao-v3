@@ -7,6 +7,7 @@ import { syncCustomSelects } from './custom-select.js';
 import { syncDateTimeFields } from './date-time.js';
 
 const FEEDBACK_HIDE_MS = 2600;
+const FEEDBACK_TRANSITION_MS = 320;
 
 function syncFormControls(form) {
   syncCustomSelects(form);
@@ -30,30 +31,61 @@ function clearStatus(form) {
   setStatus(status, '');
 }
 
+function clearFeedbackTimers(form) {
+  window.clearTimeout(Number(form.dataset.feedbackTimer || 0));
+  window.clearTimeout(Number(form.dataset.feedbackCleanupTimer || 0));
+  delete form.dataset.feedbackTimer;
+  delete form.dataset.feedbackCleanupTimer;
+}
+
 function showOverlayStatus(form, text, state = '') {
   const status = getStatus(form);
   if (!status) return;
-  window.clearTimeout(Number(form.dataset.feedbackTimer || 0));
-  setStatus(status, text, state, { overlay: true });
+
+  clearFeedbackTimers(form);
+  const wasVisible = status.classList.contains('is-overlay')
+    && status.classList.contains('is-visible');
+
+  status.textContent = text;
+  status.classList.add('is-overlay');
+  status.classList.toggle('is-success', state === 'is-success');
+  status.classList.toggle('is-error', state === 'is-error');
+  status.setAttribute('aria-live', state === 'is-error' ? 'assertive' : 'polite');
   form.classList.add('has-form-feedback');
+
+  if (wasVisible) return;
+
+  status.classList.remove('is-visible');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => status.classList.add('is-visible'));
+  });
 }
 
 function hideOverlayStatus(form, { delay = 0 } = {}) {
-  window.clearTimeout(Number(form.dataset.feedbackTimer || 0));
+  clearFeedbackTimers(form);
 
-  const hide = () => {
+  const beginHide = () => {
     const status = getStatus(form);
-    status?.classList.remove('is-overlay');
-    form.classList.remove('has-form-feedback');
-    delete form.dataset.feedbackTimer;
+    if (!status?.classList.contains('is-overlay')) return;
+
+    status.classList.remove('is-visible');
+
+    const cleanupTimer = window.setTimeout(() => {
+      status.classList.remove('is-overlay', 'is-success', 'is-error');
+      status.textContent = '';
+      form.classList.remove('has-form-feedback');
+      delete form.dataset.feedbackCleanupTimer;
+    }, FEEDBACK_TRANSITION_MS);
+
+    form.dataset.feedbackCleanupTimer = String(cleanupTimer);
   };
 
   if (!delay) {
-    hide();
+    beginHide();
     return;
   }
 
-  const timer = window.setTimeout(hide, delay);
+  const timer = window.setTimeout(beginHide, delay);
   form.dataset.feedbackTimer = String(timer);
 }
 
@@ -71,6 +103,7 @@ function restoreSubmit(form) {
 }
 
 function resetVisualState(form) {
+  clearFeedbackTimers(form);
   clearErrors(form);
   syncFormControls(form);
   restoreSubmit(form);
