@@ -133,18 +133,16 @@ function initDemoForm(form) {
     const validation = validateForm(form);
 
     if (!validation.valid) {
-      showOverlayStatus(form, 'Проверьте выделенные поля.', 'is-error');
-      window.setTimeout(() => {
-        hideOverlayStatus(form);
-        focusInvalid(validation.firstInvalid);
-      }, 1800);
+      const status = getStatus(form);
+      setStatus(status, 'Проверьте выделенные поля.', 'is-error');
+      focusInvalid(validation.firstInvalid);
       return;
     }
 
     const submit = form.querySelector('[type="submit"]');
     submit?.classList.add('is-loading');
     submit?.setAttribute('disabled', '');
-    showOverlayStatus(form, 'Отправляем заявку…');
+    setStatus(getStatus(form), 'Отправляем заявку…');
 
     await new Promise(resolve => setTimeout(resolve, 700));
 
