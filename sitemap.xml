@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://neotwalker.github.io/Ya-bao-v3/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-05</lastmod>
   </url>
   <url>
     <loc>https://neotwalker.github.io/Ya-bao-v3/menu.html</loc>
@@ -26,6 +26,10 @@
   </url>
   <url>
     <loc>https://neotwalker.github.io/Ya-bao-v3/blog.html</loc>
+    <lastmod>2026-09-05</lastmod>
+  </url>
+  <url>
+    <loc>https://neotwalker.github.io/Ya-bao-v3/blog-chaynaya-ceremoniya.html</loc>
     <lastmod>2026-09-05</lastmod>
   </url>
 </urlset>
