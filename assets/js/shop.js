@@ -121,19 +121,21 @@ if (catalog) {
     const stockText = out ? 'Нет в наличии' : 'В наличии';
 
     article.innerHTML = `
-      <div class="shop-card__media">
-        <span class="shop-card__badge${out ? ' shop-card__badge--out' : ''}">${out ? 'Нет в наличии' : 'Demo'}</span>
-        ${mediaFor(product)}
-      </div>
-      <div class="shop-card__body">
-        <div class="shop-card__meta">
-          <span>${escapeHTML(categoryLabel)}</span>
-          <strong class="shop-card__price">${escapeHTML(priceFor(product))}</strong>
+      <a class="shop-card__link" href="${encodeURIComponent(product.slug)}/">
+        <div class="shop-card__media">
+          <span class="shop-card__badge${out ? ' shop-card__badge--out' : ''}">${out ? 'Нет в наличии' : 'Demo'}</span>
+          ${mediaFor(product)}
         </div>
-        <h3>${escapeHTML(product.name)}</h3>
-        <p class="shop-card__detail">${escapeHTML(detailFor(product))}</p>
-        <div class="shop-card__stock">${escapeHTML(stockText)}</div>
-      </div>`;
+        <div class="shop-card__body">
+          <div class="shop-card__meta">
+            <span>${escapeHTML(categoryLabel)}</span>
+            <strong class="shop-card__price">${escapeHTML(priceFor(product))}</strong>
+          </div>
+          <h3>${escapeHTML(product.name)}</h3>
+          <p class="shop-card__detail">${escapeHTML(detailFor(product))}</p>
+          <div class="shop-card__stock">${escapeHTML(stockText)}</div>
+        </div>
+      </a>`;
 
     return article;
   };

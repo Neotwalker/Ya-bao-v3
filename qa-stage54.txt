@@ -1,0 +1,19 @@
+Этап 54 — QA
+Дата: 07.09.2026
+
+Результат: PASS
+Проверок: 2555
+HTML: 39
+JS: 25
+Публичных demo-товаров / страниц: 7 / 7
+
+[PASS] /shop/{slug}/ создан для каждого active/out_of_stock demo-товара.
+[PASS] inactive/missing_from_feed/archived не получают публичные страницы.
+[PASS] Карточки /shop/ ведут на /shop/{slug}/.
+[PASS] Шаблон содержит галерею, название, цену, наличие, описание, CTA, related products и related articles.
+[PASS] Интерактивный выбор веса и add-to-cart не добавлены раньше этапов 55/57.
+[PASS] Demo-страницы noindex; Product schema и sitemap entries не добавлены до реальных данных.
+[PASS] JSON-LD синтаксически валиден.
+[PASS] JS проходит node --check.
+[PASS] products.json валиден по products.schema.json; системные ID уникальны.
+[PASS] Локальные href/src/srcset существуют; duplicate id отсутствуют.
