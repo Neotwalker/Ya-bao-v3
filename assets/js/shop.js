@@ -36,6 +36,9 @@ if (catalog) {
   const searchInput = catalog.querySelector('[data-shop-search]');
   const categorySelect = catalog.querySelector('[data-shop-category]');
   const sortSelect = catalog.querySelector('[data-shop-sort]');
+  const filtersToggle = catalog.querySelector('[data-shop-filters-toggle]');
+  const filterPanel = catalog.querySelector('[data-shop-filter-panel]');
+  const filterCount = catalog.querySelector('[data-shop-filter-count]');
   const resetButtons = [...catalog.querySelectorAll('[data-shop-reset]')];
 
   const collator = new Intl.Collator('ru-RU', { sensitivity: 'base', numeric: true });
@@ -181,6 +184,27 @@ if (catalog) {
     || state.sort !== 'default'
   );
 
+  const advancedFilterCount = () => Number(Boolean(state.category)) + Number(state.sort !== 'default');
+
+  const setFilterPanelOpen = open => {
+    if (!filtersToggle || !filterPanel) return;
+    filterPanel.classList.toggle('is-open', open);
+    filtersToggle.setAttribute('aria-expanded', String(open));
+    if (!open) {
+      filterPanel.querySelectorAll('.custom-select.is-open').forEach(selectRoot => {
+        selectRoot.classList.remove('is-open');
+        selectRoot.querySelector('.custom-select__trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    }
+  };
+
+  const syncFilterToggle = () => {
+    if (!filtersToggle || !filterCount) return;
+    const count = advancedFilterCount();
+    filterCount.hidden = count === 0;
+    filterCount.textContent = count ? String(count) : '';
+  };
+
   const writeURLState = () => {
     const url = new URL(window.location.href);
     ['type', 'category', 'q', 'sort'].forEach(key => url.searchParams.delete(key));
@@ -201,6 +225,7 @@ if (catalog) {
     updateCategoryOptions();
     sortSelect.value = state.sort;
     if (syncSearch && searchInput.value !== state.q) searchInput.value = state.q;
+    syncFilterToggle();
   };
 
   const getVisibleProducts = () => {
@@ -317,6 +342,11 @@ if (catalog) {
   });
 
   resetButtons.forEach(button => button.addEventListener('click', resetState));
+
+  filtersToggle?.addEventListener('click', () => {
+    const open = filtersToggle.getAttribute('aria-expanded') !== 'true';
+    setFilterPanelOpen(open);
+  });
 
   filterBar.addEventListener('keydown', event => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;

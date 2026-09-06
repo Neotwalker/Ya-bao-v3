@@ -1,0 +1,13 @@
+Этап 53 — QA/UX-правка v4.47.2
+Дата: 06.09.2026
+
+Результат: PASS
+
+Исправлено по визуальной проверке:
+[PASS] На mobile поиск остаётся видимым, category/sort скрыты за раскрывающейся кнопкой «Фильтры».
+[PASS] Активные category/sort отражаются счётчиком на кнопке и не становятся невидимым состоянием.
+[PASS] Search input, native select и custom-select trigger используют общий --shop-control-height.
+[PASS] Удалены противоречащие друг другу mobile min-height 42/46px.
+[PASS] shop-filter-bar на mobile уплотнён и больше не использует отрицательные gutters/горизонтальный скролл.
+[PASS] Desktop/tablet сохраняют открытые category/sort без mobile-toggle.
+[PASS] Stage 54 не затронут.
