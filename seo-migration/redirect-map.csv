@@ -1,0 +1,35 @@
+﻿source_path,target_path,http_status,comment
+/index.html,/,301,Главная
+/chaynaya-ceremoniya.html,/chaynaya-ceremoniya/,301,Чайная церемония
+/menu.html,/menu/,301,Меню; query string category должен сохраняться
+/contacts.html,/contacts/,301,Контакты
+/about.html,/about/,301,О чайной
+/booking.html,/booking/,301,Бронирование
+/blog.html,/blog/,301,Блог; query string page должен сохраняться
+/events.html,/events/,301,События
+/privacy.html,/privacy/,301,Политика ПД
+/consent.html,/consent/,301,Согласие на ПД
+/blog-chaynaya-ceremoniya.html,/blog/chaynaya-ceremoniya/,301,Статья
+/blog-kuda-shodit-na-svidanie-v-chelyabinske.html,/blog/kuda-shodit-na-svidanie-v-chelyabinske/,301,Статья
+/blog-kuda-shodit-na-kirovke-chelyabinsk.html,/blog/kuda-shodit-na-kirovke-chelyabinsk/,301,Статья
+/blog-kak-vybrat-kitayskiy-chay.html,/blog/kak-vybrat-kitayskiy-chay/,301,Статья
+/blog-chto-takoe-puer.html,/blog/chto-takoe-puer/,301,Статья
+/blog-kak-zavarivat-puer.html,/blog/kak-zavarivat-puer/,301,Статья
+/blog-chto-takoe-gaba.html,/blog/chto-takoe-gaba/,301,Статья
+/blog-kak-zavarivat-gaba.html,/blog/kak-zavarivat-gaba/,301,Статья
+/blog-chto-takoe-ulun.html,/blog/chto-takoe-ulun/,301,Статья
+/blog-kak-zavarivat-ulun.html,/blog/kak-zavarivat-ulun/,301,Статья
+/blog-smola-puera.html,/blog/smola-puera/,301,Статья
+/blog-kak-zavarivat-shu-puer.html,/blog/kak-zavarivat-shu-puer/,301,Статья
+/blog-kak-zavarivat-shen-puer.html,/blog/kak-zavarivat-shen-puer/,301,Статья
+/blog-shen-i-shu-puer-raznitsa.html,/blog/shen-i-shu-puer-raznitsa/,301,Статья
+/blog-molochnyy-ulun.html,/blog/molochnyy-ulun/,301,Статья
+/blog-kak-zavarivat-da-hun-pao.html,/blog/kak-zavarivat-da-hun-pao/,301,Статья
+/blog-belyy-chay.html,/blog/belyy-chay/,301,Статья
+/blog-kak-zavarivat-chay-prolivami.html,/blog/kak-zavarivat-chay-prolivami/,301,Статья
+/article.html,/blog/,301,Технический шаблон; не должен иметь отдельного production URL
+/event.html,/events/,301,Технический шаблон; реальные события получают /events/{slug}/
+/reviews.html,/#reviews,301,Старая отдельная страница отзывов
+/reviews/,/#reviews,301,Старая отдельная страница отзывов
+/faq.html,/#faq,301,Старая отдельная FAQ-страница
+/faq/,/#faq,301,Старая отдельная FAQ-страница
