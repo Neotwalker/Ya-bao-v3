@@ -710,3 +710,15 @@
   .related-article-card{min-height:260px;padding:24px}
   .related-articles__button{display:none}
 }
+/* Human-readable sitemap */
+.sitemap-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.sitemap-card{padding:clamp(24px,3vw,34px);border:1px solid var(--color-line);border-radius:24px;background:rgba(255,255,255,.62)}
+.sitemap-card h2{margin:0 0 18px;font-size:clamp(24px,2.2vw,34px)}
+.sitemap-card ul{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.sitemap-card a{color:var(--color-ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-color:rgba(95,70,48,.35);transition:color .25s ease,text-decoration-color .25s ease}
+.sitemap-card a:hover{color:var(--color-bronze);text-decoration-color:currentColor}
+.sitemap-card--wide{grid-column:span 2}
+.sitemap-card__columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px}
+@media (max-width:960px){.sitemap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sitemap-card--wide{grid-column:span 2}}
+@media (max-width:640px){.sitemap-grid{grid-template-columns:1fr}.sitemap-card--wide{grid-column:auto}.sitemap-card__columns{grid-template-columns:1fr}}
+
