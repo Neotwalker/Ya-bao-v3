@@ -1,0 +1,24 @@
+Stage 54 QA/UX fix v4.48.2
+Baseline: GitHub main ee0da67fb5b274a5af9caee30cf588a5c041a2a5 (v4.48.1)
+Date: 2026-09-07
+
+Changes checked:
+- /shop/ uses shared inner-hero markup.
+- All 7 public demo product pages use the same shared inner-hero; v4.48.1 product-specific hero overrides removed.
+- Product description is inside the same .product-detail section, below .product-detail__grid.
+- Related articles on all 7 product pages reuse existing .guides-v4 + Swiper markup/styles/initializer.
+- Product-specific .product-related-link CSS removed.
+- Product-page .cards-grid mobile gap override removed.
+- Base .cards-grid--three kept because it is still used by chaynaya-ceremoniya.html and contacts.html.
+
+Automated QA:
+- HTML files: 39
+- JS files checked with node --check: 23
+- Static/structure checks: 2458
+- Errors: 0
+- Broken local href/src/srcset: 0
+- Duplicate IDs: 0
+- JSON-LD parse: PASS
+- Product pages: 7/7 contain guides-v4 Swiper with 3 slides
+- Product pages: 7/7 description inside product-detail container
+- products.json schema validation: PASS
