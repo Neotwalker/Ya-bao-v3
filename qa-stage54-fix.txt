@@ -1,0 +1,22 @@
+Этап 54 — QA-правка v4.48.1
+Дата: 07.09.2026
+
+Результат: PASS
+
+Изменения:
+[PASS] Desktop hero карточки товара уплотнён без изменения глобальной типографики.
+[PASS] Product grid расширен в пользу изображения, gap уменьшен, summary выровнен по центру изображения.
+[PASS] Первый product-detail получил меньший вертикальный padding.
+[PASS] На mobile уменьшены вертикальные отступы секций, section-heading и gap между related cards.
+[PASS] Новые font-size для h1/h2/h3 не добавлялись.
+[PASS] Этап 55, выбор веса, add-to-cart, store state и localStorage не затронуты.
+
+Полный QA:
+[PASS] 39 HTML.
+[PASS] 3133 локальных/внешних ссылок и ресурсов разобраны; битых локальных ресурсов: 0.
+[PASS] Duplicate id: 0.
+[PASS] JSON-LD парсится без ошибок.
+[PASS] 23 JS-файла проходят node --check.
+[PASS] products.json валиден по products.schema.json.
+[PASS] CSS structural brace check PASS.
+[INFO] Browser smoke-test локального HTTP недоступен в текущей среде: Chromium возвращает ERR_BLOCKED_BY_ADMINISTRATOR для localhost; финальный визуальный smoke-test — после загрузки на GitHub Pages.
