@@ -1,0 +1,19 @@
+Stage 54 QA/UX fix v4.48.3
+Baseline: main 76b1b3768cbe4fb2961acaab72fba26e88d73141 (v4.48.2)
+
+Scope:
+- Reuse the homepage guides-v4 block on all 7 product pages.
+- No new CSS.
+- No new JS.
+- Only relative href adjustment for /shop/{slug}/ nesting.
+
+QA PASS:
+- 7/7 product pages use an exact homepage guides-v4 HTML copy after relative href normalization.
+- 18/18 homepage guide slides are present on every product page.
+- section-tail, controls, pagination and card metadata are preserved.
+- CSS diff versus v4.48.2: none.
+- JS diff versus v4.48.2: none.
+- Local href/src: PASS.
+- Duplicate IDs: PASS.
+- JSON-LD parse: PASS.
+- JS syntax: PASS.
