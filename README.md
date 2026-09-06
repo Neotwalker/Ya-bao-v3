@@ -27,7 +27,7 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 
 ### JavaScript
 - `app.js` — глобальная инициализация;
-- `home.js` — только главная: hero video, Fancybox, Swiper, top-scroll;
+- `home.js` — главная и переиспользуемая инициализация `guides-v4` Swiper на товарных страницах; hero video/Fancybox/top-scroll активируются только при наличии соответствующей разметки;
 - `menu.js` — legacy-меню: локальные фильтры статического снимка;
 - `shop.js` — `/shop/`: загрузка demo-товаров, поиск, тип/категория, сортировка и URL-state;
 - `components/forms/` — телефон, select, дата/время, validation и demo-form;
@@ -395,3 +395,16 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - сохранены те же `guide-grid-v4`, `guide-card-v4`, метаданные карточек, пагинация, стрелки, `section-tail` и ссылка «Перейти в блог»;
 - изменены только относительные `href` для уровня `/shop/{slug}/`;
 - новые CSS и JS не создавались, существующие `home-v4.css`, Swiper и `home.js` переиспользуются без изменений.
+
+### v4.48.4 — CSS cleanup перед этапом 55
+
+- выполнен аудит всех 8 CSS-файлов относительно baseline `main` commit `6ad2b36c6b37682a19c6c64c9a64ea13af0db696`;
+- удалены неиспользуемые стили удалённой `booking.html`, старого `.shop-catalog__notice`, `.section--olive` и старого `.shop-hero`;
+- mobile header приведён к одному источнику responsive-правил: убраны повторные `menu-toggle`/brand overrides из `custom.css`, при этом текущие размеры на breakpoint сохранены;
+- удалены мёртвые и повторные mobile-правила footer и shop controls, а `hidden` в магазине оставлен единым через `.page-shop [hidden]`;
+- из product page удалены общие mobile overrides секций/section-heading, из-за которых переиспользованный `guides-v4` отличался по вертикальному ритму от главной;
+- удалены повторные декларации `home-v4.css` (`tea-card`, `beginner`, `space-gallery`);
+- `.article-page__content h3` больше не задаёт отдельный `font-size` и использует общую шкалу заголовков;
+- после cleanup проектных CSS-классов, не встречающихся в HTML/JS, не осталось; исключения — runtime-классы Swiper;
+- новые компоненты, новые CSS-файлы и новые JS не создавались; этап 55 не начинался.
+

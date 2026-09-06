@@ -100,21 +100,6 @@
 }
 .feature-panel p{color:rgba(255,255,255,.68)}
 
-/* Booking */
-.booking-layout{
-  display:grid;
-  grid-template-columns:minmax(280px,.7fr) minmax(0,1fr);
-  gap:clamp(32px,6vw,96px);
-  align-items:start;
-}
-.booking-copy ol{padding-left:22px}
-.booking-card{
-  padding:clamp(28px,4vw,48px);
-  border-radius:var(--radius-lg);
-  background:rgba(255,255,255,.6);
-  box-shadow:var(--shadow-soft);
-}
-
 /* Contacts */
 .section--contact{padding-top:40px}
 .contact-grid{
@@ -326,7 +311,6 @@
 
 @media(max-width:1024px){
   .cards-grid--three{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .booking-layout,
   .contact-grid,
   .intro-split,
   .inner-hero__grid{grid-template-columns:1fr}
@@ -609,7 +593,7 @@
 }
 .article-page__aside .button{width:100%}
 .article-page__aside .button+.button{margin-top:10px}
-.article-page__content h3{margin-top:28px;margin-bottom:10px;font-size:clamp(20px,1.7vw,25px)}
+.article-page__content h3{margin-top:28px;margin-bottom:10px}
 .article-page__content strong{color:var(--color-ink)}
 .article-page__content a{
   color:var(--color-walnut);
