@@ -286,3 +286,42 @@ body .site-footer h3{margin-bottom:18px;color:var(--color-gold);font-family:var(
     font-size:9px;
   }
 }
+
+/* Stage 51: static cart indicator. Store state is connected only at stage 57. */
+.cart-indicator{
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:50%;
+  color:#fff;
+}
+.cart-indicator svg{width:20px;height:20px}
+.cart-indicator__count{
+  position:absolute;
+  top:-4px;
+  right:-4px;
+  display:grid;
+  min-width:18px;
+  height:18px;
+  place-items:center;
+  padding:0 4px;
+  border:2px solid #17130f;
+  border-radius:999px;
+  background:var(--color-gold);
+  color:var(--color-ink);
+  font-size:10px;
+  font-weight:800;
+  line-height:1;
+}
+@media (min-width:700px) and (max-width:1240px){
+  .header-actions>.cart-indicator{order:4}
+  .header-actions>.menu-toggle{order:5}
+}
+@media (max-width:767px){
+  .cart-indicator{width:40px;height:40px;flex-basis:40px}
+}
+
