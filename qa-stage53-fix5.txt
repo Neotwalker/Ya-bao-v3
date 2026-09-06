@@ -1,0 +1,20 @@
+Этап 53 — QA-патч v4.47.5
+Дата: 06.09.2026
+
+Результат: PASS
+
+Изменения:
+[PASS] Удалена отдельная стилизация .article-page__content .lead.
+[PASS] Общий mobile .card__body использует padding:18px в responsive.css.
+[PASS] Новых локальных размеров заголовков/lead не добавлено.
+[PASS] Этап 54 не затронут.
+
+QA:
+[PASS] 32 HTML-файла.
+[PASS] 2414 локальных/внешних href/src проверены, битых локальных ссылок: 0.
+[PASS] Duplicate id: 0.
+[PASS] JSON-LD: валиден.
+[PASS] Все JS в assets/js проходят node --check.
+[PASS] products.json проходит products.schema.json.
+[PASS] CSS: баланс фигурных скобок корректен.
+[PASS] Diff относительно v4.47.4: только README.md, assets/css/pages.css, assets/css/responsive.css и новый qa-stage53-fix5.txt.

@@ -16,6 +16,7 @@
   main h2{font-size:clamp(30px,8vw,36px)}
   main h3{font-size:clamp(23px,6.8vw,29px)}
   main .lead{font-size:18px;line-height:1.4}
+  .card__body{padding:18px}
   .brand img{width:42px;height:42px}
   .brand strong{font-size:19px}
   .brand small{font-size:8px}

@@ -599,7 +599,6 @@
   align-items:start;
 }
 .article-page__content{max-width:820px}
-.article-page__content .lead{font-size:clamp(20px,2vw,26px);line-height:1.5}
 .article-page__content h2{margin-top:42px;margin-bottom:14px}
 .article-page__content h2[id],
 .article-page__content h3[id]{scroll-margin-top:calc(var(--header-height) + 32px)}
