@@ -3,6 +3,7 @@ const catalog = document.querySelector('[data-shop-catalog]');
 if (catalog) {
   const DATA_URL = new URL('../../data/products.json', import.meta.url);
   const PUBLIC_STATUSES = new Set(['active', 'out_of_stock']);
+  const REQUEST_TIMEOUT_MS = 8000;
   const TYPE_LABELS = {
     tea: 'Чай',
     ware: 'Посуда',
@@ -135,14 +136,26 @@ if (catalog) {
 
   const load = async () => {
     setState('loading');
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
     try {
-      const response = await fetch(DATA_URL, { cache: 'no-store' });
+      const response = await fetch(DATA_URL, {
+        cache: 'default',
+        signal: controller.signal,
+      });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       render(await response.json());
     } catch (loadError) {
-      console.error('Shop catalog load failed:', loadError);
+      if (loadError?.name === 'AbortError') {
+        console.warn(`Shop catalog load timed out after ${REQUEST_TIMEOUT_MS} ms`);
+      } else {
+        console.error('Shop catalog load failed:', loadError);
+      }
       setState('error');
       resultCount.textContent = '';
+    } finally {
+      window.clearTimeout(timeoutId);
     }
   };
 

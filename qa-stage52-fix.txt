@@ -1,0 +1,29 @@
+Этап 52 — QA-правка загрузки каталога
+Дата: 06.09.2026
+
+Результат: PASS
+
+Причина правки:
+[PASS] На iPhone/Safari визуальный QA выявил ~15–20 секунд skeleton до появления demo-карточек.
+[PASS] В исходном shop.js подтверждён fetch products.json с cache='no-store'.
+
+Изменения:
+[PASS] cache='no-store' удалён; используется cache='default'.
+[PASS] В shop/index.html добавлен preload для ../data/products.json.
+[PASS] Добавлен AbortController с таймаутом 8000 мс.
+[PASS] При таймауте включается существующий error-state; skeleton не остаётся бесконечно.
+[PASS] Retry создаёт новый запрос и новый timeout.
+[PASS] Фильтры, DOM карточек, public statuses и data contract не изменены.
+[PASS] Функции следующих этапов не добавлялись.
+
+Технические проверки:
+[PASS] node --check assets/js/shop.js.
+[PASS] products.json валиден по products.schema.json.
+[PASS] preload указывает на существующий data/products.json.
+[PASS] битых локальных href/src после правки нет.
+[PASS] ZIP проверен на целостность.
+
+Нужно проверить на GitHub Pages:
+1. Первый вход на /shop/ на iPhone/Safari.
+2. Повторный вход/обновление страницы — каталог должен появляться заметно быстрее за счёт нормального кэша.
+3. При искусственно плохой сети skeleton должен смениться error-state максимум примерно через 8 секунд.
