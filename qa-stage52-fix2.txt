@@ -1,0 +1,19 @@
+Этап 52 — QA-правка v4.46.2
+Дата: 06.09.2026
+
+Результат: PASS
+
+Причина повторной правки:
+- на мобильной записи счётчик уже показывал 7 товаров, но skeleton оставался видимым;
+- это подтверждает, что products.json был загружен, а проблема была в отображении hidden-state, а не в длительном fetch.
+
+Исправление:
+[PASS] assets/css/shop.css содержит .page-shop [hidden]{display:none!important}.
+[PASS] Атрибут hidden теперь имеет приоритет над display:grid/display:flex внутри /shop/.
+[PASS] Оптимизация загрузки v4.46.1 сохранена.
+[PASS] Этап 53 не затронут.
+
+Дополнительный QA:
+[PASS] shop.js проходит node --check.
+[PASS] products.json валиден по products.schema.json.
+[PASS] Локальные ссылки проверены.
