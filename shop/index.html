@@ -88,28 +88,54 @@
 </section>
 <section class="section section--paper shop-catalog" id="catalog" data-shop-catalog>
 <div class="container">
-<div class="section-heading reveal"><div><p class="eyebrow">Каталог</p><h2>Выберите категорию</h2></div><p>На этом этапе доступны базовая сетка и фильтры по типу товара. Поиск, сортировка и расширенные фильтры появятся отдельно.</p></div>
+<div class="section-heading reveal"><div><p class="eyebrow">Каталог</p><h2>Найдите нужный товар</h2></div><p>Ищите по названию, выбирайте тип и категорию, меняйте порядок товаров. Состояние каталога сохраняется в адресной строке.</p></div>
 <div class="shop-catalog__notice" role="note">
 <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"></circle><path d="M12 10.5v6M12 7.2v.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
 <span><strong>Тестовые данные.</strong> Названия, цены и наличие ниже нужны только для проверки интерфейса и не являются реальным ассортиментом «Я Бао Завари».</span>
 </div>
-<div class="shop-catalog__toolbar">
-<div class="shop-filter-bar" data-shop-filters role="group" aria-label="Фильтр каталога">
+<div class="shop-catalog__controls" data-shop-controls hidden>
+<label class="shop-control shop-control--search" for="shop-search">
+<span class="shop-control__label">Поиск по названию</span>
+<span class="shop-search-field">
+<svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="m16 16 4 4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg>
+<input id="shop-search" type="search" maxlength="100" autocomplete="off" placeholder="Например, пуэр" data-shop-search aria-controls="shop-grid"/>
+</span>
+</label>
+<label class="shop-control" for="shop-category">
+<span class="shop-control__label">Категория</span>
+<span class="shop-select-field"><select id="shop-category" data-shop-category aria-controls="shop-grid"><option value="">Все категории</option></select></span>
+</label>
+<label class="shop-control" for="shop-sort">
+<span class="shop-control__label">Сортировка</span>
+<span class="shop-select-field"><select id="shop-sort" data-shop-sort aria-controls="shop-grid">
+<option value="default">По умолчанию</option>
+<option value="name-asc">По названию А–Я</option>
+<option value="price-asc">Сначала дешевле</option>
+<option value="price-desc">Сначала дороже</option>
+</select></span>
+</label>
+</div>
+<div class="shop-catalog__toolbar" data-shop-toolbar hidden>
+<div class="shop-filter-bar" data-shop-filters role="group" aria-label="Тип товара">
 <button class="shop-filter" type="button" data-shop-filter="all" aria-pressed="true">Все</button>
 <button class="shop-filter" type="button" data-shop-filter="tea" aria-pressed="false">Чай</button>
 <button class="shop-filter" type="button" data-shop-filter="ware" aria-pressed="false">Посуда</button>
 <button class="shop-filter" type="button" data-shop-filter="accessory" aria-pressed="false">Аксессуары</button>
 </div>
+<div class="shop-catalog__summary">
 <p class="shop-result-count" data-shop-result-count aria-live="polite"></p>
+<button class="shop-reset" type="button" data-shop-reset="toolbar" hidden>Сбросить</button>
+</div>
 </div>
 <div class="shop-skeleton-grid" data-shop-loading aria-label="Каталог загружается" aria-busy="true">
 <div class="shop-skeleton" aria-hidden="true"><div class="shop-skeleton__media"></div><div class="shop-skeleton__body"><div class="shop-skeleton__line shop-skeleton__line--short"></div><div class="shop-skeleton__line shop-skeleton__line--title"></div><div class="shop-skeleton__line"></div></div></div><div class="shop-skeleton" aria-hidden="true"><div class="shop-skeleton__media"></div><div class="shop-skeleton__body"><div class="shop-skeleton__line shop-skeleton__line--short"></div><div class="shop-skeleton__line shop-skeleton__line--title"></div><div class="shop-skeleton__line"></div></div></div><div class="shop-skeleton" aria-hidden="true"><div class="shop-skeleton__media"></div><div class="shop-skeleton__body"><div class="shop-skeleton__line shop-skeleton__line--short"></div><div class="shop-skeleton__line shop-skeleton__line--title"></div><div class="shop-skeleton__line"></div></div></div><div class="shop-skeleton" aria-hidden="true"><div class="shop-skeleton__media"></div><div class="shop-skeleton__body"><div class="shop-skeleton__line shop-skeleton__line--short"></div><div class="shop-skeleton__line shop-skeleton__line--title"></div><div class="shop-skeleton__line"></div></div></div><div class="shop-skeleton" aria-hidden="true"><div class="shop-skeleton__media"></div><div class="shop-skeleton__body"><div class="shop-skeleton__line shop-skeleton__line--short"></div><div class="shop-skeleton__line shop-skeleton__line--title"></div><div class="shop-skeleton__line"></div></div></div><div class="shop-skeleton" aria-hidden="true"><div class="shop-skeleton__media"></div><div class="shop-skeleton__body"><div class="shop-skeleton__line shop-skeleton__line--short"></div><div class="shop-skeleton__line shop-skeleton__line--title"></div><div class="shop-skeleton__line"></div></div></div><div class="shop-skeleton" aria-hidden="true"><div class="shop-skeleton__media"></div><div class="shop-skeleton__body"><div class="shop-skeleton__line shop-skeleton__line--short"></div><div class="shop-skeleton__line shop-skeleton__line--title"></div><div class="shop-skeleton__line"></div></div></div><div class="shop-skeleton" aria-hidden="true"><div class="shop-skeleton__media"></div><div class="shop-skeleton__body"><div class="shop-skeleton__line shop-skeleton__line--short"></div><div class="shop-skeleton__line shop-skeleton__line--title"></div><div class="shop-skeleton__line"></div></div></div>
 </div>
-<div class="shop-grid" data-shop-grid hidden></div>
+<div class="shop-grid" id="shop-grid" data-shop-grid hidden></div>
 <div class="shop-state" data-shop-empty hidden>
 <div class="shop-state__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 8h14l-1 11H6L5 8Zm3 0a4 4 0 0 1 8 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg></div>
-<h3>В этой категории пока пусто</h3>
-<p>Для выбранной категории нет доступных demo-товаров. Выберите другой раздел каталога.</p>
+<h3>Ничего не найдено</h3>
+<p>Измените поисковый запрос или параметры каталога.</p>
+<button class="button button--outline-walnut" type="button" data-shop-reset="empty">Сбросить фильтры</button>
 </div>
 <div class="shop-state" data-shop-error hidden role="alert">
 <div class="shop-state__icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 8v5M12 17v.1M4.8 19h14.4L12 5 4.8 19Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>

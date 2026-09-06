@@ -4,6 +4,8 @@ if (catalog) {
   const DATA_URL = new URL('../../data/products.json', import.meta.url);
   const PUBLIC_STATUSES = new Set(['active', 'out_of_stock']);
   const REQUEST_TIMEOUT_MS = 8000;
+  const TYPES = new Set(['all', 'tea', 'ware', 'accessory']);
+  const SORTS = new Set(['default', 'name-asc', 'price-asc', 'price-desc']);
   const TYPE_LABELS = {
     tea: 'Чай',
     ware: 'Посуда',
@@ -26,11 +28,32 @@ if (catalog) {
   const error = catalog.querySelector('[data-shop-error]');
   const retry = catalog.querySelector('[data-shop-retry]');
   const resultCount = catalog.querySelector('[data-shop-result-count]');
+  const controls = catalog.querySelector('[data-shop-controls]');
+  const toolbar = catalog.querySelector('[data-shop-toolbar]');
   const filterBar = catalog.querySelector('[data-shop-filters]');
   const filters = [...catalog.querySelectorAll('[data-shop-filter]')];
+  const searchInput = catalog.querySelector('[data-shop-search]');
+  const categorySelect = catalog.querySelector('[data-shop-category]');
+  const sortSelect = catalog.querySelector('[data-shop-sort]');
+  const resetButtons = [...catalog.querySelectorAll('[data-shop-reset]')];
 
+  const collator = new Intl.Collator('ru-RU', { sensitivity: 'base', numeric: true });
   let products = [];
-  let activeFilter = 'all';
+  let sourceOrder = new Map();
+
+  const readURLState = () => {
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type') || 'all';
+    const sort = params.get('sort') || 'default';
+    return {
+      type: TYPES.has(type) ? type : 'all',
+      category: (params.get('category') || '').trim(),
+      q: (params.get('q') || '').slice(0, 100),
+      sort: SORTS.has(sort) ? sort : 'default',
+    };
+  };
+
+  let state = readURLState();
 
   const money = value => new Intl.NumberFormat('ru-RU').format(value) + ' ₽';
   const escapeHTML = value => String(value).replace(/[&<>'"]/g, char => ({
@@ -75,6 +98,7 @@ if (catalog) {
     article.className = `shop-card${out ? ' shop-card--out' : ''}`;
     article.dataset.type = product.type;
     article.dataset.shopItem = '';
+    article.dataset.productId = product.external_id;
 
     const typeLabel = TYPE_LABELS[product.type] || product.type;
     const categoryLabel = CATEGORY_LABELS[product.category] || typeLabel;
@@ -98,40 +122,138 @@ if (catalog) {
     return article;
   };
 
-  const setState = state => {
-    loading.hidden = state !== 'loading';
-    error.hidden = state !== 'error';
-    const isReady = state === 'ready';
-    grid.hidden = !isReady;
-    filterBar.hidden = !isReady;
-    if (!isReady) empty.hidden = true;
+  const pluralizeProducts = count => {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+    if (mod10 === 1 && mod100 !== 11) return `${count} товар`;
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${count} товара`;
+    return `${count} товаров`;
   };
 
-  const applyFilter = value => {
-    activeFilter = value;
+  const categoriesForType = type => {
+    const values = new Set(
+      products
+        .filter(product => type === 'all' || product.type === type)
+        .map(product => product.category)
+        .filter(Boolean),
+    );
+    return [...values].sort((a, b) => collator.compare(CATEGORY_LABELS[a] || a, CATEGORY_LABELS[b] || b));
+  };
+
+  const updateCategoryOptions = () => {
+    const categories = categoriesForType(state.type);
+    if (state.category && !categories.includes(state.category)) state.category = '';
+
+    const fragment = document.createDocumentFragment();
+    const allOption = document.createElement('option');
+    allOption.value = '';
+    allOption.textContent = 'Все категории';
+    fragment.append(allOption);
+
+    categories.forEach(category => {
+      const option = document.createElement('option');
+      option.value = category;
+      option.textContent = CATEGORY_LABELS[category] || category;
+      fragment.append(option);
+    });
+
+    categorySelect.replaceChildren(fragment);
+    categorySelect.value = state.category;
+  };
+
+  const hasActiveState = () => (
+    state.type !== 'all'
+    || Boolean(state.category)
+    || Boolean(state.q.trim())
+    || state.sort !== 'default'
+  );
+
+  const writeURLState = () => {
+    const url = new URL(window.location.href);
+    ['type', 'category', 'q', 'sort'].forEach(key => url.searchParams.delete(key));
+
+    if (state.type !== 'all') url.searchParams.set('type', state.type);
+    if (state.category) url.searchParams.set('category', state.category);
+    const query = state.q.trim();
+    if (query) url.searchParams.set('q', query);
+    if (state.sort !== 'default') url.searchParams.set('sort', state.sort);
+
+    window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+  };
+
+  const syncControls = ({ syncSearch = true } = {}) => {
     filters.forEach(button => {
-      button.setAttribute('aria-pressed', String(button.dataset.shopFilter === value));
+      button.setAttribute('aria-pressed', String(button.dataset.shopFilter === state.type));
+    });
+    updateCategoryOptions();
+    sortSelect.value = state.sort;
+    if (syncSearch && searchInput.value !== state.q) searchInput.value = state.q;
+  };
+
+  const getVisibleProducts = () => {
+    const query = state.q.trim().toLocaleLowerCase('ru-RU');
+    const visible = products.filter(product => {
+      if (state.type !== 'all' && product.type !== state.type) return false;
+      if (state.category && product.category !== state.category) return false;
+      if (query && !product.name.toLocaleLowerCase('ru-RU').includes(query)) return false;
+      return true;
     });
 
-    let visible = 0;
-    [...grid.querySelectorAll('[data-shop-item]')].forEach((card, index) => {
-      const product = products[index];
-      const show = value === 'all' || product.type === value;
-      card.hidden = !show;
-      if (show) visible += 1;
+    if (state.sort === 'name-asc') {
+      visible.sort((a, b) => collator.compare(a.name, b.name));
+    } else if (state.sort === 'price-asc') {
+      visible.sort((a, b) => (a.price - b.price) || collator.compare(a.name, b.name));
+    } else if (state.sort === 'price-desc') {
+      visible.sort((a, b) => (b.price - a.price) || collator.compare(a.name, b.name));
+    } else {
+      visible.sort((a, b) => sourceOrder.get(a.external_id) - sourceOrder.get(b.external_id));
+    }
+
+    return visible;
+  };
+
+  const setState = current => {
+    loading.hidden = current !== 'loading';
+    error.hidden = current !== 'error';
+    const isReady = current === 'ready';
+    controls.hidden = !isReady;
+    toolbar.hidden = !isReady;
+    if (!isReady) {
+      grid.hidden = true;
+      empty.hidden = true;
+    }
+  };
+
+  const applyState = ({ updateURL = true, syncSearch = false } = {}) => {
+    syncControls({ syncSearch });
+    const visible = getVisibleProducts();
+    grid.replaceChildren(...visible.map(createCard));
+    const isEmpty = visible.length === 0;
+    grid.hidden = isEmpty;
+    empty.hidden = !isEmpty;
+    resultCount.textContent = pluralizeProducts(visible.length);
+
+    const active = hasActiveState();
+    resetButtons.forEach(button => {
+      if (button.matches('[data-shop-reset="toolbar"]')) button.hidden = !active;
     });
 
-    empty.hidden = visible !== 0;
-    resultCount.textContent = visible === 1 ? '1 товар' : `${visible} товаров`;
+    if (updateURL) writeURLState();
+  };
+
+  const resetState = () => {
+    state = { type: 'all', category: '', q: '', sort: 'default' };
+    applyState({ syncSearch: true });
+    searchInput.focus();
   };
 
   const render = data => {
     if (!data || !Array.isArray(data.products)) throw new Error('Некорректный формат каталога');
 
     products = data.products.filter(product => PUBLIC_STATUSES.has(product.status));
-    grid.replaceChildren(...products.map(createCard));
+    sourceOrder = new Map(products.map((product, index) => [product.external_id, index]));
     setState('ready');
-    applyFilter(activeFilter);
+    applyState({ syncSearch: true });
   };
 
   const load = async () => {
@@ -160,8 +282,28 @@ if (catalog) {
   };
 
   filters.forEach(button => {
-    button.addEventListener('click', () => applyFilter(button.dataset.shopFilter));
+    button.addEventListener('click', () => {
+      state.type = button.dataset.shopFilter;
+      applyState();
+    });
   });
+
+  searchInput.addEventListener('input', () => {
+    state.q = searchInput.value.slice(0, 100);
+    applyState();
+  });
+
+  categorySelect.addEventListener('change', () => {
+    state.category = categorySelect.value;
+    applyState();
+  });
+
+  sortSelect.addEventListener('change', () => {
+    state.sort = SORTS.has(sortSelect.value) ? sortSelect.value : 'default';
+    applyState();
+  });
+
+  resetButtons.forEach(button => button.addEventListener('click', resetState));
 
   filterBar.addEventListener('keydown', event => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
@@ -175,6 +317,11 @@ if (catalog) {
     if (event.key === 'ArrowRight') next = (current + 1) % filters.length;
     if (event.key === 'ArrowLeft') next = (current - 1 + filters.length) % filters.length;
     filters[next].focus();
+  });
+
+  window.addEventListener('popstate', () => {
+    state = readURLState();
+    if (products.length) applyState({ updateURL: false, syncSearch: true });
   });
 
   retry.addEventListener('click', load);

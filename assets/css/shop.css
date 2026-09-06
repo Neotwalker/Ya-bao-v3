@@ -80,6 +80,75 @@
   margin-top:1px;
   color:var(--color-walnut);
 }
+.shop-catalog__controls{
+  display:grid;
+  grid-template-columns:minmax(260px,1.45fr) minmax(190px,.8fr) minmax(190px,.8fr);
+  gap:14px;
+  margin-bottom:16px;
+  padding:16px;
+  border:1px solid var(--color-line);
+  border-radius:18px;
+  background:rgba(255,255,255,.34);
+}
+.shop-control{display:grid;gap:7px;min-width:0}
+.shop-control__label{
+  color:var(--color-muted);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.04em;
+}
+.shop-search-field,.shop-select-field{position:relative;display:block;min-width:0}
+.shop-search-field>svg{
+  position:absolute;
+  z-index:1;
+  top:50%;
+  left:14px;
+  width:19px;
+  height:19px;
+  transform:translateY(-50%);
+  color:var(--color-muted);
+  pointer-events:none;
+}
+.shop-search-field input,.shop-select-field select{
+  display:block;
+  width:100%;
+  min-width:0;
+  min-height:48px;
+  border:1px solid rgba(95,70,48,.24);
+  border-radius:11px;
+  background:rgba(255,255,255,.78);
+  color:var(--color-ink);
+  font:inherit;
+  font-size:14px;
+  transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;
+}
+.shop-search-field input{padding:11px 14px 11px 43px}
+.shop-search-field input::placeholder{color:rgba(95,70,48,.58)}
+.shop-search-field input::-webkit-search-cancel-button{cursor:pointer}
+.shop-select-field select{
+  padding:11px 42px 11px 13px;
+  appearance:none;
+  -webkit-appearance:none;
+  cursor:pointer;
+}
+.shop-select-field::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  right:17px;
+  width:7px;
+  height:7px;
+  border-right:1.5px solid var(--color-muted);
+  border-bottom:1.5px solid var(--color-muted);
+  transform:translateY(-68%) rotate(45deg);
+  pointer-events:none;
+}
+.shop-search-field input:focus,.shop-select-field select:focus{
+  outline:0;
+  border-color:var(--color-walnut);
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(95,70,48,.10);
+}
 .shop-catalog__toolbar{
   display:flex;
   align-items:center;
@@ -115,12 +184,34 @@
   outline:3px solid rgba(139,97,55,.28);
   outline-offset:3px;
 }
+.shop-catalog__summary{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:12px;
+  flex:0 0 auto;
+}
 .shop-result-count{
   flex:0 0 auto;
   margin:0;
   color:var(--color-muted);
   font-size:13px;
 }
+.shop-reset{
+  min-height:38px;
+  padding:7px 11px;
+  border:1px solid rgba(95,70,48,.20);
+  border-radius:999px;
+  background:transparent;
+  color:var(--color-walnut);
+  font:inherit;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+.shop-reset:hover{background:rgba(95,70,48,.07)}
+.shop-reset:focus-visible{outline:2px solid var(--color-gold);outline-offset:3px}
+
 
 .shop-grid{
   display:grid;
@@ -314,6 +405,8 @@
 }
 @media (max-width:880px){
   .shop-hero__grid{grid-template-columns:1fr;align-items:start}
+  .shop-catalog__controls{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .shop-control--search{grid-column:1/-1}
   .shop-hero__aside{max-width:650px}
   .shop-grid,.shop-skeleton-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -321,6 +414,9 @@
   .page-shop .shop-hero{padding-top:calc(var(--header-height) + 34px);padding-bottom:52px}
   .shop-hero h1{font-size:clamp(44px,14vw,64px)}
   .shop-catalog{padding-block:56px 72px}
+  .shop-catalog__controls{grid-template-columns:1fr;padding:14px;margin-bottom:14px}
+  .shop-control--search{grid-column:auto}
+  .shop-search-field input,.shop-select-field select{min-height:46px;font-size:16px}
   .shop-catalog__toolbar{display:block;margin-bottom:24px}
   .shop-filter-bar{
     flex-wrap:nowrap;
@@ -331,7 +427,8 @@
   }
   .shop-filter-bar::-webkit-scrollbar{display:none}
   .shop-filter{flex:0 0 auto;white-space:nowrap}
-  .shop-result-count{margin-top:12px}
+  .shop-catalog__summary{justify-content:space-between;margin-top:8px}
+  .shop-result-count{margin-top:0}
   .shop-grid,.shop-skeleton-grid{grid-template-columns:1fr}
   .shop-card__media,.shop-skeleton__media{aspect-ratio:16/10}
   .shop-card__body{padding:18px}
@@ -339,6 +436,6 @@
   .shop-catalog__notice{padding:14px 15px}
 }
 @media (prefers-reduced-motion:reduce){
-  .shop-card,.shop-filter{transition:none}
+  .shop-card,.shop-filter,.shop-search-field input,.shop-select-field select{transition:none}
   .shop-skeleton__media::after,.shop-skeleton__line::after{animation:none}
 }

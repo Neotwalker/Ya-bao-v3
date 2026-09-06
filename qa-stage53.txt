@@ -1,0 +1,82 @@
+Этап 53 — поиск, сортировка и фильтры каталога
+Дата: 06.09.2026
+
+Результат: PASS
+
+Baseline перед началом:
+[PASS] Актуальный GitHub main проверен перед работой: commit 3cb260017091c06f7af442be45d14af2af57d3a3.
+[PASS] Этот commit — утверждённая версия v4.46.2 после Safari hidden-state fix.
+[PASS] В main подтверждены stage-52 файлы: /shop/, assets/js/shop.js, assets/css/shop.css, products data contract и QA-файлы 50–52.
+[PASS] Архитектура этапа 53 сверена с Google Doc: поиск по названию, тип/категория, сортировка, URL/query-state; без пагинации при малом demo-каталоге.
+
+Реализовано в этапе 53:
+[PASS] Поиск только по названию товара, регистр не влияет.
+[PASS] Фильтр по типу: все / чай / посуда / аксессуары.
+[PASS] Фильтр по категории строится динамически только из публичных demo-товаров выбранного типа.
+[PASS] Сортировка: по умолчанию, название А–Я, цена по возрастанию, цена по убыванию.
+[PASS] Поиск + тип + категория + сортировка работают совместно.
+[PASS] Состояние сохраняется в query string: q, type, category, sort.
+[PASS] Состояние восстанавливается из query string.
+[PASS] Параметры по умолчанию удаляются из URL.
+[PASS] Некорректные type/category/sort отбрасываются.
+[PASS] Сторонние query-параметры сохраняются.
+[PASS] Canonical остаётся https://neotwalker.github.io/Ya-bao-v3/shop/ без query-параметров.
+[PASS] Empty-state и кнопки сброса работают после комбинированной фильтрации.
+[PASS] Публично по-прежнему выводятся только active и out_of_stock.
+[PASS] inactive / missing_from_feed / archived не попадают в каталог и category-filter.
+[PASS] Safari hidden-state fix v4.46.2 сохранён.
+[PASS] Загрузка products.json сохраняет cache=default, preload и timeout 8 секунд.
+
+Сопутствующий QA найденного baseline-дефекта:
+[FIXED] В актуальном main у blog-kak-vybrat-kitayskiy-chay.html оставалось два последовательных <!DOCTYPE html>.
+[PASS] Удалён только лишний второй doctype; содержимое статьи не менялось.
+[PASS] После исправления все 33 HTML содержат ровно один doctype.
+
+README / документация:
+[PASS] Текущая структура обновлена: /shop/ отмечен основным коммерческим каталогом, menu.html — legacy-снимком до production redirect.
+[PASS] В списки CSS/JS добавлены shop.css и shop.js.
+[PASS] Исправлено устаревшее упоминание внешнего Google Fonts: текущие PT Sans/PT Serif подключены локально.
+[PASS] Добавлен блок v4.47 — этап 53.
+
+Полный статический QA проекта после изменений:
+[PASS] HTML-файлов: 33.
+[PASS] 2723 статические проверки, ошибок 0.
+[PASS] Битых локальных href/src/poster/srcset: 0.
+[PASS] Дубликатов id: 0.
+[PASS] JSON-LD во всех проверенных HTML валиден.
+[PASS] Все assets/js/*.js: 23 файла проходят node --check.
+[PASS] products.json валиден по products.schema.json Draft 2020-12 + FormatChecker.
+[PASS] external_id / SKU / slug / variant_id уникальны.
+[PASS] Demo dataset: 10 сущностей, публичных active/out_of_stock — 7.
+[PASS] sitemap.xml валиден, содержит /shop/ и не содержит menu.html.
+[PASS] robots.txt содержит Sitemap.
+
+Браузерный QA логики и responsive:
+Среда контейнера блокирует прямую Chromium-навигацию на localhost/внешние URL политикой ERR_BLOCKED_BY_ADMINISTRATOR, поэтому тест выполнен через headless Chromium на локальном DOM-harness с production HTML/CSS/shop.js и тем же products.json. Production-код не изменялся для этого теста.
+[PASS] 41 сценарная проверка, ошибок 0.
+[PASS] Старт: 7 товаров; skeleton скрывается; controls/toolbar показываются.
+[PASS] Тип «Чай»: 3 товара и корректный список категорий.
+[PASS] Категория shu-puer: только DEMO-P002.
+[PASS] При смене типа несовместимая категория очищается и удаляется из URL-state.
+[PASS] Поиск «чайник»: DEMO-P007.
+[PASS] Поиск «ПУЭР»: 2 товара, регистр не влияет.
+[PASS] Цена по возрастанию: DEMO-P002 перед DEMO-P001.
+[PASS] Цена по убыванию: DEMO-P007 первый.
+[PASS] Название А–Я: порядок корректен по Intl.Collator ru-RU.
+[PASS] Нулевой результат: 0 товаров + empty-state + скрытая сетка.
+[PASS] Сброс возвращает 7 товаров и исходные значения controls.
+[PASS] ArrowRight / Home / End работают для keyboard focus по типам товара.
+[PASS] URL-state восстанавливает type=ware&category=brewing-ware&sort=price-desc в порядке DEMO-P007, DEMO-P005.
+[PASS] Некорректные type/category/sort очищаются; валидный q и сторонний utm_source сохраняются.
+[PASS] Canonical остаётся стабильным без query string.
+[PASS] Mobile 390 px: search/category/sort стоят вертикально, карточки в одну колонку, horizontal overflow отсутствует.
+[PASS] Desktop 1440 px: карточки в 4 колонки.
+
+Границы этапа:
+- пагинация не добавлялась;
+- карточка товара /shop/{slug}/ не добавлялась;
+- выбор веса не добавлялся;
+- store state / localStorage и корзина не добавлялись;
+- checkout не добавлялся.
+
+Итог: этап 53 готов к пользовательскому визуальному QA на GitHub Pages.
