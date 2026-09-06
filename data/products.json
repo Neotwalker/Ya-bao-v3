@@ -1,0 +1,237 @@
+{
+  "schema_version": "1.0.0",
+  "dataset": "demo",
+  "currency": "RUB",
+  "generated_at": "2026-09-06T12:00:00Z",
+  "products": [
+    {
+      "external_id": "DEMO-P001",
+      "sku": "DEMO-TEA-001",
+      "slug": "demo-sheng-puer-01",
+      "type": "tea",
+      "status": "active",
+      "name": "Демо: шэн пуэр №1",
+      "category": "sheng-puer",
+      "sale_mode": "weight",
+      "tea_form": "loose",
+      "min_weight_g": 50,
+      "price": 500,
+      "stock_status": "in_stock",
+      "variants": [
+        {
+          "variant_id": "DEMO-P001-50G",
+          "weight_g": 50,
+          "price": 500,
+          "stock_status": "in_stock"
+        },
+        {
+          "variant_id": "DEMO-P001-100G",
+          "weight_g": 100,
+          "price": 950,
+          "stock_status": "in_stock"
+        },
+        {
+          "variant_id": "DEMO-P001-250G",
+          "weight_g": 250,
+          "price": 2200,
+          "stock_status": "in_stock"
+        }
+      ],
+      "images": [],
+      "updated_at": "2026-09-06T12:00:00Z",
+      "is_demo": true,
+      "demo_note": "Тестовая сущность для проверки контракта. Не является реальным товаром или предложением."
+    },
+    {
+      "external_id": "DEMO-P002",
+      "sku": "DEMO-TEA-002",
+      "slug": "demo-shu-puer-01",
+      "type": "tea",
+      "status": "active",
+      "name": "Демо: шу пуэр №1",
+      "category": "shu-puer",
+      "sale_mode": "weight",
+      "tea_form": "loose",
+      "min_weight_g": 50,
+      "price": 450,
+      "stock_status": "in_stock",
+      "variants": [
+        {
+          "variant_id": "DEMO-P002-50G",
+          "weight_g": 50,
+          "price": 450,
+          "stock_status": "in_stock"
+        },
+        {
+          "variant_id": "DEMO-P002-100G",
+          "weight_g": 100,
+          "price": 850,
+          "stock_status": "in_stock"
+        }
+      ],
+      "images": [],
+      "updated_at": "2026-09-06T12:00:00Z",
+      "is_demo": true,
+      "demo_note": "Тестовая сущность для проверки контракта. Не является реальным товаром или предложением."
+    },
+    {
+      "external_id": "DEMO-P003",
+      "sku": "DEMO-TEA-003",
+      "slug": "demo-white-tea-01",
+      "type": "tea",
+      "status": "out_of_stock",
+      "name": "Демо: белый чай №1",
+      "category": "white-tea",
+      "sale_mode": "weight",
+      "tea_form": "loose",
+      "min_weight_g": 50,
+      "price": 600,
+      "stock_status": "out_of_stock",
+      "variants": [],
+      "images": [],
+      "updated_at": "2026-09-06T12:00:00Z",
+      "is_demo": true,
+      "demo_note": "Тестовая сущность для проверки состояния out_of_stock. Не является реальным товаром или предложением."
+    },
+    {
+      "external_id": "DEMO-P004",
+      "sku": "DEMO-TEA-004",
+      "slug": "demo-pressed-tea-01",
+      "type": "tea",
+      "status": "missing_from_feed",
+      "name": "Демо: прессованный чай №1",
+      "category": "pressed-tea",
+      "sale_mode": "weight",
+      "tea_form": "pressed",
+      "min_weight_g": 50,
+      "price": 550,
+      "stock_status": "in_stock",
+      "variants": [
+        {
+          "variant_id": "DEMO-P004-50G",
+          "weight_g": 50,
+          "price": 550,
+          "stock_status": "in_stock"
+        },
+        {
+          "variant_id": "DEMO-P004-100G",
+          "weight_g": 100,
+          "price": 1050,
+          "stock_status": "in_stock"
+        },
+        {
+          "variant_id": "DEMO-P004-200G",
+          "weight_g": 200,
+          "price": 2000,
+          "stock_status": "in_stock"
+        }
+      ],
+      "images": [],
+      "updated_at": "2026-09-06T12:00:00Z",
+      "is_demo": true,
+      "demo_note": "Тестовая сущность для проверки статуса missing_from_feed. Не является реальным товаром или предложением."
+    },
+    {
+      "external_id": "DEMO-P005",
+      "sku": "DEMO-WARE-001",
+      "slug": "demo-gaiwan-01",
+      "type": "ware",
+      "status": "active",
+      "name": "Демо: гайвань №1",
+      "category": "brewing-ware",
+      "sale_mode": "unit",
+      "price": 1500,
+      "stock_status": "in_stock",
+      "quantity": 8,
+      "images": [],
+      "updated_at": "2026-09-06T12:00:00Z",
+      "is_demo": true,
+      "demo_note": "Тестовая сущность посуды. Не является реальным товаром или предложением."
+    },
+    {
+      "external_id": "DEMO-P006",
+      "sku": "DEMO-WARE-002",
+      "slug": "demo-tea-cup-01",
+      "type": "ware",
+      "status": "out_of_stock",
+      "name": "Демо: чайная пиала №1",
+      "category": "serving-ware",
+      "sale_mode": "unit",
+      "price": 700,
+      "stock_status": "out_of_stock",
+      "quantity": 0,
+      "images": [],
+      "updated_at": "2026-09-06T12:00:00Z",
+      "is_demo": true,
+      "demo_note": "Тестовая сущность посуды для проверки нулевого остатка. Не является реальным товаром или предложением."
+    },
+    {
+      "external_id": "DEMO-P007",
+      "sku": "DEMO-WARE-003",
+      "slug": "demo-teapot-01",
+      "type": "ware",
+      "status": "active",
+      "name": "Демо: чайник №1",
+      "category": "brewing-ware",
+      "sale_mode": "unit",
+      "price": 2500,
+      "stock_status": "in_stock",
+      "quantity": 4,
+      "images": [],
+      "updated_at": "2026-09-06T12:00:00Z",
+      "is_demo": true,
+      "demo_note": "Тестовая сущность посуды. Не является реальным товаром или предложением."
+    },
+    {
+      "external_id": "DEMO-P008",
+      "sku": "DEMO-ACC-001",
+      "slug": "demo-tea-tool-01",
+      "type": "accessory",
+      "status": "active",
+      "name": "Демо: чайный инструмент №1",
+      "category": "tea-tools",
+      "sale_mode": "unit",
+      "price": 900,
+      "stock_status": "in_stock",
+      "quantity": 10,
+      "images": [],
+      "updated_at": "2026-09-06T12:00:00Z",
+      "is_demo": true,
+      "demo_note": "Тестовая сущность аксессуара. Не является реальным товаром или предложением."
+    },
+    {
+      "external_id": "DEMO-P009",
+      "sku": "DEMO-ACC-002",
+      "slug": "demo-filter-01",
+      "type": "accessory",
+      "status": "inactive",
+      "name": "Демо: фильтр №1",
+      "category": "tea-tools",
+      "sale_mode": "unit",
+      "price": 300,
+      "stock_status": "in_stock",
+      "quantity": 6,
+      "images": [],
+      "updated_at": "2026-09-06T12:00:00Z",
+      "is_demo": true,
+      "demo_note": "Тестовая сущность для проверки статуса inactive. Не является реальным товаром или предложением."
+    },
+    {
+      "external_id": "DEMO-P010",
+      "sku": "DEMO-ACC-003",
+      "slug": "demo-gift-box-01",
+      "type": "accessory",
+      "status": "archived",
+      "name": "Демо: подарочная упаковка №1",
+      "category": "packaging",
+      "sale_mode": "unit",
+      "price": 400,
+      "stock_status": "out_of_stock",
+      "quantity": 0,
+      "images": [],
+      "updated_at": "2026-09-06T12:00:00Z",
+      "is_demo": true,
+      "demo_note": "Тестовая сущность для проверки статуса archived. Не является реальным товаром или предложением."
+    }
+  ]
+}

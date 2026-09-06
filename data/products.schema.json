@@ -1,0 +1,427 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ya-bao-zavari.local/schemas/products.schema.json",
+  "title": "Я Бао Завари — product data contract",
+  "description": "Контракт данных каталога. Не является источником реального ассортимента.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "dataset",
+    "currency",
+    "generated_at",
+    "products"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "dataset": {
+      "type": "string",
+      "enum": ["demo", "production"]
+    },
+    "currency": {
+      "type": "string",
+      "const": "RUB"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "products": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/product"
+      }
+    }
+  },
+  "$defs": {
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["src", "alt"],
+      "properties": {
+        "src": {
+          "type": "string",
+          "minLength": 1
+        },
+        "alt": {
+          "type": "string"
+        },
+        "sort_order": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "weightVariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "variant_id",
+        "weight_g",
+        "price",
+        "stock_status"
+      ],
+      "properties": {
+        "variant_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "weight_g": {
+          "type": "integer",
+          "minimum": 50,
+          "multipleOf": 50
+        },
+        "price": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stock_status": {
+          "type": "string",
+          "const": "in_stock"
+        }
+      }
+    },
+    "unitVariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "variant_id",
+        "label",
+        "price",
+        "stock_status",
+        "quantity"
+      ],
+      "properties": {
+        "variant_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "price": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stock_status": {
+          "type": "string",
+          "enum": ["in_stock", "out_of_stock"]
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "option_values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "editorial": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "seo_title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "long_description": {
+          "type": "string"
+        },
+        "taste": {
+          "type": "string"
+        },
+        "aroma": {
+          "type": "string"
+        },
+        "brewing": {
+          "type": "string"
+        },
+        "related_content": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "product": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "external_id",
+        "sku",
+        "slug",
+        "type",
+        "status",
+        "name",
+        "category",
+        "sale_mode",
+        "price",
+        "stock_status",
+        "images",
+        "updated_at",
+        "is_demo"
+      ],
+      "properties": {
+        "external_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sku": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["tea", "ware", "accessory"]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "out_of_stock",
+            "inactive",
+            "missing_from_feed",
+            "archived"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "sale_mode": {
+          "type": "string",
+          "enum": ["weight", "unit"]
+        },
+        "price": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stock_status": {
+          "type": "string",
+          "enum": ["in_stock", "out_of_stock"]
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/image"
+          }
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "is_demo": {
+          "type": "boolean"
+        },
+        "demo_note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tea_form": {
+          "type": "string",
+          "enum": ["loose", "pressed"]
+        },
+        "min_weight_g": {
+          "type": "integer",
+          "const": 50
+        },
+        "variants": {
+          "type": "array"
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "editorial": {
+          "$ref": "#/$defs/editorial"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "is_demo": {
+                "const": true
+              }
+            },
+            "required": ["is_demo"]
+          },
+          "then": {
+            "required": ["demo_note"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "tea"
+              }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["tea_form", "min_weight_g", "variants"],
+            "properties": {
+              "sale_mode": {
+                "const": "weight"
+              },
+              "min_weight_g": {
+                "const": 50
+              },
+              "variants": {
+                "items": {
+                  "$ref": "#/$defs/weightVariant"
+                }
+              },
+              "quantity": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": ["ware", "accessory"]
+              }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["quantity"],
+            "properties": {
+              "sale_mode": {
+                "const": "unit"
+              },
+              "tea_form": false,
+              "min_weight_g": false,
+              "variants": {
+                "items": {
+                  "$ref": "#/$defs/unitVariant"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "sale_mode": {
+                "const": "weight"
+              },
+              "stock_status": {
+                "const": "in_stock"
+              }
+            },
+            "required": ["sale_mode", "stock_status"]
+          },
+          "then": {
+            "properties": {
+              "variants": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "sale_mode": {
+                "const": "weight"
+              },
+              "stock_status": {
+                "const": "out_of_stock"
+              }
+            },
+            "required": ["sale_mode", "stock_status"]
+          },
+          "then": {
+            "properties": {
+              "variants": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "out_of_stock"
+              }
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "stock_status": {
+                "const": "out_of_stock"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "sale_mode": {
+                "const": "unit"
+              },
+              "stock_status": {
+                "const": "out_of_stock"
+              }
+            },
+            "required": ["sale_mode", "stock_status"]
+          },
+          "then": {
+            "properties": {
+              "quantity": {
+                "const": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "sale_mode": {
+                "const": "unit"
+              },
+              "stock_status": {
+                "const": "in_stock"
+              }
+            },
+            "required": ["sale_mode", "stock_status"]
+          },
+          "then": {
+            "properties": {
+              "quantity": {
+                "minimum": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
