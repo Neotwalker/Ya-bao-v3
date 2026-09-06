@@ -1,0 +1,41 @@
+Этап 52 — QA каркаса каталога /shop/
+Дата: 06.09.2026
+
+Результат: PASS
+
+Проверено:
+[PASS] baseline содержит v4.45 / этап 51.
+[PASS] products.json валиден по products.schema.json.
+[PASS] публичный demo-каркас получает 7 active/out_of_stock товаров.
+[PASS] фильтры Чай/Посуда/Аксессуары имеют ожидаемые demo-данные.
+[PASS] out-of-stock состояние представлено 2 demo-товарами.
+[PASS] служебные статусы не попадают в публичный набор.
+[PASS] shop/index.html содержит один DOCTYPE.
+[PASS] hero содержит H1 магазина.
+[PASS] есть 4 кнопки фильтра: Все/Чай/Посуда/Аксессуары.
+[PASS] loading state присутствует.
+[PASS] empty state присутствует.
+[PASS] error state присутствует.
+[PASS] контейнер товарной сетки присутствует.
+[PASS] счётчик результатов объявляется через aria-live.
+[PASS] фильтры объединены в доступную группу.
+[PASS] фильтры — keyboard-native buttons с aria-pressed.
+[PASS] shop.css подключён.
+[PASS] shop.js подключён.
+[PASS] реализована клавиатурная навигация фильтров Arrow/Home/End.
+[PASS] URL/query-state не реализован раньше этапа 53.
+[PASS] localStorage не реализован раньше этапа 57.
+[PASS] add-to-cart не реализован раньше этапа 57.
+[PASS] каталог читает data/products.json через стабильный URL от модуля.
+[PASS] публичная выдача ограничена active/out_of_stock.
+[PASS] динамические строки экранируются перед вставкой в HTML.
+[PASS] shop.css содержит desktop/tablet/mobile breakpoints.
+[PASS] учтён prefers-reduced-motion.
+[PASS] out-of-stock имеет отдельное визуальное состояние.
+[PASS] дубли id отсутствуют во всех 33 HTML.
+[PASS] битых локальных href/src нет (33 HTML).
+[PASS] node --check PASS для 25 JS-файлов.
+[PASS] баланс CSS-блоков PASS для 10 CSS-файлов.
+
+Ограничение QA:
+Браузерный визуальный прогон в контейнере недоступен из-за сетевой политики среды; responsive/keyboard проверены структурно по DOM/CSS/JS. Финальный визуальный контроль — на GitHub Pages после загрузки этапа.
