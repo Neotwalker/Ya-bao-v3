@@ -273,6 +273,26 @@
 .legal-content p,
 .legal-content ul{max-width:none}
 
+.legal-details{
+  width:100%;
+  margin:0 0 34px;
+  border-collapse:collapse;
+  border:1px solid var(--color-line);
+  border-radius:16px;
+  background:rgba(255,255,255,.46);
+  overflow:hidden;
+}
+.legal-details th,.legal-details td{
+  padding:13px 16px;
+  border-bottom:1px solid var(--color-line);
+  vertical-align:top;
+  text-align:left;
+  line-height:1.45;
+}
+.legal-details tr:last-child th,.legal-details tr:last-child td{border-bottom:0}
+.legal-details th{width:210px;color:var(--color-ink);font-weight:700}
+.legal-details td{color:var(--color-muted);overflow-wrap:anywhere}
+
 /* 404 */
 .not-found{
   display:grid;
@@ -341,11 +361,9 @@
   }
   .page-menu .menu-card .card__image{aspect-ratio:16/9}
   .page-menu .menu-card .card__body{padding:18px}
-  .page-menu .menu-card h3{font-size:26px}
 }
 
 @media(max-width:600px){
-  .inner-hero h1{font-size:clamp(40px,12vw,58px)}
 
   .map-frame,
   .map-frame iframe{min-height:340px}
@@ -744,3 +762,9 @@
 @media (max-width:960px){.sitemap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sitemap-card--wide{grid-column:span 2}}
 @media (max-width:640px){.sitemap-grid{grid-template-columns:1fr}.sitemap-card--wide{grid-column:auto}.sitemap-card__columns{grid-template-columns:1fr}}
 
+
+@media(max-width:767px){
+  .legal-details{margin-bottom:26px;font-size:14px}
+  .legal-details th,.legal-details td{padding:10px 11px}
+  .legal-details th{width:34%}
+}

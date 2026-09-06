@@ -417,10 +417,9 @@
 }
 @media (max-width:640px){
   .page-shop .shop-hero{padding-top:calc(var(--header-height) + 34px);padding-bottom:52px}
-  .shop-hero h1{font-size:clamp(44px,14vw,64px)}
   .shop-catalog{padding-block:56px 72px}
   .shop-catalog__controls{
-    --shop-control-height:46px;
+    --shop-control-height:44px;
     grid-template-columns:minmax(0,1fr) auto;
     align-items:end;
     gap:8px;
@@ -431,9 +430,10 @@
   .shop-control{gap:4px}
   .shop-control--search{grid-column:auto}
   .shop-control__label{font-size:10px}
-  .shop-search-field input,.shop-select-field select,.shop-select-field .custom-select__trigger{font-size:16px}
-  .shop-search-field input{padding-inline:40px 10px}
-  .shop-search-field>svg{left:12px;width:18px;height:18px}
+  .shop-search-field input,.shop-select-field select,.shop-select-field .custom-select__trigger{font-size:14px}
+  .shop-select-field .custom-select__value{font-size:14px;line-height:1.2}
+  .shop-search-field input{padding-inline:33px 9px}
+  .shop-search-field>svg{left:10px;width:15px;height:15px}
   .shop-select-field select,.shop-select-field .custom-select__trigger{padding-inline:10px}
   .shop-filters-toggle{
     display:inline-flex;
@@ -499,7 +499,6 @@
   .shop-grid,.shop-skeleton-grid{grid-template-columns:1fr}
   .shop-card__media,.shop-skeleton__media{aspect-ratio:16/10}
   .shop-card__body{padding:18px}
-  .shop-card h3{font-size:26px}
   .shop-catalog__notice{padding:14px 15px}
 }
 @media (prefers-reduced-motion:reduce){

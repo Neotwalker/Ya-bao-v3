@@ -4,7 +4,6 @@
 /menu.html,/menu/,301,Меню; query string category должен сохраняться
 /contacts.html,/contacts/,301,Контакты
 /about.html,/about/,301,О чайной
-/booking.html,/booking/,301,Бронирование
 /blog.html,/blog/,301,Блог; query string page должен сохраняться
 /events.html,/events/,301,События
 /privacy.html,/privacy/,301,Политика ПД

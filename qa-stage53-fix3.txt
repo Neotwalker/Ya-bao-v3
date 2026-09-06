@@ -1,0 +1,22 @@
+Stage 53 QA patch v4.47.3
+Date: 2026-09-06
+
+Scope
+- compact mobile shop search/custom-select typography and search icon spacing
+- semantic operator details table in privacy + consent
+- one canonical mobile h1/h2/h3 scale inside main; footer/burger/dialog untouched
+- compact mobile .lead
+- booking.html removed; home meeting card opens #booking-modal only
+
+QA result: PASS
+- HTML files: 32
+- local href/src/srcset/poster refs checked: 2602
+- broken local references: 0
+- duplicate ids: 0
+- JSON-LD: PASS
+- JavaScript: 25 files, node --check PASS
+- CSS: 10 files, brace balance PASS
+- products.json vs products.schema.json: PASS
+- booking.html file: absent
+- live booking.html href references: 0
+- Stage 54: not started
