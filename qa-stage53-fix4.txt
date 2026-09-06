@@ -1,0 +1,11 @@
+Stage 53 QA patch v4.47.4
+Date: 2026-09-06
+
+Scope:
+- event/blog list card title semantics h2 -> h3
+- sitemap card title semantics h2 -> h3
+- canonical mobile typography without !important
+- tighter mobile line-height in main
+- compact contact card using existing styles only
+
+No Stage 54 functionality added.
