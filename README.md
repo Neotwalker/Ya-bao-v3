@@ -317,3 +317,16 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - сохранены Safari hidden-state fix v4.46.2, preload, `cache: default` и 8-секундный timeout загрузки;
 - во время полного QA исправлен оставшийся в `blog-kak-vybrat-kitayskiy-chay.html` дублирующий `<!DOCTYPE html>` из старого baseline;
 - пагинация, `/shop/{slug}/`, выбор веса, store state, корзина и checkout не добавлялись.
+
+## v4.47.1 — UX/consistency patch after Stage 53
+
+- удалён отдельный demo-notice над каталогом;
+- устранена двойная стрелка в shop custom select;
+- мобильные controls магазина уплотнены: поиск на всю строку, категория и сортировка рядом;
+- карта на главной переведена с iframe 2ГИС на Яндекс Карты;
+- footer legal перенесён в footer-brand на всех HTML-страницах;
+- во все footer добавлена ссылка «Разработано Abzalov-Lab»;
+- cart indicator переставлен перед кнопкой «Забронировать» в header;
+- карточка «Просто зайти на чай» на главной теперь ведёт в `/shop/`;
+- карточки магазина используют существующие изображения из старого `/menu/`;
+- custom select теперь пересобирает UI-options при динамическом изменении native select, поэтому категории Stage 53 синхронизируются корректно.

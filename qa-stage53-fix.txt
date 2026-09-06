@@ -1,0 +1,38 @@
+Stage 53 — UX/consistency patch v4.47.1
+Date: 06.09.2026
+Baseline: main @ b45c1a9c7fad804d211cb770829b658125623c3f (v4.47 / Stage 53)
+Result: PASS
+
+Requested fixes
+[PASS] 1. Removed shop demo notice block: «Тестовые данные...».
+[PASS] 2. Removed .shop-select-field::after; custom-select now has one arrow.
+[PASS] 3. Mobile .shop-catalog__controls compacted: search full row; category + sort share second row; trigger/input height 42px.
+[PASS] 4. Homepage embedded map migrated from 2GIS iframe to Yandex Maps iframe; eager loading used.
+[PASS] 5. .footer-legal moved into .footer-brand on all 33 HTML pages.
+[PASS] 6. Added «Разработано Abzalov-Lab» link to https://limitlesscreators.ru/ in all 33 footers.
+[PASS] 7. .cart-indicator appears before desktop «Забронировать» button in DOM on all 33 pages.
+[PASS] 8. Homepage «Просто зайти на чай» card now points to /shop/; action label updated to «Перейти в магазин».
+[PASS] 9. Shop cards use the existing responsive image assets already used by /menu/; 640w + 1074w variants are reused.
+
+Additional QA fix found while checking Stage 53
+[PASS] Dynamic category options now rebuild the generated custom-select menu when the native <select> options change. This keeps Stage 53 category filtering synchronized with the custom select UI.
+
+Regression / project QA
+[PASS] 33 HTML files parsed.
+[PASS] Exactly one doctype per HTML file.
+[PASS] Duplicate HTML ids: 0.
+[PASS] Local href/src/srcset references checked: 1907; missing: 0.
+[PASS] JSON-LD blocks parsed: 32; errors: 0.
+[PASS] CSS files parsed with tinycss2: 10; parse errors: 0.
+[PASS] JS files checked with node --check: 25; syntax errors: 0.
+[PASS] products.json validates against products.schema.json.
+[PASS] external_id / sku / slug / variant_id uniqueness retained.
+[PASS] Demo products: 10; public products (active/out_of_stock): 7.
+[PASS] All product image files and their 640w variants exist.
+[PASS] Stage 53 query state tokens q/type/category/sort and URL sync logic retained.
+[PASS] Safari hidden-state rule from Stage 52 remains intact.
+
+Scope
+- This is a QA/UX patch to approved Stage 53, not Stage 54.
+- Product page /shop/{slug}/ is not implemented here.
+- Old /menu/ is not removed or redirected here; production redirect remains a later roadmap task.

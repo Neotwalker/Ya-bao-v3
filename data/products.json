@@ -37,7 +37,13 @@
           "stock_status": "in_stock"
         }
       ],
-      "images": [],
+      "images": [
+        {
+          "src": "assets/images/tea-category-sheng-puer-real.webp",
+          "alt": "Шэн пуэр",
+          "sort_order": 0
+        }
+      ],
       "updated_at": "2026-09-06T12:00:00Z",
       "is_demo": true,
       "demo_note": "Тестовая сущность для проверки контракта. Не является реальным товаром или предложением."
@@ -69,7 +75,13 @@
           "stock_status": "in_stock"
         }
       ],
-      "images": [],
+      "images": [
+        {
+          "src": "assets/images/tea-category-shu-puer-real.webp",
+          "alt": "Шу пуэр",
+          "sort_order": 0
+        }
+      ],
       "updated_at": "2026-09-06T12:00:00Z",
       "is_demo": true,
       "demo_note": "Тестовая сущность для проверки контракта. Не является реальным товаром или предложением."
@@ -88,7 +100,13 @@
       "price": 600,
       "stock_status": "out_of_stock",
       "variants": [],
-      "images": [],
+      "images": [
+        {
+          "src": "assets/images/tea-category-white-real.webp",
+          "alt": "Белый чай",
+          "sort_order": 0
+        }
+      ],
       "updated_at": "2026-09-06T12:00:00Z",
       "is_demo": true,
       "demo_note": "Тестовая сущность для проверки состояния out_of_stock. Не является реальным товаром или предложением."
@@ -126,7 +144,13 @@
           "stock_status": "in_stock"
         }
       ],
-      "images": [],
+      "images": [
+        {
+          "src": "assets/images/tea-category-hei-cha-real.webp",
+          "alt": "Прессованный чай",
+          "sort_order": 0
+        }
+      ],
       "updated_at": "2026-09-06T12:00:00Z",
       "is_demo": true,
       "demo_note": "Тестовая сущность для проверки статуса missing_from_feed. Не является реальным товаром или предложением."
@@ -143,7 +167,13 @@
       "price": 1500,
       "stock_status": "in_stock",
       "quantity": 8,
-      "images": [],
+      "images": [
+        {
+          "src": "assets/images/tea-category-author-tea-real.webp",
+          "alt": "Чайная посуда",
+          "sort_order": 0
+        }
+      ],
       "updated_at": "2026-09-06T12:00:00Z",
       "is_demo": true,
       "demo_note": "Тестовая сущность посуды. Не является реальным товаром или предложением."
@@ -160,7 +190,13 @@
       "price": 700,
       "stock_status": "out_of_stock",
       "quantity": 0,
-      "images": [],
+      "images": [
+        {
+          "src": "assets/images/tea-category-author-tea-real.webp",
+          "alt": "Чайная посуда",
+          "sort_order": 0
+        }
+      ],
       "updated_at": "2026-09-06T12:00:00Z",
       "is_demo": true,
       "demo_note": "Тестовая сущность посуды для проверки нулевого остатка. Не является реальным товаром или предложением."
@@ -177,7 +213,13 @@
       "price": 2500,
       "stock_status": "in_stock",
       "quantity": 4,
-      "images": [],
+      "images": [
+        {
+          "src": "assets/images/tea-category-author-tea-real.webp",
+          "alt": "Чайник и чайная посуда",
+          "sort_order": 0
+        }
+      ],
       "updated_at": "2026-09-06T12:00:00Z",
       "is_demo": true,
       "demo_note": "Тестовая сущность посуды. Не является реальным товаром или предложением."
@@ -194,7 +236,13 @@
       "price": 900,
       "stock_status": "in_stock",
       "quantity": 10,
-      "images": [],
+      "images": [
+        {
+          "src": "assets/images/tea-category-author-tea-real.webp",
+          "alt": "Чайные аксессуары",
+          "sort_order": 0
+        }
+      ],
       "updated_at": "2026-09-06T12:00:00Z",
       "is_demo": true,
       "demo_note": "Тестовая сущность аксессуара. Не является реальным товаром или предложением."
@@ -211,7 +259,13 @@
       "price": 300,
       "stock_status": "in_stock",
       "quantity": 6,
-      "images": [],
+      "images": [
+        {
+          "src": "assets/images/tea-category-author-tea-real.webp",
+          "alt": "Чайные аксессуары",
+          "sort_order": 0
+        }
+      ],
       "updated_at": "2026-09-06T12:00:00Z",
       "is_demo": true,
       "demo_note": "Тестовая сущность для проверки статуса inactive. Не является реальным товаром или предложением."
@@ -228,7 +282,13 @@
       "price": 400,
       "stock_status": "out_of_stock",
       "quantity": 0,
-      "images": [],
+      "images": [
+        {
+          "src": "assets/images/tea-category-author-tea-real.webp",
+          "alt": "Чайный набор",
+          "sort_order": 0
+        }
+      ],
       "updated_at": "2026-09-06T12:00:00Z",
       "is_demo": true,
       "demo_note": "Тестовая сущность для проверки статуса archived. Не является реальным товаром или предложением."

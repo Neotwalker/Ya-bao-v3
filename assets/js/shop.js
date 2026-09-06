@@ -2,6 +2,7 @@ const catalog = document.querySelector('[data-shop-catalog]');
 
 if (catalog) {
   const DATA_URL = new URL('../../data/products.json', import.meta.url);
+  const SITE_ROOT_URL = new URL('../../', import.meta.url);
   const PUBLIC_STATUSES = new Set(['active', 'out_of_stock']);
   const REQUEST_TIMEOUT_MS = 8000;
   const TYPES = new Set(['all', 'tea', 'ware', 'accessory']);
@@ -92,6 +93,18 @@ if (catalog) {
     return money(product.price);
   };
 
+  const mediaFor = product => {
+    const image = Array.isArray(product.images) ? product.images[0] : null;
+    if (!image?.src) return `<span class="shop-card__symbol">${symbolFor(product.type)}</span>`;
+
+    const src = new URL(image.src, SITE_ROOT_URL).href;
+    const smallPath = image.src.endsWith('.webp') ? image.src.replace(/\.webp$/, '-640.webp') : '';
+    const smallSrc = smallPath ? new URL(smallPath, SITE_ROOT_URL).href : '';
+    const alt = image.alt || product.name;
+    const srcset = smallSrc ? ` srcset="${escapeHTML(smallSrc)} 640w, ${escapeHTML(src)} 1074w" sizes="(max-width: 700px) calc(100vw - 44px), (max-width: 1180px) 33vw, 24vw"` : '';
+    return `<img class="shop-card__image" src="${escapeHTML(src)}"${srcset} alt="${escapeHTML(alt)}" width="1074" height="669" loading="lazy" decoding="async"/>`;
+  };
+
   const createCard = product => {
     const article = document.createElement('article');
     const out = product.stock_status === 'out_of_stock' || product.status === 'out_of_stock';
@@ -107,7 +120,7 @@ if (catalog) {
     article.innerHTML = `
       <div class="shop-card__media">
         <span class="shop-card__badge${out ? ' shop-card__badge--out' : ''}">${out ? 'Нет в наличии' : 'Demo'}</span>
-        <span class="shop-card__symbol">${symbolFor(product.type)}</span>
+        ${mediaFor(product)}
       </div>
       <div class="shop-card__body">
         <div class="shop-card__meta">

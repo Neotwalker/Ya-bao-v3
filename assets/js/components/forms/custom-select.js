@@ -106,46 +106,51 @@ function initCustomSelect(select, index) {
   menu.setAttribute('role', 'listbox');
   if (label?.id) menu.setAttribute('aria-labelledby', label.id);
 
-  [...select.options].forEach((option, optionIndex) => {
+  const rebuildMenu = () => {
+    menu.replaceChildren();
+    [...select.options].forEach((option, optionIndex) => {
     const item = document.createElement('button');
-    item.type = 'button';
-    item.className = 'custom-select__option';
-    item.id = `${baseId}-option-${optionIndex + 1}`;
-    item.setAttribute('role', 'option');
-    item.dataset.value = option.value;
-    item.textContent = option.textContent;
-    item.disabled = option.disabled;
-
-    item.addEventListener('click', () => {
-      select.value = option.value;
-      select.dispatchEvent(new Event('change', { bubbles: true }));
-      select.dispatchEvent(new Event('input', { bubbles: true }));
-      closeSelect(root, { focusTrigger: true });
-    });
-
-    item.addEventListener('keydown', event => {
-      if (event.key === 'ArrowDown') {
-        event.preventDefault();
-        moveOptionFocus(root, 1);
-      } else if (event.key === 'ArrowUp') {
-        event.preventDefault();
-        moveOptionFocus(root, -1);
-      } else if (event.key === 'Home') {
-        event.preventDefault();
-        focusOption(root, 'first');
-      } else if (event.key === 'End') {
-        event.preventDefault();
-        focusOption(root, 'last');
-      } else if (event.key === 'Escape') {
-        event.preventDefault();
+      item.type = 'button';
+      item.className = 'custom-select__option';
+      item.id = `${baseId}-option-${optionIndex + 1}`;
+      item.setAttribute('role', 'option');
+      item.dataset.value = option.value;
+      item.textContent = option.textContent;
+      item.disabled = option.disabled;
+  
+      item.addEventListener('click', () => {
+        select.value = option.value;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        select.dispatchEvent(new Event('input', { bubbles: true }));
         closeSelect(root, { focusTrigger: true });
-      } else if (event.key === 'Tab') {
-        closeSelect(root);
-      }
-    });
+      });
+  
+      item.addEventListener('keydown', event => {
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          moveOptionFocus(root, 1);
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          moveOptionFocus(root, -1);
+        } else if (event.key === 'Home') {
+          event.preventDefault();
+          focusOption(root, 'first');
+        } else if (event.key === 'End') {
+          event.preventDefault();
+          focusOption(root, 'last');
+        } else if (event.key === 'Escape') {
+          event.preventDefault();
+          closeSelect(root, { focusTrigger: true });
+        } else if (event.key === 'Tab') {
+          closeSelect(root);
+        }
+      });
+  
+      menu.append(item);
+      });
+  };
 
-    menu.append(item);
-  });
+  rebuildMenu();
 
   root.append(trigger, menu);
   select.after(root);
@@ -193,10 +198,18 @@ function initCustomSelect(select, index) {
     requestAnimationFrame(sync);
   });
 
-  const observer = new MutationObserver(sync);
+  const observer = new MutationObserver(mutations => {
+    if (mutations.some(mutation => mutation.type === 'childList' || mutation.type === 'characterData')) {
+      rebuildMenu();
+    }
+    sync();
+  });
   observer.observe(select, {
     attributes: true,
     attributeFilter: ['aria-invalid', 'aria-describedby', 'disabled'],
+    childList: true,
+    subtree: true,
+    characterData: true,
   });
 
   sync();
