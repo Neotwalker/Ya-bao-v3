@@ -51,10 +51,18 @@ function initSpaceGalleryFancybox() {
   window.Fancybox.bind('[data-fancybox="space-gallery"]', {});
 }
 
-runInitializers(
-  initHeroVideo,
-  initSpaceGalleryFancybox,
-  initEventsSwipers,
-  initGuidesSwiper,
-  initTopScroll,
-);
+function initHomePage() {
+  runInitializers(
+    initHeroVideo,
+    initSpaceGalleryFancybox,
+    initEventsSwipers,
+    initGuidesSwiper,
+    initTopScroll,
+  );
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initHomePage, { once: true });
+} else {
+  initHomePage();
+}

@@ -12,18 +12,46 @@ export function initHeroVideo() {
     return;
   }
 
-  const showVideo = () => media.classList.add('is-ready');
-  video.addEventListener('canplay', showVideo, { once: true });
-  video.play().catch(() => {});
+  const source = video.querySelector('source[data-src]');
+  const poster = media.querySelector('.hero-v4__poster');
+  let hydrated = false;
+  let inView = true;
+
+  const playIfVisible = () => {
+    if (!document.hidden && inView) video.play().catch(() => {});
+  };
+
+  const hydrate = () => {
+    if (hydrated || !source) return;
+    hydrated = true;
+    source.src = source.dataset.src;
+    source.removeAttribute('data-src');
+    video.load();
+    playIfVisible();
+  };
+
+  const scheduleHydration = () => {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(hydrate, { timeout: 1200 });
+    } else {
+      window.setTimeout(hydrate, 250);
+    }
+  };
+
+  if (!poster || poster.complete) scheduleHydration();
+  else poster.addEventListener('load', scheduleHydration, { once: true });
+
+  video.addEventListener('canplay', () => media.classList.add('is-ready'), { once: true });
 
   const observer = new IntersectionObserver(([entry]) => {
-    if (document.hidden || !entry.isIntersecting) video.pause();
-    else video.play().catch(() => {});
+    inView = entry.isIntersecting;
+    if (document.hidden || !inView) video.pause();
+    else if (hydrated) playIfVisible();
   }, { threshold: .05 });
   observer.observe(video);
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) video.pause();
-    else if (video.getBoundingClientRect().bottom > 0) video.play().catch(() => {});
+    else if (hydrated) playIfVisible();
   });
 }
