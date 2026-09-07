@@ -1033,6 +1033,92 @@
 .checkout-delivery-address__note{margin:10px 0 0;color:var(--color-muted);font-size:12px;line-height:1.45}
 .checkout-summary__row [data-checkout-fulfillment-summary]{text-align:right}
 
+
+/* Stage 61: demo payment flow */
+.checkout-payment-demo{
+  display:grid;
+  gap:12px;
+  margin-top:16px;
+  padding:18px;
+  border:1px solid rgba(95,70,48,.18);
+  border-radius:var(--radius-sm);
+  background:rgba(95,70,48,.045);
+}
+.checkout-payment-demo>.eyebrow{margin:0}
+.checkout-payment-demo h3{margin:0;font-size:22px;line-height:1.12}
+.checkout-payment-demo>p:not(.eyebrow){margin:0;color:var(--color-muted);font-size:14px;line-height:1.5}
+.checkout-payment-demo>small{color:var(--color-muted);font-size:11px;line-height:1.4}
+.checkout-payment-demo__meta{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.checkout-payment-demo__meta>div{
+  display:grid;
+  gap:3px;
+  min-width:0;
+  padding:11px 12px;
+  border-top:1px solid var(--color-line);
+}
+.checkout-payment-demo__meta span{color:var(--color-muted);font-size:11px}
+.checkout-payment-demo__meta strong{font-size:14px;overflow-wrap:anywhere}
+.checkout-payment-demo__actions{display:flex;flex-wrap:wrap;gap:10px}
+
+.order-result-page{min-height:52vh}
+.order-result-card{
+  max-width:760px;
+  margin-inline:auto;
+  padding:clamp(24px,4vw,42px);
+  border:1px solid var(--color-line);
+  border-radius:var(--radius-sm);
+  background:rgba(255,255,255,.56);
+  box-shadow:var(--shadow-soft);
+}
+.order-result__icon{
+  display:grid;
+  place-items:center;
+  width:56px;
+  height:56px;
+  margin-bottom:18px;
+  border-radius:50%;
+  background:rgba(95,70,48,.08);
+  color:var(--color-walnut);
+}
+.order-result__icon svg{width:27px;height:27px}
+.order-result-card>.eyebrow{margin:0 0 8px}
+.order-result-card h2{margin:0;font-size:clamp(30px,4vw,46px);line-height:1.02}
+.order-result__intro{max-width:620px;margin:14px 0 0;color:var(--color-muted);line-height:1.55}
+.order-result__details{display:grid;gap:0;margin-top:24px;border-top:1px solid var(--color-line)}
+.order-result__row{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:18px;
+  padding:12px 0;
+  border-bottom:1px solid var(--color-line);
+}
+.order-result__row span{color:var(--color-muted);font-size:13px}
+.order-result__row strong{text-align:right;font-size:15px;overflow-wrap:anywhere}
+.order-result__note,.order-result__fallback{margin:16px 0 0;color:var(--color-muted);font-size:13px;line-height:1.5}
+.order-result__fallback{padding:14px;border:1px solid rgba(95,70,48,.16);border-radius:var(--radius-sm);background:rgba(95,70,48,.045)}
+.order-result__actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+
+@media (max-width:640px){
+  .checkout-payment-demo{padding:15px}
+  .checkout-payment-demo h3{font-size:20px}
+  .checkout-payment-demo__meta{grid-template-columns:1fr}
+  .checkout-payment-demo__meta>div{padding-inline:0}
+  .checkout-payment-demo__actions{display:grid;grid-template-columns:1fr}
+  .checkout-payment-demo__actions .button{width:100%}
+  .order-result-page{padding-top:34px;padding-bottom:44px}
+  .order-result-card{padding:20px 16px}
+  .order-result__icon{width:50px;height:50px;margin-bottom:14px}
+  .order-result__row{display:grid;gap:3px}
+  .order-result__row strong{text-align:left}
+  .order-result__actions{display:grid;grid-template-columns:1fr}
+  .order-result__actions .button{width:100%}
+}
+
 .delivery-page{min-height:52vh}
 .delivery-intro{max-width:760px;margin-bottom:30px}
 .delivery-intro p{margin:0;color:var(--color-muted);font-size:17px;line-height:1.55}

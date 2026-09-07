@@ -9,6 +9,8 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - `shop/index.html` — прототип интернет-магазина и основной коммерческий каталог;
 - `cart/index.html` — корзина интернет-магазина (noindex): состав, количество, удаление и промежуточный итог;
 - `checkout/index.html` — оформление заказа без регистрации (noindex);
+- `order-success/index.html` — demo-состояние успешной оплаты (noindex);
+- `order-failed/index.html` — demo-состояние ошибки/отмены оплаты (noindex);
 - `delivery/index.html` — доставка и самовывоз (noindex до подтверждения реальных условий);
 - `menu.html` — статический legacy-снимок прежнего меню до production-редиректа;
 - `about.html` — о чайной;
@@ -24,7 +26,7 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - `responsive.css` — общий адаптив;
 - `custom.css` — глобальные проектные уточнения;
 - `home-v4.css` — только главная;
-- `shop.css` — каталог `/shop/`, карточки товара, `/cart/`, `/checkout/` и `/delivery/`.
+- `shop.css` — каталог `/shop/`, карточки товара, `/cart/`, `/checkout/`, demo payment result pages и `/delivery/`.
 
 `sections.css` удалён в v4.36: после предыдущей чистки в нём оставался только FAQ главной, который перенесён в `home-v4.css`.
 
@@ -32,7 +34,9 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - `app.js` — глобальная инициализация и подключение состояния корзины;
 - `store.js` — единый store корзины: localStorage, add/remove/update quantity, totals и синхронизация badge;
 - `cart.js` — `/cart/`: рендер состава заказа, сверка с `products.json`, количества, удаление, очистка и промежуточный итог;
-- `checkout.js` — `/checkout/`: сверка корзины, форма покупателя, способ получения и сводка заказа;
+- `checkout.js` — `/checkout/`: сверка корзины, форма покупателя, способ получения, сводка заказа и запуск demo-платёжного flow;
+- `payment-demo.js` — sessionStorage-контракт demo-платежа: pending → success/failed без банковских данных и реального списания;
+- `order-result.js` — `/order-success/` и `/order-failed/`: отображение результата demo-платежа; success очищает корзину, failed сохраняет её;
 - `home.js` — главная и переиспользуемая инициализация `guides-v4` Swiper на товарных страницах; hero video/Fancybox/top-scroll активируются только при наличии соответствующей разметки;
 - `menu.js` — legacy-меню: локальные фильтры статического снимка;
 - `shop.js` — `/shop/` и demo-карточки товара: загрузка demo-товаров, поиск, тип/категория, сортировка, URL-state, галереи, выбор веса чая и количества штучных товаров;
@@ -524,3 +528,14 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - На `/delivery/` уменьшен чрезмерный вертикальный разрыв между блоком «Как это работает» и следующим разделом «Условия доставки» на экранах до 640 px.
 - Правка локальна для страницы доставки: нижний padding `delivery-process` — 20 px, верхний padding следующей `section` — 28 px.
 - Desktop/tablet, checkout, cart/store, данные товаров и изображения не менялись.
+
+### v4.55 — этап 61: demo-платёжный flow
+
+- кнопка checkout изменена на «Перейти к оплате»: она по-прежнему не создаёт реальный платёж и не списывает деньги;
+- после успешной валидации checkout открывается локальный demo-блок платёжного провайдера с двумя явными исходами: success и failed/cancelled;
+- добавлен `assets/js/payment-demo.js` с sessionStorage-контрактом `yabao:payment-demo:v1`: reference, status, amount, currency, itemCount, fulfillment и timestamps; персональные данные покупателя в demo payment state не сохраняются;
+- добавлены noindex-страницы `/order-success/` и `/order-failed/`, соответствующие целевой URL-архитектуре;
+- успешный demo-исход очищает корзину только после перехода на `/order-success/`; неуспешный исход оставляет корзину без изменений и позволяет повторить checkout;
+- прямое открытие result URL без активного demo-контекста безопасно: корзина не меняется, показывается fallback-состояние;
+- банковские поля, платёжный iframe/API, backend order creation, email/CRM и реальное списание денег не добавлялись; это остаётся production-этапом подключения платёжного провайдера;
+- `/order-success/` и `/order-failed/` намеренно не добавлены в sitemap как noindex-служебные страницы.

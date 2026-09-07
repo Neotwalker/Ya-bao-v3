@@ -1,5 +1,6 @@
 import { assessCartItem } from './cart.js';
 import { getCartState, getCartWeightSummary } from './store.js';
+import { clearDemoPayment, createDemoPayment, setDemoPaymentStatus } from './payment-demo.js';
 import { setFieldError, wireFormErrors } from './components/forms/validation.js';
 
 const PUBLIC_STATUSES = new Set(['active', 'out_of_stock']);
@@ -52,10 +53,18 @@ if (root) {
   const fulfillmentInfo = [...(form?.querySelectorAll('[data-fulfillment-info]') || [])];
   const fulfillmentSummary = root.querySelector('[data-checkout-fulfillment-summary]');
   const deliveryNote = root.querySelector('[data-checkout-delivery-note]');
+  const paymentDemo = root.querySelector('[data-payment-demo]');
+  const paymentReference = root.querySelector('[data-payment-demo-reference]');
+  const paymentAmount = root.querySelector('[data-payment-demo-amount]');
+  const paymentFulfillment = root.querySelector('[data-payment-demo-fulfillment]');
+  const paymentSuccess = root.querySelector('[data-payment-demo-success]');
+  const paymentFailed = root.querySelector('[data-payment-demo-failed]');
 
   let feedStatus = 'loading';
   let productsById = new Map();
-  let checkoutState = { subtotal: 0, invalidCount: 0, priceChangedCount: 0 };
+  let paymentDemoOpen = false;
+  let checkoutState = { subtotal: 0, invalidCount: 0, priceChangedCount: 0, itemCount: 0 };
+  clearDemoPayment();
 
   const getAssessment = item => assessCartItem(item, productsById.get(item.productId), feedStatus);
 
@@ -120,7 +129,10 @@ if (root) {
       summaryNote.hidden = true;
       validationStatus.hidden = true;
       if (submit) submit.disabled = true;
-      checkoutState = { subtotal: 0, invalidCount: 0, priceChangedCount: 0 };
+      paymentDemoOpen = false;
+      if (paymentDemo) paymentDemo.hidden = true;
+      clearDemoPayment();
+      checkoutState = { subtotal: 0, invalidCount: 0, priceChangedCount: 0, itemCount: 0 };
       return;
     }
 
@@ -137,7 +149,7 @@ if (root) {
     itemsNode.innerHTML = items.map(summaryItemMarkup).join('');
     countNode.textContent = `${totalCount} ${pluralProducts(totalCount)}`;
     subtotalNode.textContent = money(subtotal);
-    checkoutState = { subtotal, invalidCount, priceChangedCount };
+    checkoutState = { subtotal, invalidCount, priceChangedCount, itemCount: totalCount };
 
     if (feedStatus === 'loading') {
       summaryNote.hidden = false;
@@ -161,7 +173,24 @@ if (root) {
       validationStatus.textContent = 'Сейчас не удалось проверить актуальность цены и наличия. Перед реальным созданием заказа эти данные должны быть проверены сервером.';
     }
 
-    if (submit) submit.disabled = feedStatus === 'loading' || invalidCount > 0;
+    if (submit) submit.disabled = feedStatus === 'loading' || invalidCount > 0 || paymentDemoOpen;
+  };
+
+  const resetPaymentDemo = () => {
+    paymentDemoOpen = false;
+    if (paymentDemo) paymentDemo.hidden = true;
+    clearDemoPayment();
+    if (submit) submit.disabled = feedStatus === 'loading' || checkoutState.invalidCount > 0;
+  };
+
+  const showPaymentDemo = payment => {
+    paymentDemoOpen = true;
+    if (paymentDemo) paymentDemo.hidden = false;
+    if (paymentReference) paymentReference.textContent = payment.reference;
+    if (paymentAmount) paymentAmount.textContent = money(payment.amount);
+    if (paymentFulfillment) paymentFulfillment.textContent = payment.fulfillment === 'delivery' ? 'Доставка' : 'Самовывоз';
+    if (submit) submit.disabled = true;
+    paymentDemo?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   };
 
   const clearFormStatus = () => {
@@ -203,6 +232,7 @@ if (root) {
     fulfillmentInputs.forEach(input => {
       input.addEventListener('change', () => {
         syncFulfillment();
+        resetPaymentDemo();
         clearFormStatus();
       });
     });
@@ -210,6 +240,7 @@ if (root) {
     form.querySelectorAll('input, textarea').forEach(field => {
       field.addEventListener('input', () => {
         setFieldError(field, '');
+        resetPaymentDemo();
         clearFormStatus();
       });
     });
@@ -234,14 +265,35 @@ if (root) {
         return;
       }
 
+      const fulfillment = form.querySelector('input[name="fulfillment"]:checked')?.value === 'delivery' ? 'delivery' : 'pickup';
+      const payment = createDemoPayment({
+        amount: checkoutState.subtotal,
+        itemCount: checkoutState.itemCount,
+        fulfillment,
+      });
+      showPaymentDemo(payment);
+
       if (formStatus) {
-        formStatus.textContent = 'Демо-режим: данные проверены. Создание заказа и отправка менеджеру пока не подключены.';
+        formStatus.textContent = 'Данные проверены. Ниже открыт демо-переход к платёжному провайдеру.';
         formStatus.className = 'form-status is-success';
       }
     });
   }
 
-  document.addEventListener('shop:cartchange', render);
+  paymentSuccess?.addEventListener('click', () => {
+    if (!setDemoPaymentStatus('success')) return;
+    window.location.href = '../order-success/';
+  });
+
+  paymentFailed?.addEventListener('click', () => {
+    if (!setDemoPaymentStatus('failed')) return;
+    window.location.href = '../order-failed/';
+  });
+
+  document.addEventListener('shop:cartchange', () => {
+    resetPaymentDemo();
+    render();
+  });
 
   const loadProducts = async () => {
     const controller = new AbortController();

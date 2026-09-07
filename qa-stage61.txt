@@ -1,0 +1,31 @@
+PASS — HTML files: 44
+PASS — booking.html absent
+PASS — Local refs: checked 2912, broken 0
+PASS — Duplicate HTML ids: 0
+PASS — JSON-LD parse: 0
+PASS — order-success noindex/canonical
+PASS — order-success result script
+PASS — order-failed noindex/canonical
+PASS — order-failed result script
+PASS — Result pages excluded from XML sitemap
+PASS — Checkout demo payment markup
+PASS — No bank card fields in checkout
+PASS — JS syntax: 31 files, errors 0
+PASS — Relative JS imports: 40 imports, missing 0
+PASS — CSS parse: 8 files, errors 0
+PASS — products schema validation: errors 0
+PASS — data/products.json unchanged
+PASS — data/products.schema.json unchanged
+PASS — Images unchanged: 39 files
+PASS — Changed files limited to Stage 61: README.md, assets/css/shop.css, assets/js/checkout.js, checkout/index.html
+PASS — Added files limited to Stage 61 before QA: assets/js/order-result.js, assets/js/payment-demo.js, order-failed/index.html, order-success/index.html
+PASS — No files removed
+PASS — Demo payment uses sessionStorage
+PASS — Demo payment has pending/success/failed
+PASS — Demo payment state excludes checkout PII fields
+PASS — Success clears cart / failed preserves cart contract
+
+PASS — CSS duplicate selector+context: 0
+PASS — payment-demo runtime harness: pending → success/failed, terminal transition guarded, clear/persistence PASS
+
+OVERALL: PASS

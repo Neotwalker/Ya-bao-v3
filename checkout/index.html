@@ -126,8 +126,23 @@
 <div class="field"><label for="checkout-comment">Комментарий</label><textarea id="checkout-comment" name="comment" placeholder="Пожелания по заказу или получению"></textarea><span class="field__error"></span></div>
 <label class="checkbox checkout-consent"><input name="consent" required type="checkbox"><span>Согласен на <a href="../consent.html">обработку персональных данных</a> и ознакомлен с <a href="../privacy.html">политикой конфиденциальности</a>.</span><span class="field__error"></span></label>
 <div class="checkout-submit">
-<p>Демо-версия: заказ пока не создаётся и не отправляется менеджеру.</p>
-<div class="form-submit"><button class="button button--walnut" disabled type="submit">Оформить заказ <span aria-hidden="true">→</span></button><div aria-live="polite" class="form-status" data-form-status></div></div>
+<p>Демо-версия: переход к оплате не создаёт реальный заказ и не списывает деньги.</p>
+<div class="form-submit"><button class="button button--walnut" disabled type="submit">Перейти к оплате <span aria-hidden="true">→</span></button><div aria-live="polite" class="form-status" data-form-status></div></div>
+</div>
+<div class="checkout-payment-demo" data-payment-demo hidden role="region" aria-labelledby="checkout-payment-demo-title">
+<p class="eyebrow">Демо оплаты</p>
+<h3 id="checkout-payment-demo-title">Переход к платёжному провайдеру</h3>
+<p>На production-сайте здесь будет переход на защищённую форму платёжного провайдера. В прототипе банковские данные не запрашиваются и деньги не списываются.</p>
+<div class="checkout-payment-demo__meta">
+<div><span>Демо-операция</span><strong data-payment-demo-reference>—</strong></div>
+<div><span>Сумма</span><strong data-payment-demo-amount>0 ₽</strong></div>
+<div><span>Получение</span><strong data-payment-demo-fulfillment>Самовывоз</strong></div>
+</div>
+<div class="checkout-payment-demo__actions">
+<button class="button button--walnut" data-payment-demo-success type="button">Демо: успешная оплата</button>
+<button class="button button--outline-walnut" data-payment-demo-failed type="button">Демо: ошибка / отмена</button>
+</div>
+<small>Эти кнопки нужны только для проверки переходов checkout → success/failed.</small>
 </div>
 </section>
 </form>
