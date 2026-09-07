@@ -55,6 +55,7 @@ if ( 'menu_order' !== $current_order ) {
 		<div class="container">
 			<div class="section-heading"><div><p class="eyebrow">Каталог</p><h2>Чай, посуда и аксессуары</h2></div><p>Каталог работает на данных WooCommerce. Структуру товарных полей и весовых вариаций закрепим на следующем этапе.</p></div>
 
+			<div class="yabao-wc-catalog-shell" data-wc-catalog-shell aria-live="polite">
 			<form class="shop-catalog__controls yabao-wc-catalog-controls" action="<?php echo esc_url( $shop_url ); ?>" method="get" data-wc-catalog-controls>
 				<label class="shop-control shop-control--search" for="shop-search">
 					<span class="shop-control__label">Поиск по названию</span>
@@ -94,7 +95,7 @@ if ( 'menu_order' !== $current_order ) {
 
 			<div class="shop-catalog__toolbar">
 				<div class="shop-filter-bar" role="group" aria-label="Категории магазина">
-					<a class="shop-filter<?php echo $current_cat ? '' : ' is-active'; ?>"<?php echo $current_cat ? '' : ' aria-current="page"'; ?> href="<?php echo esc_url( add_query_arg( $preserved_args, $shop_url ) ); ?>">Все</a>
+					<a class="shop-filter<?php echo $current_cat ? '' : ' is-active'; ?>" data-wc-category=""<?php echo $current_cat ? '' : ' aria-current="page"'; ?> href="<?php echo esc_url( add_query_arg( $preserved_args, $shop_url ) ); ?>">Все</a>
 					<?php if ( ! is_wp_error( $terms ) ) : foreach ( $terms as $term ) :
 						$term_link = get_term_link( $term );
 						if ( is_wp_error( $term_link ) ) {
@@ -103,7 +104,7 @@ if ( 'menu_order' !== $current_order ) {
 						$term_link = add_query_arg( $preserved_args, $term_link );
 						$is_active = $current_cat === $term->slug;
 					?>
-						<a class="shop-filter<?php echo $is_active ? ' is-active' : ''; ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?> href="<?php echo esc_url( $term_link ); ?>"><?php echo esc_html( $term->name ); ?></a>
+						<a class="shop-filter<?php echo $is_active ? ' is-active' : ''; ?>" data-wc-category="<?php echo esc_attr( $term->slug ); ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?> href="<?php echo esc_url( $term_link ); ?>"><?php echo esc_html( $term->name ); ?></a>
 					<?php endforeach; endif; ?>
 				</div>
 				<div class="shop-catalog__summary">
@@ -121,6 +122,8 @@ if ( 'menu_order' !== $current_order ) {
 			<?php else : ?>
 				<div class="shop-state"><div class="shop-state__icon">茶</div><h2>Товары не найдены</h2><p>Измените запрос или вернитесь ко всему каталогу.</p><a class="button button--walnut" href="<?php echo esc_url( $shop_url ); ?>">Показать все товары</a></div>
 			<?php endif; ?>
+
+			</div>
 
 			<div class="section-heading shop-seo-copy reveal" aria-labelledby="shop-seo-title">
 				<div><p class="eyebrow">Магазин в Челябинске</p><h2 id="shop-seo-title">Китайский чай и чайная посуда</h2></div>

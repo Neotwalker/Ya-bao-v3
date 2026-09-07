@@ -16,6 +16,9 @@
 .woocommerce-error{border-color:rgba(135,91,48,.36);background:rgba(135,91,48,.07)}
 .woocommerce-message a,.woocommerce-info a,.woocommerce-error a{color:var(--color-walnut);font-weight:700}
 
+
+.yabao-wc-catalog-shell{transition:opacity .18s ease}
+.yabao-wc-catalog-shell.is-loading{opacity:.55;pointer-events:none}
 .shop-filter{text-decoration:none}
 .shop-filter.is-active{border-color:var(--color-walnut);background:var(--color-walnut);color:#fff}
 .shop-reset{text-decoration:none}

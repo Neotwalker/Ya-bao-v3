@@ -1,5 +1,83 @@
 import { initRelatedArticlesSwipers } from './components/related-articles-swiper.js';
 
+let catalogRequest = null;
+let catalogSearchTimer = null;
+
+function catalogUrlFromForm(form) {
+  const url = new URL(form.action, window.location.href);
+  const data = new FormData(form);
+
+  url.search = '';
+  for (const [key, rawValue] of data.entries()) {
+    const value = String(rawValue).trim();
+    if (!value) continue;
+    if (key === 'orderby' && value === 'menu_order') continue;
+    url.searchParams.set(key, value);
+  }
+
+  return url;
+}
+
+function initDynamicCatalogContent(root = document) {
+  root.querySelectorAll('[data-card-gallery]').forEach(initCardGallery);
+}
+
+async function updateCatalog(url, { push = true, focusGrid = false } = {}) {
+  const currentShell = document.querySelector('[data-wc-catalog-shell]');
+  if (!currentShell) {
+    window.location.assign(url);
+    return;
+  }
+
+  const activeElement = document.activeElement;
+  const restoreSearchFocus = activeElement?.matches?.('input[name=\"q\"]') && currentShell.contains(activeElement);
+  const searchSelection = restoreSearchFocus ? activeElement.selectionStart : null;
+
+  catalogRequest?.abort();
+  catalogRequest = new AbortController();
+  currentShell.classList.add('is-loading');
+  currentShell.setAttribute('aria-busy', 'true');
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      signal: catalogRequest.signal,
+    });
+
+    if (!response.ok) throw new Error(`Catalog request failed: ${response.status}`);
+
+    const html = await response.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const nextShell = doc.querySelector('[data-wc-catalog-shell]');
+    if (!nextShell) throw new Error('Catalog shell is missing in the response');
+
+    currentShell.replaceWith(nextShell);
+    initCatalogControls(nextShell.querySelector('[data-wc-catalog-controls]'));
+    initDynamicCatalogContent(nextShell);
+
+    if (restoreSearchFocus) {
+      const nextSearch = nextShell.querySelector('input[name=\"q\"]');
+      nextSearch?.focus({ preventScroll: true });
+      if (nextSearch && Number.isInteger(searchSelection)) {
+        const caret = Math.min(searchSelection, nextSearch.value.length);
+        nextSearch.setSelectionRange(caret, caret);
+      }
+    }
+
+    if (push) history.pushState({ yabaoCatalog: true }, '', url);
+
+    if (focusGrid) {
+      const grid = nextShell.querySelector('#shop-grid, .shop-state');
+      grid?.setAttribute('tabindex', '-1');
+      grid?.focus({ preventScroll: true });
+    }
+  } catch (error) {
+    if (error?.name === 'AbortError') return;
+    window.location.assign(url);
+  }
+}
 
 function initCatalogControls(form) {
   if (!form || form.dataset.catalogReady === 'true') return;
@@ -7,6 +85,7 @@ function initCatalogControls(form) {
 
   const toggle = form.querySelector('[data-wc-filters-toggle]');
   const panel = form.querySelector('[data-wc-filter-panel]');
+  const search = form.querySelector('input[name="q"]');
 
   const setOpen = open => {
     if (!toggle || !panel) return;
@@ -14,12 +93,27 @@ function initCatalogControls(form) {
     panel.classList.toggle('is-open', open);
   };
 
+  const run = ({ focusGrid = false } = {}) => {
+    clearTimeout(catalogSearchTimer);
+    updateCatalog(catalogUrlFromForm(form), { push: true, focusGrid });
+  };
+
   toggle?.addEventListener('click', () => {
     setOpen(toggle.getAttribute('aria-expanded') !== 'true');
   });
 
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    run({ focusGrid: true });
+  });
+
   form.querySelectorAll('[data-wc-auto-submit]').forEach(control => {
-    control.addEventListener('change', () => form.requestSubmit());
+    control.addEventListener('change', () => run());
+  });
+
+  search?.addEventListener('input', () => {
+    clearTimeout(catalogSearchTimer);
+    catalogSearchTimer = window.setTimeout(() => run(), 320);
   });
 
   const desktop = window.matchMedia('(min-width: 641px)');
@@ -28,6 +122,36 @@ function initCatalogControls(form) {
   };
   if (typeof desktop.addEventListener === 'function') desktop.addEventListener('change', syncViewport);
   else if (typeof desktop.addListener === 'function') desktop.addListener(syncViewport);
+}
+
+function initCatalogNavigation() {
+  document.addEventListener('click', event => {
+    const link = event.target.closest(
+      '[data-wc-catalog-shell] .shop-filter, [data-wc-catalog-shell] .shop-reset, [data-wc-catalog-shell] .yabao-wc-pagination a, [data-wc-catalog-shell] .shop-state a'
+    );
+    if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (link.target && link.target !== '_self') return;
+
+    let url = new URL(link.href, window.location.href);
+    if (url.origin !== window.location.origin) return;
+
+    event.preventDefault();
+
+    if (link.matches('.shop-filter')) {
+      const form = document.querySelector('[data-wc-catalog-controls]');
+      const category = form?.querySelector('select[name=\"product_cat\"]');
+      if (form && category) {
+        category.value = link.dataset.wcCategory || '';
+        url = catalogUrlFromForm(form);
+      }
+    }
+
+    updateCatalog(url, { push: true, focusGrid: true });
+  });
+
+  window.addEventListener('popstate', () => {
+    updateCatalog(new URL(window.location.href), { push: false });
+  });
 }
 
 function initProductGallery(gallery) {
@@ -102,6 +226,7 @@ function initCardGallery(gallery) {
 }
 
 document.querySelectorAll('[data-wc-catalog-controls]').forEach(initCatalogControls);
+initCatalogNavigation();
 document.querySelectorAll('[data-product-gallery]').forEach(initProductGallery);
-document.querySelectorAll('[data-card-gallery]').forEach(initCardGallery);
+initDynamicCatalogContent();
 initRelatedArticlesSwipers();
