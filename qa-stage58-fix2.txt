@@ -1,0 +1,23 @@
+Stage 58 UX fix v4.52.2 QA
+Date: 2026-09-07
+Baseline: GitHub main adb924eaf468861e2aa437fb9f2331b992354ae8 (v4.52.1)
+
+Scope
+- Reduced .cart-line radius from --radius-md (20px) / mobile 16px override to shared --radius-sm (12px).
+- Added touch-action: manipulation to .product-quantity-picker__control buttons.
+- Added user-select protection to +/- buttons to prevent accidental selection during rapid taps.
+- Did NOT change viewport zoom restrictions; pinch zoom remains available.
+- No cart/store/data/checkout logic changed.
+
+QA
+- HTML files: 40
+- Local href/src/srcset refs checked: 2690; broken: 0
+- Duplicate HTML IDs: 0
+- JSON-LD parse errors: 0
+- JS files: 26; node --check PASS for all
+- CSS parse errors: 0
+- Repeated declarations in same CSS rule: 0
+- products.json unchanged vs v4.52.1
+- products.schema.json unchanged vs v4.52.1
+- assets/images unchanged vs v4.52.1
+- Before this QA file, only README.md and assets/css/shop.css differ from v4.52.1.

@@ -485,3 +485,10 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - Weight items now show the total grams already in cart (`250 г × 3 = 750 г`) and quantity is labeled as packages.
 - Added a shared mini-cart drawer from the header cart indicator on non-cart pages. It uses the same Stage 57 store state, supports +/- and remove, and links to `/cart/`.
 - Checkout and one-click order flow are intentionally not implemented in this pass.
+
+## v4.52.2 — Stage 58 mobile interaction fix
+
+- `/cart/`: cart item cards now use the shared small radius token instead of the larger card radius on desktop and mobile.
+- Quantity stepper buttons use `touch-action: manipulation` to suppress double-tap zoom on touch devices while keeping normal page pinch zoom available.
+- Added user-select protection on +/- buttons to avoid accidental text selection during rapid taps.
+- Cart/store logic, product data, checkout and one-click order flow are unchanged.
