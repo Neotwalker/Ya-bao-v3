@@ -337,6 +337,23 @@
 .shop-state p{max-width:540px;margin:0;color:var(--color-muted)}
 .shop-state .button{margin-top:6px}
 
+.shop-seo-copy{
+  margin-top:clamp(48px,6vw,80px);
+  margin-bottom:0;
+  padding-top:clamp(36px,4vw,56px);
+  border-top:1px solid var(--color-line);
+  align-items:start;
+}
+.shop-seo-copy__body{display:grid;gap:14px}
+.shop-seo-copy__body p{margin:0}
+.shop-seo-copy__body a:not(.button){color:var(--color-walnut);font-weight:700}
+.shop-seo-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+
+@media (max-width:640px){
+  .shop-seo-links{display:grid}
+  .shop-seo-links .button{width:100%}
+}
+
 .shop-skeleton-grid{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
