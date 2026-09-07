@@ -57,10 +57,96 @@
     const returnLink = sourceActions?.querySelector('a.button');
     if (!summary || !submit || !returnLink || !target) return;
 
+    submit.classList.add('button', 'button--walnut');
     sourceActions.classList.add('yabao-wc-actions');
     target.append(sourceActions);
     sourceActions.prepend(submit);
     submit.textContent = 'Добавить в корзину';
+  }
+
+  function feedbackNode(form) {
+    let node = form.querySelector('.yabao-cart-feedback');
+    if (node) return node;
+
+    node = document.createElement('p');
+    node.className = 'yabao-cart-feedback';
+    node.setAttribute('role', 'status');
+    node.setAttribute('aria-live', 'polite');
+    form.append(node);
+    return node;
+  }
+
+  function setFeedback(form, message, isError) {
+    const node = feedbackNode(form);
+    node.textContent = message || '';
+    node.classList.toggle('is-error', Boolean(isError));
+  }
+
+  function refreshCartFragments() {
+    if (window.jQuery) {
+      window.jQuery(document.body).trigger('wc_fragment_refresh');
+    }
+  }
+
+  function responseErrorMessage(html) {
+    if (!html) return '';
+    const documentFromResponse = new DOMParser().parseFromString(html, 'text/html');
+    const error = documentFromResponse.querySelector('.woocommerce-error, .woocommerce-error li, .wc-block-components-notice-banner.is-error');
+    return error?.textContent?.replace(/\s+/g, ' ').trim() || '';
+  }
+
+  function enableAjaxAddToCart(form) {
+    if (form.dataset.yabaoAjaxCartReady === 'true') return;
+    form.dataset.yabaoAjaxCartReady = 'true';
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+
+      const submit = event.submitter || form.querySelector('.single_add_to_cart_button');
+      if (!submit || submit.disabled || submit.classList.contains('disabled')) return;
+      if (form.dataset.yabaoSubmitting === 'true') return;
+
+      const formData = new FormData(form);
+      if (submit.name && !formData.has(submit.name)) {
+        formData.append(submit.name, submit.value || '');
+      }
+
+      form.dataset.yabaoSubmitting = 'true';
+      submit.disabled = true;
+      submit.setAttribute('aria-busy', 'true');
+      setFeedback(form, 'Добавляю в корзину…', false);
+
+      try {
+        const response = await fetch(form.getAttribute('action') || window.location.href, {
+          method: (form.getAttribute('method') || 'post').toUpperCase(),
+          body: formData,
+          credentials: 'same-origin',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          redirect: 'follow'
+        });
+
+        const html = await response.text();
+        if (!response.ok) {
+          throw new Error('Не удалось добавить товар в корзину.');
+        }
+
+        const serverError = responseErrorMessage(html);
+        if (serverError) {
+          throw new Error(serverError);
+        }
+
+        setFeedback(form, 'Добавлено в корзину.', false);
+        refreshCartFragments();
+      } catch (error) {
+        setFeedback(form, error?.message || 'Не удалось добавить товар в корзину.', true);
+      } finally {
+        form.dataset.yabaoSubmitting = 'false';
+        submit.removeAttribute('aria-busy');
+        submit.disabled = submit.classList.contains('disabled');
+      }
+    });
   }
 
   function enhanceSimpleForm(form) {
@@ -69,6 +155,7 @@
     form.classList.add('yabao-product-form', 'yabao-simple-form');
     enhanceQuantity(form);
     moveActions(form, form);
+    enableAjaxAddToCart(form);
   }
 
   function optionWeight(option) {
@@ -132,6 +219,7 @@
     const quantity = variationButton.querySelector('.quantity input.qty');
     if (quantity) quantity.value = '1';
     moveActions(form, variationButton);
+    enableAjaxAddToCart(form);
 
     const topPrice = summary.querySelector('.product-summary__price');
     if (window.jQuery && topPrice) {
@@ -156,6 +244,22 @@
     });
   }
 
-  if (document.readyState === 'complete') init();
-  else window.addEventListener('load', init, { once: true });
+  function resyncWeightForms() {
+    document.querySelectorAll('.yabao-weight-form select[name="attribute_pa_weight"]').forEach(select => {
+      if (!select.value) return;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  }
+
+  /* Footer script: enhance immediately, not after every product image has loaded. */
+  init();
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      init();
+      window.setTimeout(resyncWeightForms, 0);
+    }, { once: true });
+  } else {
+    window.setTimeout(resyncWeightForms, 0);
+  }
 }());

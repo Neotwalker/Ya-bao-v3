@@ -2,10 +2,10 @@
 /** Single product template using the approved product-page visual language. */
 defined( 'ABSPATH' ) || exit;
 
-// Stage 66 QA parity layer. Kept product-only and versioned independently so
-// this visual fix does not disturb the approved global/static CSS system.
-wp_enqueue_style( 'yabao-wc-product-parity', yabao_asset_url( 'css/wp-product-parity.css' ), array( 'yabao-wp' ), '0.4.1' );
-wp_enqueue_script( 'yabao-wc-product-parity', yabao_asset_url( 'js/wp-product-parity.js' ), array(), '0.4.1', true );
+// Stage 66 QA parity layer. Product-only and versioned independently so the
+// browser cannot keep an older product CSS/JS build after this patch.
+wp_enqueue_style( 'yabao-wc-product-parity', yabao_asset_url( 'css/wp-product-parity.css' ), array( 'yabao-wp' ), '0.4.2' );
+wp_enqueue_script( 'yabao-wc-product-parity', yabao_asset_url( 'js/wp-product-parity.js' ), array( 'jquery', 'wc-add-to-cart-variation', 'wc-cart-fragments' ), '0.4.2', true );
 
 get_header();
 
@@ -21,6 +21,37 @@ if ( ! $product ) {
 $image_ids = array_filter( array_merge( array( $product->get_image_id() ), $product->get_gallery_image_ids() ) );
 $image_ids = array_values( array_unique( $image_ids ) );
 $category  = yabao_product_terms_text( $product );
+
+// A variable product normally renders a price range until Woo JS resolves the
+// selected variation. The approved static page starts on the first available
+// weight, so render that same price server-side to remove the reload flash.
+$display_price_html = $product->get_price_html();
+if ( $product->is_type( 'variable' ) ) {
+	$available_variations = $product->get_available_variations( 'objects' );
+	if ( $available_variations ) {
+		$variation_weight = static function ( WC_Product_Variation $variation ): int {
+			$value  = (string) $variation->get_attribute( 'pa_weight' );
+			$digits = preg_replace( '/\D+/', '', $value );
+			return $digits ? (int) $digits : PHP_INT_MAX;
+		};
+		usort(
+			$available_variations,
+			static function ( WC_Product_Variation $left, WC_Product_Variation $right ) use ( $variation_weight ): int {
+				return $variation_weight( $left ) <=> $variation_weight( $right );
+			}
+		);
+		foreach ( $available_variations as $variation ) {
+			if ( ! $variation->is_purchasable() || ! $variation->is_in_stock() ) {
+				continue;
+			}
+			$variation_price_html = $variation->get_price_html();
+			if ( $variation_price_html ) {
+				$display_price_html = $variation_price_html;
+				break;
+			}
+		}
+	}
+}
 ?>
 <main id="main-content">
 	<section class="section section--dark section--compact inner-hero">
@@ -52,7 +83,7 @@ $category  = yabao_product_terms_text( $product );
 				</div>
 
 				<div class="product-summary">
-					<div class="product-summary__top"><p class="eyebrow"><?php echo esc_html( $category ); ?></p><p class="product-summary__price"><?php echo wp_kses_post( $product->get_price_html() ); ?></p><p class="product-summary__stock"><?php echo $product->is_in_stock() ? 'В наличии' : 'Нет в наличии'; ?></p></div>
+					<div class="product-summary__top"><p class="eyebrow"><?php echo esc_html( $category ); ?></p><p class="product-summary__price"><?php echo wp_kses_post( $display_price_html ); ?></p><p class="product-summary__stock"><?php echo $product->is_in_stock() ? 'В наличии' : 'Нет в наличии'; ?></p></div>
 					<?php if ( $product->get_short_description() ) : ?><div class="lead"><?php echo wp_kses_post( wpautop( $product->get_short_description() ) ); ?></div><?php endif; ?>
 					<dl class="product-facts">
 						<?php if ( $product->get_sku() ) : ?><div><dt>Артикул</dt><dd><?php echo esc_html( $product->get_sku() ); ?></dd></div><?php endif; ?>
