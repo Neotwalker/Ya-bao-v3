@@ -1,5 +1,35 @@
 import { initRelatedArticlesSwipers } from './components/related-articles-swiper.js';
 
+
+function initCatalogControls(form) {
+  if (!form || form.dataset.catalogReady === 'true') return;
+  form.dataset.catalogReady = 'true';
+
+  const toggle = form.querySelector('[data-wc-filters-toggle]');
+  const panel = form.querySelector('[data-wc-filter-panel]');
+
+  const setOpen = open => {
+    if (!toggle || !panel) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    panel.classList.toggle('is-open', open);
+  };
+
+  toggle?.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  form.querySelectorAll('[data-wc-auto-submit]').forEach(control => {
+    control.addEventListener('change', () => form.requestSubmit());
+  });
+
+  const desktop = window.matchMedia('(min-width: 641px)');
+  const syncViewport = event => {
+    if (event.matches) setOpen(false);
+  };
+  if (typeof desktop.addEventListener === 'function') desktop.addEventListener('change', syncViewport);
+  else if (typeof desktop.addListener === 'function') desktop.addListener(syncViewport);
+}
+
 function initProductGallery(gallery) {
   if (gallery.dataset.galleryReady === 'true') return;
   const slides = [...gallery.querySelectorAll('[data-product-slide]')];
@@ -71,6 +101,7 @@ function initCardGallery(gallery) {
   show(0);
 }
 
+document.querySelectorAll('[data-wc-catalog-controls]').forEach(initCatalogControls);
 document.querySelectorAll('[data-product-gallery]').forEach(initProductGallery);
 document.querySelectorAll('[data-card-gallery]').forEach(initCardGallery);
 initRelatedArticlesSwipers();

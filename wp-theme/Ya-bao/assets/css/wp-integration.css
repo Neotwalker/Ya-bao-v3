@@ -18,11 +18,7 @@
 
 .shop-filter{text-decoration:none}
 .shop-filter.is-active{border-color:var(--color-walnut);background:var(--color-walnut);color:#fff}
-.yabao-wc-catalog-controls{display:grid!important;grid-template-columns:minmax(0,1.6fr) minmax(210px,.7fr) auto;gap:12px;align-items:end;margin:24px 0}
-.yabao-wc-catalog-controls .shop-control{margin:0}
-.yabao-wc-search-submit{min-height:46px}
-.shop-results-meta{display:flex;justify-content:flex-end;margin:0 0 14px;color:var(--color-muted);font-size:13px}
-.shop-results-meta .woocommerce-result-count{margin:0}
+.shop-reset{text-decoration:none}
 .yabao-wc-pagination{margin-top:30px}
 .yabao-wc-pagination .page-numbers{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0;padding:0;list-style:none}
 .yabao-wc-pagination a,.yabao-wc-pagination span{display:grid;min-width:42px;height:42px;place-items:center;padding:0 10px;border:1px solid var(--color-line);border-radius:999px;text-decoration:none}
@@ -82,19 +78,8 @@
 .woocommerce-form-coupon-toggle,.woocommerce-form-login-toggle{margin-bottom:14px}
 .woocommerce-form-coupon,.woocommerce-form-login{margin:0 0 18px;padding:16px;border:1px solid var(--color-line);border-radius:var(--radius-sm);background:var(--color-paper)}
 
-@media(max-width:900px){
-  .shop-filter{text-decoration:none}
-.shop-filter.is-active{border-color:var(--color-walnut);background:var(--color-walnut);color:#fff}
-.yabao-wc-catalog-controls{grid-template-columns:1fr 1fr}
-  .yabao-wc-catalog-controls .shop-control--search{grid-column:1/-1}
-  .yabao-wc-search-submit{width:100%}
-}
 @media(max-width:640px){
   .site-nav .menu{display:none}
-  .shop-filter{text-decoration:none}
-.shop-filter.is-active{border-color:var(--color-walnut);background:var(--color-walnut);color:#fff}
-.yabao-wc-catalog-controls{grid-template-columns:1fr;gap:9px;margin:18px 0}
-  .yabao-wc-catalog-controls .shop-control--search{grid-column:auto}
   .checkout-panel .woocommerce-billing-fields__field-wrapper,.checkout-panel .woocommerce-shipping-fields__field-wrapper{grid-template-columns:1fr}
   .checkout-panel .form-row{grid-column:1/-1}
   .yabao-wc-add-to-cart form.cart{display:grid}
