@@ -1,0 +1,131 @@
+Я Бао Завари — Stage 63 QA статического прототипа
+Версия: v4.57
+Baseline: GitHub main commit eb2b6f16017b8cb937b757c66362122febd936f8 (v4.56.1)
+
+Цель этапа 63
+- desktop/mobile;
+- Safari iOS/macOS, Chrome, Firefox;
+- формы, корзина, варианты веса, пустые/ошибочные состояния;
+- отсутствие битых ссылок;
+- accessibility;
+- JS syntax;
+- performance.
+
+AUTOMATED QA — PASS
+
+1. Структура / ссылки / HTML
+- HTML: 44.
+- href/src/srcset tokens: 3870.
+- Broken local refs: 0.
+- Fragment links checked: 221; missing targets: 0.
+- CSS local url() refs: 33; broken: 0.
+- Duplicate HTML id: 0.
+- html[lang], title, viewport: PASS на всех 44 страницах.
+- H1 count: ровно 1 на всех 44 страницах.
+- aria-controls / aria-labelledby / aria-describedby targets: missing 0.
+- target=_blank without rel=noopener: 0.
+
+2. Accessibility static checks
+- img without alt: 0.
+- img without explicit width/height: 0 из 417 тегов img.
+- button/link without accessible name: 0.
+- input/select/textarea без label/aria-label/aria-labelledby: 0.
+- required field without name: 0.
+- button inside form without explicit type: 0.
+- role=dialog without accessible label: 0.
+- skip link / focusable navigation structure preserved; runtime focus trap code syntax PASS.
+
+3. SEO / служебные состояния
+- JSON-LD blocks: 43; parse errors: 0.
+- products.json against Draft 2020-12 schema: errors 0.
+- sitemap.xml: 25 URL; noindex URL inside sitemap: 0.
+- /shop/ remains indexable.
+- /cart/, /checkout/, /order-success/, /order-failed/, /privacy/, /consent/, /404/ and legacy menu.html remain noindex where required.
+- menu.html canonical -> /shop/ preserved.
+- demo product pages remain noindex; Product schema not introduced on demo data.
+
+4. Product / cart contract
+- Public products in products.json: 7; matching product pages: 7/7.
+- product external_id / sale_mode markup alignment: PASS.
+- Weight pages: enabled HTML variants match available JSON variants.
+- Unit in-stock pages: quantity picker present; out-of-stock unit state has no fake selector.
+- Weight and unit logic remain separated.
+
+5. JS / runtime harness
+- Project + vendor JS syntax: 31 files; errors 0.
+- Relative JS imports: 41; missing 0.
+- store/localStorage harness: PASS:
+  - weight item requires variant_id;
+  - different weights are separate cart lines;
+  - cart count/total correct;
+  - unit maxQuantity clamps repeated add/update;
+  - remove/persist work;
+  - total tea weight helper correct.
+- cart assessment harness: PASS:
+  - price changed;
+  - variant unavailable;
+  - stock limited;
+  - excluded subtotal states.
+- demo payment harness: PASS:
+  - pending -> success;
+  - terminal transition guarded;
+  - clear state.
+- checkout helpers: PASS:
+  - email validation;
+  - `250 г × 3 = 750 г` summary.
+- phone mask: PASS.
+- booking time boundaries: 10:00 / 01:00 inclusive; 09:59 / 01:01 rejected.
+
+6. CSS / responsive contract
+- CSS files: 8.
+- tinycss2 parse errors: 0.
+- local CSS asset refs broken: 0.
+- Existing mobile quantity `touch-action: manipulation` preserved.
+- Responsive breakpoints/components are syntactically valid; mobile/tablet visual verification remains browser-manual.
+
+7. Performance static checks
+- All 417 img tags contain explicit width/height (layout shift protection).
+- CSS total: 127,785 bytes raw; ~28,860 bytes gzip estimate.
+- Project JS total: 118,108 bytes raw; ~37,684 bytes gzip estimate.
+- Vendor JS total: 293,824 bytes raw; ~84,164 bytes gzip estimate.
+- Images: 39 files / 3,568,108 bytes total.
+- Hero video: 539,607 bytes; existing poster-first/deferred loading strategy preserved.
+- Swiper/Fancybox vendor scripts remain defer; fetchpriority=low where already configured.
+- No new performance-heavy asset introduced in Stage 63.
+
+BROWSER VISUAL / INTERACTION QA — MANUAL SIGN-OFF REQUIRED
+
+Environment limitation:
+- System Chromium is installed, but headless Chromium hangs even on a minimal local HTML file in this runtime, so a trustworthy Chrome screenshot/interaction run cannot be produced here.
+- Firefox and Safari/WebKit runtimes are not available in this environment.
+- Therefore no claim is made that real Chrome/Firefox/Safari rendering was executed.
+
+Manual browser checklist before final Stage 63 sign-off:
+A. Chrome desktop + mobile viewport
+- /shop/: search, filters, sorting, Swiper guides, empty state.
+- one tea product: 50/100/250 g switching, price, add-to-cart.
+- one unit product: +/- rapid taps, max stock, add-to-cart.
+- mini-cart drawer: +/-/remove/total/link to cart.
+- /cart/: desktop/tablet/mobile layout, quantity, remove, empty cart, reload persistence.
+- /checkout/: pickup/delivery toggle, validation, address required only for delivery.
+- demo payment: failed preserves cart; success clears cart.
+
+B. Safari iOS/macOS
+- header/mobile menu/modal body lock;
+- quantity rapid taps do not zoom;
+- custom select/filter UI;
+- /cart/ responsive layout;
+- checkout radio cards and delivery address state;
+- Swiper gestures/pagination.
+
+C. Firefox desktop
+- catalog search/filter/sort/query state;
+- Swiper guides;
+- mini-cart/dialog/modal focus/close;
+- cart and checkout forms;
+- demo payment transitions.
+
+Stage 63 automated result: PASS.
+Stage 63 full cross-browser sign-off: PENDING manual browser smoke.
+Code changes in this pass: none.
+Documentation changes: README.md + qa-stage63.txt.

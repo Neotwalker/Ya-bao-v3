@@ -562,3 +562,13 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - `/shop/` подключает уже имеющиеся Swiper bundle CSS/JS только для этого блока.
 - `shop-seo-links` на мобильных стал компактнее: 2 колонки, меньшие gap, высота, padding и размер текста.
 - SEO-семантика, перелинковка, product data, cart/checkout/payment flow и изображения не менялись.
+
+### v4.57 — этап 63: QA статического прототипа магазина
+
+- выполнен финальный автоматизированный QA статического frontend-прототипа после этапа 62.1;
+- проверены HTML/локальные ресурсы, anchors, duplicate ID, JSON-LD, product schema, JS syntax/imports, CSS parse и CSS url(), индексируемость/sitemap, базовая доступность форм и интерактивных элементов;
+- отдельно прогнаны runtime-harness проверки store/localStorage, weight variants, unit stock limits, cart assessment, demo payment state, checkout email/weight summary, phone mask и границы времени формы;
+- подтверждено соответствие 7 публичных demo-товаров `products.json` их product pages и отсутствие Product schema на demo-данных;
+- проверены responsive-image dimensions: все 417 `<img>` имеют width/height; прежняя poster-first стратегия hero и deferred vendor scripts сохранены;
+- код магазина, product data, cart/checkout/payment flow, CSS и изображения в этом проходе не менялись;
+- Chromium в текущей среде не запускает даже минимальную headless-страницу, а Safari/Firefox здесь отсутствуют, поэтому реальный visual/browser smoke для Chrome/Safari/Firefox остаётся ручной частью sign-off. До этой ручной проверки фронт не помечается как окончательно закрытый референс.
