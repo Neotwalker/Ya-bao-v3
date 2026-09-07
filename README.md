@@ -492,3 +492,13 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - Quantity stepper buttons use `touch-action: manipulation` to suppress double-tap zoom on touch devices while keeping normal page pinch zoom available.
 - Added user-select protection on +/- buttons to avoid accidental text selection during rapid taps.
 - Cart/store logic, product data, checkout and one-click order flow are unchanged.
+
+### v4.53 — этап 59: `/checkout/`
+
+- Добавлена noindex-страница `/checkout/` с оформлением без обязательной регистрации.
+- Поля: имя, телефон, email, способ получения, адрес при доставке, комментарий и согласие на обработку данных.
+- Самовывоз/доставка на этом этапе — только интерфейсный выбор; реальные зоны, стоимость и сроки доставки не выдумываются и остаются этапом 60.
+- Состав заказа и итог читаются из общего cart store; весовые позиции показывают вес × количество.
+- Текущие цены/наличие повторно сверяются с `products.json`; недоступные позиции блокируют CTA и отправляют пользователя обратно в корзину.
+- `/cart/` и mini-cart получили переход «Оформить заказ» на `/checkout/`.
+- Отправка заказа, CRM/email, аккаунт покупателя, банковские поля и платёжный flow не подключались.

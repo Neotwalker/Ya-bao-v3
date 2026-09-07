@@ -10,6 +10,7 @@ import { getFocusable, trapTab } from '../utils/focus.js';
 
 const SITE_ROOT_URL = new URL('../../../', import.meta.url);
 const CART_URL = new URL('cart/', SITE_ROOT_URL).href;
+const CHECKOUT_URL = new URL('checkout/', SITE_ROOT_URL).href;
 const SHOP_URL = new URL('shop/', SITE_ROOT_URL).href;
 
 const money = value => `${new Intl.NumberFormat('ru-RU').format(value)} ₽`;
@@ -88,7 +89,8 @@ export function initCartDrawer() {
       </div>
       <div class="cart-drawer__footer" data-cart-drawer-footer>
         <div class="cart-drawer__total"><span>Итого</span><strong data-cart-drawer-total>0 ₽</strong></div>
-        <a class="button button--walnut" href="${escapeHTML(CART_URL)}">Открыть корзину</a>
+        <a class="button button--outline-walnut" href="${escapeHTML(CART_URL)}">Корзина</a>
+        <a class="button button--walnut" href="${escapeHTML(CHECKOUT_URL)}">Оформить заказ</a>
         <button class="cart-drawer__continue" data-cart-drawer-close type="button">Продолжить покупки</button>
       </div>
     </aside>`;
