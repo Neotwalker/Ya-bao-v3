@@ -42,6 +42,16 @@
           "src": "assets/images/tea-category-sheng-puer-real.webp",
           "alt": "Шэн пуэр",
           "sort_order": 0
+        },
+        {
+          "src": "assets/images/tea-category-shu-puer-real.webp",
+          "alt": "Шу пуэр",
+          "sort_order": 1
+        },
+        {
+          "src": "assets/images/tea-category-white-real.webp",
+          "alt": "Белый чай",
+          "sort_order": 2
         }
       ],
       "updated_at": "2026-09-06T12:00:00Z",
@@ -80,6 +90,16 @@
           "src": "assets/images/tea-category-shu-puer-real.webp",
           "alt": "Шу пуэр",
           "sort_order": 0
+        },
+        {
+          "src": "assets/images/tea-category-sheng-puer-real.webp",
+          "alt": "Шэн пуэр",
+          "sort_order": 1
+        },
+        {
+          "src": "assets/images/tea-category-dark-oolong-real.webp",
+          "alt": "Тёмный улун",
+          "sort_order": 2
         }
       ],
       "updated_at": "2026-09-06T12:00:00Z",
@@ -105,6 +125,16 @@
           "src": "assets/images/tea-category-white-real.webp",
           "alt": "Белый чай",
           "sort_order": 0
+        },
+        {
+          "src": "assets/images/tea-category-light-oolong-real.webp",
+          "alt": "Светлый улун",
+          "sort_order": 1
+        },
+        {
+          "src": "assets/images/tea-category-yellow-tea-real.webp",
+          "alt": "Жёлтый чай",
+          "sort_order": 2
         }
       ],
       "updated_at": "2026-09-06T12:00:00Z",
@@ -172,6 +202,16 @@
           "src": "assets/images/tea-category-author-tea-real.webp",
           "alt": "Чайная посуда",
           "sort_order": 0
+        },
+        {
+          "src": "assets/images/tea-category-light-oolong-real.webp",
+          "alt": "Чай и посуда",
+          "sort_order": 1
+        },
+        {
+          "src": "assets/images/tea-category-gaba-real.webp",
+          "alt": "Чайная подача",
+          "sort_order": 2
         }
       ],
       "updated_at": "2026-09-06T12:00:00Z",
@@ -195,6 +235,16 @@
           "src": "assets/images/tea-category-author-tea-real.webp",
           "alt": "Чайная посуда",
           "sort_order": 0
+        },
+        {
+          "src": "assets/images/tea-category-white-real.webp",
+          "alt": "Чайная подача",
+          "sort_order": 1
+        },
+        {
+          "src": "assets/images/tea-category-red-tea-real.webp",
+          "alt": "Чай в пиале",
+          "sort_order": 2
         }
       ],
       "updated_at": "2026-09-06T12:00:00Z",
@@ -218,6 +268,16 @@
           "src": "assets/images/tea-category-author-tea-real.webp",
           "alt": "Чайник и чайная посуда",
           "sort_order": 0
+        },
+        {
+          "src": "assets/images/tea-category-dark-oolong-real.webp",
+          "alt": "Чайник и чай",
+          "sort_order": 1
+        },
+        {
+          "src": "assets/images/tea-category-sheng-puer-real.webp",
+          "alt": "Чайная подача",
+          "sort_order": 2
         }
       ],
       "updated_at": "2026-09-06T12:00:00Z",
@@ -241,6 +301,16 @@
           "src": "assets/images/tea-category-author-tea-real.webp",
           "alt": "Чайные аксессуары",
           "sort_order": 0
+        },
+        {
+          "src": "assets/images/tea-category-hei-cha-real.webp",
+          "alt": "Чайные инструменты",
+          "sort_order": 1
+        },
+        {
+          "src": "assets/images/tea-category-yellow-tea-real.webp",
+          "alt": "Аксессуары для чая",
+          "sort_order": 2
         }
       ],
       "updated_at": "2026-09-06T12:00:00Z",

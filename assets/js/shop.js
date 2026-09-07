@@ -1,3 +1,135 @@
+const initProductGallery = gallery => {
+  if (gallery.dataset.galleryReady === 'true') return;
+  const slides = [...gallery.querySelectorAll('[data-product-slide]')];
+  const thumbs = [...gallery.querySelectorAll('[data-product-thumb]')];
+  const stage = gallery.querySelector('[data-product-stage]');
+  if (!slides.length || !thumbs.length) return;
+
+  gallery.dataset.galleryReady = 'true';
+  let index = 0;
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  const show = next => {
+    index = Math.max(0, Math.min(slides.length - 1, next));
+    slides.forEach((slide, slideIndex) => {
+      const active = slideIndex === index;
+      slide.hidden = !active;
+      slide.classList.toggle('is-active', active);
+    });
+    thumbs.forEach((thumb, thumbIndex) => {
+      const active = thumbIndex === index;
+      thumb.classList.toggle('is-active', active);
+      thumb.setAttribute('aria-current', String(active));
+    });
+  };
+
+  thumbs.forEach((thumb, thumbIndex) => {
+    thumb.addEventListener('click', () => show(thumbIndex));
+    thumb.addEventListener('keydown', event => {
+      if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      let next = thumbIndex;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = thumbs.length - 1;
+      if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (thumbIndex - 1 + thumbs.length) % thumbs.length;
+      if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (thumbIndex + 1) % thumbs.length;
+      show(next);
+      thumbs[next].focus();
+    });
+  });
+
+  stage?.addEventListener('touchstart', event => {
+    const touch = event.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+  }, { passive: true });
+
+  stage?.addEventListener('touchend', event => {
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+    if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      show(index + (dx < 0 ? 1 : -1));
+    }
+  }, { passive: true });
+
+  show(0);
+};
+
+const initProductGalleries = (root = document) => {
+  root.querySelectorAll('[data-product-gallery]').forEach(initProductGallery);
+};
+
+const initCardGallery = gallery => {
+  if (gallery.dataset.galleryReady === 'true') return;
+  const slides = [...gallery.querySelectorAll('[data-card-slide]')];
+  const dots = [...gallery.querySelectorAll('[data-card-dot]')];
+  if (slides.length < 2) return;
+
+  gallery.dataset.galleryReady = 'true';
+  let index = 0;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let suppressClick = false;
+
+  const show = next => {
+    index = Math.max(0, Math.min(slides.length - 1, next));
+    slides.forEach((slide, slideIndex) => {
+      slide.hidden = slideIndex !== index;
+    });
+    dots.forEach((dot, dotIndex) => {
+      dot.classList.toggle('is-active', dotIndex === index);
+    });
+  };
+
+  const fromPointer = event => {
+    if (event.pointerType === 'touch') return;
+    const rect = gallery.getBoundingClientRect();
+    if (!rect.width) return;
+    const ratio = Math.max(0, Math.min(.999, (event.clientX - rect.left) / rect.width));
+    show(Math.floor(ratio * slides.length));
+  };
+
+  gallery.addEventListener('pointerenter', fromPointer);
+  gallery.addEventListener('pointermove', fromPointer);
+  gallery.addEventListener('pointerleave', event => {
+    if (event.pointerType !== 'touch') show(0);
+  });
+
+  gallery.addEventListener('touchstart', event => {
+    const touch = event.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+  }, { passive: true });
+
+  gallery.addEventListener('touchend', event => {
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+    if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      show(index + (dx < 0 ? 1 : -1));
+      suppressClick = true;
+      window.setTimeout(() => { suppressClick = false; }, 360);
+    }
+  }, { passive: true });
+
+  gallery.addEventListener('click', event => {
+    if (!suppressClick) return;
+    event.preventDefault();
+    event.stopPropagation();
+  });
+
+  show(0);
+};
+
+const initCardGalleries = (root = document) => {
+  root.querySelectorAll('[data-card-gallery]').forEach(initCardGallery);
+};
+
+initProductGalleries();
+initCardGalleries();
+
 const catalog = document.querySelector('[data-shop-catalog]');
 
 if (catalog) {
@@ -96,16 +228,37 @@ if (catalog) {
     return money(product.price);
   };
 
-  const mediaFor = product => {
-    const image = Array.isArray(product.images) ? product.images[0] : null;
-    if (!image?.src) return `<span class="shop-card__symbol">${symbolFor(product.type)}</span>`;
-
+  const imageFor = (image, product, { secondary = false } = {}) => {
     const src = new URL(image.src, SITE_ROOT_URL).href;
-    const smallPath = image.src.endsWith('.webp') ? image.src.replace(/\.webp$/, '-640.webp') : '';
+    const supportsSmall = /\/tea-category-[^/]+\.webp$/.test(image.src);
+    const smallPath = supportsSmall ? image.src.replace(/\.webp$/, '-640.webp') : '';
     const smallSrc = smallPath ? new URL(smallPath, SITE_ROOT_URL).href : '';
-    const alt = image.alt || product.name;
-    const srcset = smallSrc ? ` srcset="${escapeHTML(smallSrc)} 640w, ${escapeHTML(src)} 1074w" sizes="(max-width: 700px) calc(100vw - 44px), (max-width: 1180px) 33vw, 24vw"` : '';
+    const alt = secondary ? '' : (image.alt || product.name);
+    const srcset = smallSrc
+      ? ` srcset="${escapeHTML(smallSrc)} 640w, ${escapeHTML(src)} 1074w" sizes="(max-width: 700px) calc(100vw - 44px), (max-width: 1180px) 33vw, 24vw"`
+      : '';
     return `<img class="shop-card__image" src="${escapeHTML(src)}"${srcset} alt="${escapeHTML(alt)}" width="1074" height="669" loading="lazy" decoding="async"/>`;
+  };
+
+  const mediaFor = product => {
+    const images = Array.isArray(product.images)
+      ? product.images.filter(image => image?.src).sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0)).slice(0, 5)
+      : [];
+    if (!images.length) {
+      return { html: `<span class="shop-card__symbol">${symbolFor(product.type)}</span>`, gallery: false };
+    }
+    if (images.length === 1) {
+      return { html: imageFor(images[0], product), gallery: false };
+    }
+
+    const slides = images.map((image, index) => (
+      `<span class="shop-card-gallery__slide" data-card-slide${index ? ' hidden' : ''}>${imageFor(image, product, { secondary: index > 0 })}</span>`
+    )).join('');
+    const progress = images.map((_, index) => `<span class="${index ? '' : 'is-active'}" data-card-dot></span>`).join('');
+    return {
+      gallery: true,
+      html: `<span class="shop-card-gallery__slides">${slides}</span><span aria-hidden="true" class="shop-card-gallery__progress">${progress}</span>`,
+    };
   };
 
   const createCard = product => {
@@ -119,12 +272,13 @@ if (catalog) {
     const typeLabel = TYPE_LABELS[product.type] || product.type;
     const categoryLabel = CATEGORY_LABELS[product.category] || typeLabel;
     const stockText = out ? 'Нет в наличии' : 'В наличии';
+    const media = mediaFor(product);
 
     article.innerHTML = `
       <a class="shop-card__link" href="${encodeURIComponent(product.slug)}/">
-        <div class="shop-card__media">
+        <div class="shop-card__media"${media.gallery ? ' data-card-gallery' : ''}>
           <span class="shop-card__badge${out ? ' shop-card__badge--out' : ''}">${out ? 'Нет в наличии' : 'Demo'}</span>
-          ${mediaFor(product)}
+          ${media.html}
         </div>
         <div class="shop-card__body">
           <div class="shop-card__meta">
@@ -268,6 +422,7 @@ if (catalog) {
     syncControls({ syncSearch });
     const visible = getVisibleProducts();
     grid.replaceChildren(...visible.map(createCard));
+    initCardGalleries(grid);
     const isEmpty = visible.length === 0;
     grid.hidden = isEmpty;
     empty.hidden = !isEmpty;
