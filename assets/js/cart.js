@@ -1,6 +1,7 @@
 import {
   clearCart,
   getCartState,
+  getCartWeightSummary,
   removeCartItem,
   updateCartItemQuantity,
 } from './store.js';
@@ -173,10 +174,10 @@ if (root) {
 
     return `
       <div class="cart-line__quantity">
-        <span class="cart-line__label">Количество</span>
+        <span class="cart-line__label">${item.saleMode === 'weight' ? 'Упаковок' : 'Количество'}</span>
         <div class="product-quantity-picker__control">
           <button aria-label="Уменьшить количество" data-cart-minus data-cart-key="${escapeHTML(item.key)}" type="button"${minusDisabled ? ' disabled' : ''}>−</button>
-          <input aria-label="Количество товара" data-cart-quantity-input data-cart-key="${escapeHTML(item.key)}" inputmode="numeric" min="1"${maxAttr} step="1" type="number" value="${item.quantity}"${disabledAttr}/>
+          <input aria-label="${item.saleMode === 'weight' ? 'Количество упаковок' : 'Количество товара'}" data-cart-quantity-input data-cart-key="${escapeHTML(item.key)}" inputmode="numeric" min="1"${maxAttr} step="1" type="number" value="${item.quantity}"${disabledAttr}/>
           <button aria-label="Увеличить количество" data-cart-plus data-cart-key="${escapeHTML(item.key)}" type="button"${plusDisabled ? ' disabled' : ''}>+</button>
         </div>
       </div>`;
@@ -185,8 +186,11 @@ if (root) {
   const renderLine = item => {
     const assessment = getAssessment(item);
     const lineTotal = assessment.includeInSubtotal ? assessment.effectivePrice * item.quantity : null;
+    const weightSummary = getCartWeightSummary(item);
     const variant = item.saleMode === 'weight' && item.variantLabel
-      ? `<p class="cart-line__variant">Вариант: ${escapeHTML(item.variantLabel)}</p>`
+      ? `<p class="cart-line__variant">${weightSummary
+        ? `${escapeHTML(new Intl.NumberFormat('ru-RU').format(weightSummary.unitWeight))} г × ${weightSummary.quantity} = <strong>${escapeHTML(new Intl.NumberFormat('ru-RU').format(weightSummary.totalWeight))} г в корзине</strong>`
+        : `Вариант: ${escapeHTML(item.variantLabel)}`}</p>`
       : '<p class="cart-line__variant">Поштучно</p>';
     const media = item.image
       ? `<img alt="${escapeHTML(item.name)}" decoding="async" loading="lazy" src="${escapeHTML(item.image)}"/>`

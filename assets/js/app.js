@@ -5,6 +5,7 @@ import { initAccordion } from './components/accordion.js';
 import { initReveal } from './components/reveal.js';
 import { runInitializers } from './utils/init.js';
 import { initCartState } from './store.js';
+import { initCartDrawer } from './components/cart-drawer.js';
 
 document.documentElement.classList.add('js');
 
@@ -23,4 +24,5 @@ runInitializers(
   initReveal,
   initCurrentYear,
   initCartState,
+  initCartDrawer,
 );

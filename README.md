@@ -477,3 +477,11 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - checkout, доставка и платёжный flow не добавлялись — это следующие этапы;
 - `products.json`, schema, изображения и sitemap не менялись; `/cart/` намеренно не добавлен в sitemap как noindex-страница.
 
+
+
+## v4.52.1 — Stage 58 UX fix
+
+- `/cart/`: compact responsive summary, tablet stack breakpoint, rebuilt mobile cart cards.
+- Weight items now show the total grams already in cart (`250 г × 3 = 750 г`) and quantity is labeled as packages.
+- Added a shared mini-cart drawer from the header cart indicator on non-cart pages. It uses the same Stage 57 store state, supports +/- and remove, and links to `/cart/`.
+- Checkout and one-click order flow are intentionally not implemented in this pass.

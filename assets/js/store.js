@@ -76,6 +76,15 @@ export const getCartState = () => cloneState();
 export const getCartCount = () => state.items.reduce((sum, item) => sum + item.quantity, 0);
 export const getCartTotal = () => state.items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
 
+export const getCartWeightSummary = item => {
+  if (!item || item.saleMode !== 'weight') return null;
+  const match = String(item.variantLabel || '').match(/(\d+)\s*г/i);
+  const unitWeight = Number.parseInt(match?.[1] || '', 10);
+  if (!Number.isInteger(unitWeight) || unitWeight < 1) return null;
+  const quantity = asPositiveInt(item.quantity);
+  return { unitWeight, totalWeight: unitWeight * quantity, quantity };
+};
+
 const pluralProducts = count => {
   const mod10 = count % 10;
   const mod100 = count % 100;
