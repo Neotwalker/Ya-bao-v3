@@ -4,6 +4,7 @@ import { initForms } from './components/forms.js';
 import { initAccordion } from './components/accordion.js';
 import { initReveal } from './components/reveal.js';
 import { runInitializers } from './utils/init.js';
+import { initCartState } from './store.js';
 
 document.documentElement.classList.add('js');
 
@@ -21,4 +22,5 @@ runInitializers(
   initAccordion,
   initReveal,
   initCurrentYear,
+  initCartState,
 );

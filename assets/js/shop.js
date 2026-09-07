@@ -1,3 +1,5 @@
+import { addCartItem } from './store.js';
+
 const initProductGallery = gallery => {
   if (gallery.dataset.galleryReady === 'true') return;
   const slides = [...gallery.querySelectorAll('[data-product-slide]')];
@@ -225,6 +227,70 @@ const initProductQuantityPickers = (root = document) => {
 };
 
 initProductQuantityPickers();
+
+const initProductCartAction = summary => {
+  if (summary.dataset.cartReady === 'true') return;
+  const button = summary.querySelector('[data-add-to-cart]');
+  if (!button || button.disabled) return;
+  const productId = summary.dataset.productId || '';
+  const saleMode = summary.dataset.saleMode || '';
+  const stockStatus = summary.dataset.stockStatus || '';
+  if (!productId || !['weight', 'unit'].includes(saleMode) || stockStatus !== 'in_stock') return;
+
+  summary.dataset.cartReady = 'true';
+  const defaultLabel = button.textContent.trim();
+  let feedbackTimer = 0;
+
+  const getPayload = () => {
+    const common = {
+      productId,
+      sku: summary.dataset.productSku || '',
+      slug: summary.dataset.productSlug || '',
+      name: summary.dataset.productName || '',
+      type: summary.dataset.productType || '',
+      saleMode,
+      image: summary.dataset.productImage ? new URL(summary.dataset.productImage, document.baseURI).href : '',
+    };
+
+    if (saleMode === 'weight') {
+      const picker = summary.querySelector('[data-product-variant-picker]');
+      const variantId = picker?.dataset.selectedVariantId || picker?.querySelector('[data-product-variant-id]')?.value || '';
+      const selected = [...(picker?.querySelectorAll('[data-product-variant]') || [])]
+        .find(option => option.dataset.variantId === variantId && !option.disabled);
+      const weight = Number(selected?.dataset.variantWeight || 0);
+      const price = Number(selected?.dataset.variantPrice || NaN);
+      if (!variantId || weight < 50 || !Number.isFinite(price)) return null;
+      return { ...common, variantId, variantLabel: `${weight} г`, quantity: 1, unitPrice: price };
+    }
+
+    const picker = summary.querySelector('[data-product-quantity-picker]');
+    const input = picker?.querySelector('[data-product-quantity]');
+    const quantity = Number.parseInt(picker?.dataset.selectedQuantity || input?.value || '1', 10);
+    const maxQuantity = Number.parseInt(picker?.dataset.stockQuantity || summary.dataset.stockQuantity || '0', 10);
+    const unitPrice = Number(summary.dataset.productPrice || NaN);
+    if (!Number.isInteger(quantity) || quantity < 1 || !Number.isInteger(maxQuantity) || maxQuantity < 1 || !Number.isFinite(unitPrice)) return null;
+    return { ...common, quantity, maxQuantity, unitPrice };
+  };
+
+  button.addEventListener('click', () => {
+    const payload = getPayload();
+    if (!payload) return;
+    try {
+      addCartItem(payload);
+      window.clearTimeout(feedbackTimer);
+      button.textContent = 'Добавлено';
+      feedbackTimer = window.setTimeout(() => { button.textContent = defaultLabel; }, 1200);
+    } catch {
+      button.textContent = defaultLabel;
+    }
+  });
+};
+
+const initProductCartActions = (root = document) => {
+  root.querySelectorAll('[data-cart-product]').forEach(initProductCartAction);
+};
+
+initProductCartActions();
 
 const catalog = document.querySelector('[data-shop-catalog]');
 
