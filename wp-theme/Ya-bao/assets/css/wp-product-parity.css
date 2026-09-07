@@ -1,0 +1,42 @@
+/* Stage 66 QA: WooCommerce product UI parity with approved static v4.57. */
+.page-product [hidden]{display:none!important}
+
+/* Woo keeps the commercial form; this layer restores the approved controls. */
+.page-product .yabao-wc-add-to-cart{display:block}
+.page-product .yabao-wc-add-to-cart form.cart.yabao-product-form{display:grid;gap:14px;margin:0}
+.page-product .yabao-wc-add-to-cart .stock{margin:0;color:var(--color-muted);font-size:14px}
+.page-product .yabao-wc-add-to-cart .single_add_to_cart_button{min-height:46px;padding:11px 18px;border:0;border-radius:999px;background:var(--color-walnut);color:var(--color-white);font:inherit;font-weight:700;cursor:pointer}
+.page-product .yabao-wc-add-to-cart .single_add_to_cart_button:disabled,
+.page-product .yabao-wc-add-to-cart .single_add_to_cart_button.disabled{opacity:.5;cursor:not-allowed}
+
+.page-product .yabao-wc-add-to-cart .product-quantity-picker{display:grid;gap:8px;margin:0;padding:0;border:0}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker legend{margin:0;padding:0;color:var(--color-ink);font-size:14px;font-weight:700}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control{display:grid;grid-template-columns:44px 64px 44px;width:max-content;overflow:hidden;border:1px solid var(--color-line);border-radius:12px;background:rgba(255,255,255,.44)}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control>button{display:grid;width:44px;height:44px;place-items:center;padding:0;border:0;background:transparent;color:var(--color-ink);font:inherit;font-size:20px;cursor:pointer;touch-action:manipulation}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control>button:disabled{cursor:not-allowed;opacity:.35}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control .quantity{display:contents}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control .qty{width:64px;height:44px;min-width:0;padding:0;border:0;border-inline:1px solid var(--color-line);border-radius:0;background:transparent;text-align:center;font:inherit;-moz-appearance:textfield}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control .qty::-webkit-inner-spin-button,
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control .qty::-webkit-outer-spin-button{margin:0;-webkit-appearance:none}
+
+.page-product .yabao-wc-weight-picker{display:grid;gap:9px;margin:0 0 22px;padding:0;border:0}
+.page-product .yabao-wc-weight-picker legend{margin:0;padding:0;color:var(--color-ink);font-size:14px;font-weight:700}
+.page-product .yabao-wc-weight-picker .shop-filter-bar{margin:0}
+.page-product .yabao-weight-form .variations,
+.page-product .yabao-weight-form .reset_variations,
+.page-product .yabao-weight-form .single_variation,
+.page-product .yabao-weight-form .quantity{display:none!important}
+.page-product .yabao-weight-form .single_variation_wrap{display:block;width:100%}
+.page-product .yabao-weight-form .variations_button{display:block!important}
+
+.page-product .product-summary__actions.yabao-wc-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0}
+.page-product .product-summary__actions.yabao-wc-actions .button{margin:0}
+.page-product .product-summary>.product-summary__actions:empty{display:none}
+
+/* Keep the selected Woo variation price in the approved top price slot only. */
+.page-product .yabao-weight-form .woocommerce-variation-price{display:none!important}
+
+@media(max-width:640px){
+  .page-product .product-summary__actions.yabao-wc-actions{display:grid;grid-template-columns:1fr 1fr}
+  .page-product .product-summary__actions.yabao-wc-actions .button{width:100%;min-width:0;text-align:center}
+}

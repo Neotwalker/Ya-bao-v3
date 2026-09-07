@@ -1,6 +1,12 @@
 <?php
 /** Single product template using the approved product-page visual language. */
 defined( 'ABSPATH' ) || exit;
+
+// Stage 66 QA parity layer. Kept product-only and versioned independently so
+// this visual fix does not disturb the approved global/static CSS system.
+wp_enqueue_style( 'yabao-wc-product-parity', yabao_asset_url( 'css/wp-product-parity.css' ), array( 'yabao-wp' ), '0.4.1' );
+wp_enqueue_script( 'yabao-wc-product-parity', yabao_asset_url( 'js/wp-product-parity.js' ), array(), '0.4.1', true );
+
 get_header();
 
 global $product;

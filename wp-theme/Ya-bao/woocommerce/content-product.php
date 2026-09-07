@@ -20,7 +20,7 @@ $image_ids  = array_slice( array_values( array_unique( $image_ids ) ), 0, 5 );
 			<?php if ( $image_ids ) : ?>
 				<span class="shop-card-gallery__slides">
 				<?php foreach ( $image_ids as $index => $image_id ) : ?>
-					<span class="shop-card-gallery__slide" data-card-slide<?php echo $index ? ' hidden' : ''; ?>><?php echo wp_get_attachment_image( $image_id, 'woocommerce_thumbnail', false, array( 'class' => 'shop-card__image', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(max-width:700px) calc(100vw - 44px), 25vw' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					<span class="shop-card-gallery__slide" data-card-slide<?php echo $index ? ' hidden' : ''; ?>><?php echo wp_get_attachment_image( $image_id, 'woocommerce_single', false, array( 'class' => 'shop-card__image', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(max-width:700px) calc(100vw - 44px), 25vw' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 				<?php endforeach; ?>
 				</span>
 				<?php if ( count( $image_ids ) > 1 ) : ?><span aria-hidden="true" class="shop-card-gallery__progress"><?php foreach ( $image_ids as $index => $_ ) : ?><span class="<?php echo $index ? '' : 'is-active'; ?>" data-card-dot></span><?php endforeach; ?></span><?php endif; ?>
