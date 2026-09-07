@@ -570,6 +570,7 @@
 .product-facts dt{color:var(--color-muted)}
 .product-facts dd{margin:0;font-weight:700}
 .product-summary__actions{display:flex;flex-wrap:wrap;gap:10px}
+.product-cart-note{margin:0;color:var(--color-muted);font-size:14px;line-height:1.4}
 
 .product-variant-picker,.product-quantity-picker{min-width:0;margin:0;padding:0;border:0}
 .product-variant-picker legend,.product-quantity-picker legend{margin-bottom:10px;padding:0;font-weight:700}

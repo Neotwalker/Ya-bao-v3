@@ -1,4 +1,4 @@
-import { addCartItem } from './store.js';
+import { addCartItem, getCartState } from './store.js';
 
 const initProductGallery = gallery => {
   if (gallery.dataset.galleryReady === 'true') return;
@@ -239,7 +239,49 @@ const initProductCartAction = summary => {
 
   summary.dataset.cartReady = 'true';
   const defaultLabel = button.textContent.trim();
+  const quantityPicker = saleMode === 'unit' ? summary.querySelector('[data-product-quantity-picker]') : null;
+  const quantityInput = quantityPicker?.querySelector('[data-product-quantity]') || null;
+  const stockQuantity = Number.parseInt(quantityPicker?.dataset.stockQuantity || summary.dataset.stockQuantity || '0', 10);
   let feedbackTimer = 0;
+  let availabilityNote = null;
+
+  if (saleMode === 'unit' && quantityPicker && Number.isInteger(stockQuantity) && stockQuantity > 0) {
+    availabilityNote = document.createElement('p');
+    availabilityNote.className = 'product-cart-note';
+    availabilityNote.setAttribute('aria-live', 'polite');
+    availabilityNote.hidden = true;
+    quantityPicker.insertAdjacentElement('afterend', availabilityNote);
+  }
+
+  const getUnitCartQuantity = () => {
+    if (saleMode !== 'unit') return 0;
+    const item = getCartState().items.find(entry => entry.productId === productId && entry.saleMode === 'unit');
+    return Number.isInteger(item?.quantity) ? item.quantity : 0;
+  };
+
+  const syncUnitAvailability = () => {
+    if (saleMode !== 'unit' || !Number.isInteger(stockQuantity) || stockQuantity < 1) return;
+    window.clearTimeout(feedbackTimer);
+    const inCart = getUnitCartQuantity();
+    const remaining = Math.max(0, stockQuantity - inCart);
+    const selected = Math.max(1, Number.parseInt(quantityPicker?.dataset.selectedQuantity || quantityInput?.value || '1', 10) || 1);
+
+    if (availabilityNote) {
+      availabilityNote.hidden = inCart === 0;
+      availabilityNote.textContent = remaining > 0
+        ? `В корзине: ${inCart} шт. Можно добавить ещё ${remaining} шт.`
+        : `В корзине уже весь доступный остаток: ${stockQuantity} шт.`;
+    }
+
+    if (remaining === 0) {
+      button.disabled = true;
+      button.textContent = 'Максимум в корзине';
+      return;
+    }
+
+    button.disabled = false;
+    button.textContent = selected > remaining ? `Добавить ещё ${remaining}` : defaultLabel;
+  };
 
   const getPayload = () => {
     const common = {
@@ -263,29 +305,51 @@ const initProductCartAction = summary => {
       return { ...common, variantId, variantLabel: `${weight} г`, quantity: 1, unitPrice: price };
     }
 
-    const picker = summary.querySelector('[data-product-quantity-picker]');
-    const input = picker?.querySelector('[data-product-quantity]');
+    const picker = quantityPicker;
+    const input = quantityInput;
     const quantity = Number.parseInt(picker?.dataset.selectedQuantity || input?.value || '1', 10);
-    const maxQuantity = Number.parseInt(picker?.dataset.stockQuantity || summary.dataset.stockQuantity || '0', 10);
+    const maxQuantity = stockQuantity;
     const unitPrice = Number(summary.dataset.productPrice || NaN);
     if (!Number.isInteger(quantity) || quantity < 1 || !Number.isInteger(maxQuantity) || maxQuantity < 1 || !Number.isFinite(unitPrice)) return null;
     return { ...common, quantity, maxQuantity, unitPrice };
   };
 
+  if (saleMode === 'unit') {
+    summary.addEventListener('shop:quantitychange', syncUnitAvailability);
+    document.addEventListener('shop:cartchange', syncUnitAvailability);
+    syncUnitAvailability();
+  }
+
   button.addEventListener('click', () => {
     const payload = getPayload();
     if (!payload) return;
     try {
+      let acceptedQuantity = payload.quantity;
+      if (saleMode === 'unit') {
+        const remaining = Math.max(0, payload.maxQuantity - getUnitCartQuantity());
+        if (remaining === 0) {
+          syncUnitAvailability();
+          return;
+        }
+        acceptedQuantity = Math.min(payload.quantity, remaining);
+        payload.quantity = acceptedQuantity;
+      }
+
       addCartItem(payload);
       window.clearTimeout(feedbackTimer);
-      button.textContent = 'Добавлено';
-      feedbackTimer = window.setTimeout(() => { button.textContent = defaultLabel; }, 1200);
+      button.textContent = saleMode === 'unit' && acceptedQuantity < Number.parseInt(quantityPicker?.dataset.selectedQuantity || quantityInput?.value || '1', 10)
+        ? `Добавлено ${acceptedQuantity}`
+        : 'Добавлено';
+      feedbackTimer = window.setTimeout(() => {
+        if (saleMode === 'unit') syncUnitAvailability();
+        else button.textContent = defaultLabel;
+      }, 1200);
     } catch {
-      button.textContent = defaultLabel;
+      if (saleMode === 'unit') syncUnitAvailability();
+      else button.textContent = defaultLabel;
     }
   });
 };
-
 const initProductCartActions = (root = document) => {
   root.querySelectorAll('[data-cart-product]').forEach(initProductCartAction);
 };
