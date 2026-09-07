@@ -130,6 +130,58 @@ const initCardGalleries = (root = document) => {
 initProductGalleries();
 initCardGalleries();
 
+const initProductVariantPicker = picker => {
+  if (picker.dataset.variantReady === 'true') return;
+  const options = [...picker.querySelectorAll('[data-product-variant]')].filter(option => !option.disabled);
+  const hiddenInput = picker.querySelector('[data-product-variant-id]');
+  const summary = picker.closest('.product-summary');
+  const priceNode = summary?.querySelector('[data-product-price]');
+  if (!options.length || !hiddenInput || !priceNode) return;
+
+  picker.dataset.variantReady = 'true';
+
+  const select = option => {
+    if (!option || option.disabled) return;
+    const variantId = option.dataset.variantId || '';
+    const weight = Number(option.dataset.variantWeight || 0);
+    const price = Number(option.dataset.variantPrice || 0);
+    if (!variantId || weight < 50 || !Number.isFinite(price)) return;
+
+    options.forEach(item => item.setAttribute('aria-checked', String(item === option)));
+    hiddenInput.value = variantId;
+    picker.dataset.selectedVariantId = variantId;
+    priceNode.textContent = `${new Intl.NumberFormat('ru-RU').format(price)} ₽`;
+
+    picker.dispatchEvent(new CustomEvent('shop:variantchange', {
+      bubbles: true,
+      detail: { variantId, weight, price },
+    }));
+  };
+
+  options.forEach((option, optionIndex) => {
+    option.addEventListener('click', () => select(option));
+    option.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      let next = optionIndex;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = options.length - 1;
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (optionIndex - 1 + options.length) % options.length;
+      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (optionIndex + 1) % options.length;
+      select(options[next]);
+      options[next].focus();
+    });
+  });
+
+  select(options.find(option => option.getAttribute('aria-checked') === 'true') || options[0]);
+};
+
+const initProductVariantPickers = (root = document) => {
+  root.querySelectorAll('[data-product-variant-picker]').forEach(initProductVariantPicker);
+};
+
+initProductVariantPickers();
+
 const catalog = document.querySelector('[data-shop-catalog]');
 
 if (catalog) {
