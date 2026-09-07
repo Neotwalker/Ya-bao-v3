@@ -1105,5 +1105,7 @@
   .delivery-method h2{font-size:26px}
   .delivery-method__facts li{grid-template-columns:1fr;gap:2px}
   .delivery-status{padding:15px}
+  .page-delivery .delivery-process{padding-bottom:20px}
+  .page-delivery .delivery-process + .section{padding-top:28px}
   .delivery-pending__cta{padding:18px}
 }
