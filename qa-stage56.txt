@@ -1,0 +1,27 @@
+Stage 56 QA — v4.50
+Baseline: GitHub main 661ee83d1c3e334e6661ab5268a790b89b785163 (v4.49 / Stage 55 approved)
+
+Scope: ware/accessory unit quantity only; store state/cart remains out of scope.
+
+Result: PASS
+- HTML files: 39
+- stale booking.html: absent
+- products schema: PASS
+- products.json unchanged: PASS
+- public unit products checked: 4
+  - DEMO-P005 gaiwan: stock 8, quantity range 1..8
+  - DEMO-P006 tea cup: out_of_stock, no interactive quantity control
+  - DEMO-P007 teapot: stock 4, quantity range 1..4
+  - DEMO-P008 tea tool: stock 10, quantity range 1..10
+- tea pages contain no unit quantity picker: PASS
+- unit pages contain no weight/gram selector: PASS
+- public unit variants in current data: none; no synthetic selectors created
+- quantity interaction harness (plus/minus, direct input, min/max clamp, disabled edge buttons, event): PASS
+- local refs checked: 2608; broken: 0
+- duplicate HTML ids: 0
+- JSON-LD parse: PASS
+- JS syntax checked: 25 files
+- CSS files checked: 8; parse errors: 0; duplicate selector+context: 0; repeated declarations in rule: 0
+- assets/images unchanged: 39 files
+- changed files vs v4.49: 7
+- added QA files: 1

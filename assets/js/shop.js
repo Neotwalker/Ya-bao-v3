@@ -182,6 +182,50 @@ const initProductVariantPickers = (root = document) => {
 
 initProductVariantPickers();
 
+const initProductQuantityPicker = picker => {
+  if (picker.dataset.quantityReady === 'true') return;
+  const input = picker.querySelector('[data-product-quantity]');
+  const minus = picker.querySelector('[data-quantity-minus]');
+  const plus = picker.querySelector('[data-quantity-plus]');
+  const maxQuantity = Number(picker.dataset.stockQuantity || input?.max || 0);
+  if (!input || !minus || !plus || !Number.isInteger(maxQuantity) || maxQuantity < 1) return;
+
+  picker.dataset.quantityReady = 'true';
+
+  const setQuantity = (next, emit = true) => {
+    const parsed = Number.parseInt(next, 10);
+    const quantity = Math.max(1, Math.min(maxQuantity, Number.isFinite(parsed) ? parsed : 1));
+    input.value = String(quantity);
+    picker.dataset.selectedQuantity = String(quantity);
+    minus.disabled = quantity <= 1;
+    plus.disabled = quantity >= maxQuantity;
+
+    if (emit) {
+      picker.dispatchEvent(new CustomEvent('shop:quantitychange', {
+        bubbles: true,
+        detail: {
+          productId: picker.dataset.productId || '',
+          quantity,
+          maxQuantity,
+        },
+      }));
+    }
+  };
+
+  minus.addEventListener('click', () => setQuantity(Number(input.value) - 1));
+  plus.addEventListener('click', () => setQuantity(Number(input.value) + 1));
+  input.addEventListener('change', () => setQuantity(input.value));
+  input.addEventListener('blur', () => setQuantity(input.value, false));
+
+  setQuantity(input.value, false);
+};
+
+const initProductQuantityPickers = (root = document) => {
+  root.querySelectorAll('[data-product-quantity-picker]').forEach(initProductQuantityPicker);
+};
+
+initProductQuantityPickers();
+
 const catalog = document.querySelector('[data-shop-catalog]');
 
 if (catalog) {
