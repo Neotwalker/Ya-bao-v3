@@ -15,9 +15,12 @@ if ( WC()->customer ) {
 	WC()->customer->set_shipping_country( 'RU' );
 }
 ?>
-<style id="yabao-checkout-russia-only">
+<style id="yabao-checkout-v044">
 .page-checkout #billing_country_field,
 .page-checkout #shipping_country_field{display:none!important}
+/* Woo inserts validation notices as a direct child of the two-column checkout grid.
+   Span the notice across both columns so it cannot consume the first grid cell and push the form right. */
+.page-checkout .checkout-layout>.woocommerce-NoticeGroup-checkout{grid-column:1/-1;min-width:0;margin:0}
 </style>
 <form name="checkout" method="post" class="checkout woocommerce-checkout checkout-layout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data" aria-label="Оформление заказа">
 	<div class="checkout-form">
