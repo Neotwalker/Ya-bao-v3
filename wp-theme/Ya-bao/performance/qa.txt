@@ -1,0 +1,13 @@
+Stage 46 static QA
+HTML files: 31
+Project JS files: 22
+Responsive image variants: 20
+Hero video: 1440x810, 539607 bytes, no audio
+Broken local refs: 0
+JSON-LD errors: 0
+Duplicate IDs: 0
+TOC missing anchors: 0
+Vendor scripts: defer + fetchpriority=low
+Hero video: preload=none + deferred data-src
+All project JS: node --check passed
+Browser/Lighthouse QA: not executed in this environment

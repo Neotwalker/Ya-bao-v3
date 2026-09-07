@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://neotwalker.github.io/Ya-bao-v3/sitemap.xml

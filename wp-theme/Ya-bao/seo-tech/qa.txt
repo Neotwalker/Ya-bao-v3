@@ -1,0 +1,20 @@
+Stage 45 QA
+=============
+HTML files: 31
+Project JS files (assets/js): 22
+Vendor JS files: 2
+Sitemap URLs: 24
+Broken local href/src references: 0
+Duplicate HTML ids: 0
+JSON-LD parse errors: 0
+Canonical / og:url mismatches: 0
+Sitemap URLs with noindex: 0
+Sitemap entries without lastmod: 0
+Footer variants: 1
+Product schema added: no
+Event schema added to demo event pages: no
+Browser visual QA: not performed
+
+Important:
+- events.html is noindex,follow and excluded from sitemap until real events are confirmed.
+- GitHub Pages project-level robots.txt is a handoff/reference file; production robots.txt must live at the final domain root.

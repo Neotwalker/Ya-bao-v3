@@ -1,0 +1,25 @@
+Этап 50 — QA product data contract
+Дата: 06.09.2026
+
+Результат: PASS
+
+Проверено:
+[PASS] products.schema.json — корректная JSON Schema Draft 2020-12.
+[PASS] products.json — валиден по products.schema.json с проверкой date-time форматов.
+[PASS] Количество demo-товаров: 10 (требование этапа: 8–12).
+[PASS] external_id уникальны: 10/10.
+[PASS] sku уникальны: 10/10.
+[PASS] slug уникальны: 10/10.
+[PASS] variant_id уникальны: 8/8.
+[PASS] Все сущности имеют is_demo=true и demo_note.
+[PASS] dataset=demo.
+[PASS] Для type=tea используется sale_mode=weight и min_weight_g=50.
+[PASS] Все весовые варианты >=50 г и кратны 50 г.
+[PASS] Для доступного чая price равен минимальной цене доступного варианта.
+[PASS] У out_of_stock чая variants пуст.
+[PASS] Для ware/accessory используется sale_mode=unit и quantity.
+[PASS] Для unit in_stock quantity >=1, для unit out_of_stock quantity=0.
+[PASS] Реальные изображения не добавлены: demo images=[]; реальный ассортимент не выдумывался.
+[PASS] HTML/CSS/JS не изменялись; браузерный визуальный QA на этом этапе не требуется.
+
+Инструмент проверки схемы: Python jsonschema 4.26.0 + Draft202012Validator + FormatChecker.

@@ -1,0 +1,304 @@
+/* Shared project additions and global component refinements. */
+.header-meta{display:flex;align-items:center;gap:16px}
+.header-phone{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-size:14px;font-weight:600;transition:color .25s ease,transform .25s ease}
+.header-phone svg,.social-link svg{width:18px;height:18px}
+.header-socials,.mobile-nav__socials,.footer-socials{display:flex;align-items:center;gap:10px}
+.social-link{display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(255,255,255,.22);border-radius:50%;color:#fff;text-decoration:none;transition:transform .25s ease,border-color .25s ease,background .25s ease}
+.social-link:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.48);background:rgba(255,255,255,.08)}
+.header-actions .button{white-space:nowrap}
+.faq-layout .button--walnut{margin-top:24px}
+.footer-socials .social-link{width:44px;height:44px}
+.mobile-nav__socials .social-link{width:44px;height:44px}
+@media (min-width: 1440px){
+  .site-nav a{font-size:16px}
+  .header-phone{font-size:15px}
+}
+@media (max-width:1180px){
+  .header-inner{gap:28px}
+}
+@media (max-width:699px){
+  .header-meta{display:none}
+}
+@media (max-width:1024px){
+  .faq-layout{grid-template-columns:1fr}
+}
+@media (max-width:1500px) and (min-width:1181px){
+  .header-phone{display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(255,255,255,.22);border-radius:50%}
+  .header-phone span{display:none}
+  .header-meta{gap:10px}
+  .site-nav ul{gap:18px}
+  .site-nav a{font-size:14px}
+  .header-inner{gap:24px}
+}
+.social-link img{width:18px;height:18px;object-fit:contain}
+.header-phone svg{transition:transform .25s ease}
+.header-phone:hover{color:var(--color-gold);transform:translateY(-2px)}
+.header-phone:hover svg{transform:scale(1.08)}
+.modal .eyebrow{margin-bottom:12px}
+.modal h2{max-width:590px;margin-bottom:10px;font-size:clamp(34px,3.5vw,48px);line-height:1.04}
+.modal .form-grid{gap:12px 16px;margin-top:20px}
+.modal .field{gap:5px}
+.modal .field label,.modal .field>label{font-size:12px}
+.modal .field input,.modal .field select,.modal .field textarea{min-height:48px;padding:10px 13px}
+.modal .custom-select__trigger{min-height:48px;padding:10px 13px}
+.modal .date-time-control{height:48px;min-height:48px}
+.modal .date-time-control input[type="date"],.modal .date-time-control input[type="time"]{min-height:0;padding:0}
+.modal .date-time-control__display{padding:10px 13px}
+.modal .custom-select__menu{max-height:220px;padding:5px}
+.modal .custom-select__option{min-height:36px;padding:7px 9px;font-size:13px;line-height:1.2}
+.modal .field textarea{min-height:86px}
+.modal .field__error{min-height:12px;font-size:11px}
+.modal .checkbox{font-size:14px;line-height:1.45}
+.modal .form-submit{gap:12px}
+@media (max-width:767px){
+  .modal{
+    position:fixed;
+    inset:0;
+    width:100vw;
+    max-width:none;
+    height:100dvh;
+    max-height:100dvh;
+    margin:0;
+    overflow-x:hidden;
+    border-radius:0;
+  }
+  .modal__inner{min-height:100%;padding:18px 14px 14px}
+  .modal__close{top:10px;right:10px;width:36px;height:36px;font-size:21px}
+  .modal .eyebrow{margin-bottom:7px;font-size:10px}
+  .modal #booking-modal-title{max-width:calc(100% - 44px);margin-bottom:7px;font-size:clamp(22px,6.4vw,26px);line-height:1.02}
+  .modal__intro{font-size:13px;line-height:1.35}
+  .modal .form-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 8px;margin-top:12px}
+  .modal .form-grid>*,
+  .modal .field--full{grid-column:1/-1}
+  .modal .field--date-time,
+  .modal .field--select-pair{grid-column:auto}
+  .modal .field--select-pair-single{grid-column:1/-1}
+  .modal .form-grid,.modal .field,.modal .custom-select,.modal .date-time-control{min-width:0;max-width:100%}
+  .modal .field,.modal .checkbox{gap:3px}
+  .modal .field label,.modal .field>label{font-size:11px}
+  .modal .field input,.modal .field select,.modal .field textarea{min-height:42px;padding:8px 10px;font-size:14px}
+  .modal .custom-select__trigger{min-height:42px;padding:8px 10px;font-size:14px}
+  .modal .date-time-control{height:42px;min-height:42px}
+  .modal .date-time-control__display{padding:8px 10px;font-size:14px}
+  .modal .custom-select__menu{top:calc(100% + 6px);max-height:198px;padding:4px}
+  .modal .custom-select__option{min-height:32px;padding:6px 8px;font-size:13px;line-height:1.2}
+  .modal .field textarea{min-height:62px}
+  .modal .field__error{min-height:8px;font-size:10px;line-height:1.15}
+  .modal .checkbox{grid-template-columns:17px 1fr;font-size:11px;line-height:1.3}
+  .modal .checkbox input{width:17px;height:17px;margin-top:0}
+  .modal .checkbox .field__error{grid-column:2}
+  .modal .form-submit{gap:8px}
+  .modal .form-submit .button{width:100%;min-height:42px;padding:9px 14px;font-size:12px}
+  .modal .form-status{font-size:11px}
+}
+@media (max-width:359px){
+  .modal .form-grid{grid-template-columns:1fr}
+  .modal .field--date-time,
+  .modal .field--select-pair{grid-column:1/-1}
+}
+
+/* iOS/iPadOS Safari zooms focused form controls whose computed font size is
+   below 16px. Keep touch form controls at 16px instead of disabling page zoom. */
+@media (hover:none) and (pointer:coarse){
+  .booking-form input:not([type="checkbox"]):not([type="radio"]),
+  .booking-form textarea,
+  .booking-form select{font-size:16px}
+}
+
+/* iPhone/iPad Safari may still zoom textareas when the primary pointer media
+   query changes (for example with a connected trackpad). Keep textarea text at
+   Safari's 16px zoom threshold without disabling user scaling. */
+@supports (-webkit-touch-callout:none){
+  .booking-form textarea{font-size:16px!important}
+}
+
+/* Submission feedback covers the whole form so the state cannot be missed. */
+.booking-form{position:relative}
+.booking-form .form-status.is-overlay{
+  position:absolute;
+  z-index:80;
+  inset:0;
+  display:grid;
+  place-items:center;
+  min-width:0;
+  padding:clamp(24px,6vw,56px);
+  border:0;
+  border-radius:0;
+  background:rgba(239,230,214,.32);
+  color:var(--color-ink);
+  font-size:clamp(18px,2vw,24px);
+  font-weight:700;
+  line-height:1.35;
+  text-align:center;
+  box-shadow:none;
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(8px) scale(.992);
+  -webkit-backdrop-filter:blur(0);
+  backdrop-filter:blur(0);
+  transition:
+    opacity .28s ease,
+    transform .32s var(--ease),
+    background .32s ease,
+    -webkit-backdrop-filter .32s ease,
+    backdrop-filter .32s ease,
+    color .2s ease;
+}
+.booking-form .form-status.is-overlay.is-visible{
+  opacity:1;
+  pointer-events:auto;
+  transform:none;
+  background:rgba(239,230,214,.78);
+  box-shadow:none;
+  -webkit-backdrop-filter:blur(4px);
+  backdrop-filter:blur(4px);
+}
+.booking-form .form-status.is-overlay.is-success{color:var(--color-ink)}
+.booking-form .form-status.is-overlay.is-error{color:var(--color-error)}
+.booking-form.has-form-feedback{isolation:isolate}
+@media (max-width:767px){
+  .booking-form .form-status.is-overlay{
+    padding:24px 18px;
+    font-size:18px;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .booking-form .form-status.is-overlay{transition:none;transform:none}
+}
+
+/* The native date/time input is transparent for consistent rendering.
+   A fine-pointer click is forwarded to showPicker() in date-time.js. */
+@media (hover:hover) and (pointer:fine){
+  .date-time-control,
+  .date-time-control input[type="date"],
+  .date-time-control input[type="time"]{cursor:pointer}
+  .date-time-control input[type="date"],
+  .date-time-control input[type="time"]{
+    -webkit-appearance:auto;
+    appearance:auto;
+  }
+}
+.modal::backdrop{background:rgba(0,0,0,0);backdrop-filter:blur(0);transition:background .28s ease,backdrop-filter .28s ease}
+.modal[open].is-visible{opacity:1;transform:none}
+.modal[open].is-visible::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(7px)}
+.modal.is-closing{opacity:0;transform:translateY(18px) scale(.985)}
+.top-scroll{position:fixed;right:24px;bottom:24px;z-index:95;display:grid;place-items:center;width:52px;height:52px;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(75,52,34,.94);color:#fff;box-shadow:0 14px 36px rgba(23,19,15,.2);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(12px);transition:opacity .28s ease,visibility .28s ease,transform .28s var(--ease),background .25s ease}
+.top-scroll.is-visible{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+.top-scroll:hover{background:var(--color-walnut);transform:translateY(-3px)}
+.top-scroll svg{width:22px;height:22px}
+.footer-contact-list{display:grid;gap:14px;margin:0 0 20px;padding:0;list-style:none}
+.footer-contact-list a{display:flex;align-items:flex-start;gap:10px;color:rgba(255,255,255,.76);font-size:14px;line-height:1.45;text-decoration:none;transition:color .25s ease}
+.footer-contact-list a:hover{color:#fff}
+.footer-contact-list svg{flex:0 0 20px;width:20px;height:20px;margin-top:1px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.footer-socials--primary{margin-top:18px}
+.footer-socials--primary .social-link img{width:20px;height:20px;object-fit:contain}
+@media (max-width:860px){
+  .top-scroll{right:16px;bottom:24px}
+}
+@media (max-width:600px){
+  .top-scroll{width:48px;height:48px}
+  .footer-contact-list a{font-size:13px}
+}
+@media (min-width:700px) and (max-width:1240px){
+  .header-actions{justify-self:end;justify-content:flex-end;width:100%;gap:10px}
+  .header-meta{display:contents}
+  .header-socials{display:contents}
+  .header-phone{order:1;display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(255,255,255,.22);border-radius:50%}
+  .header-phone span{display:none}
+  .header-socials .social-link:nth-child(1){order:2}
+  .header-socials .social-link:nth-child(2){order:3}
+}
+.footer-bottom__links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px}
+.footer-bottom__links a{color:inherit;text-decoration:none;transition:color var(--duration)}
+.footer-bottom__links a:hover{color:rgba(255,255,255,.8)}
+.mobile-nav__contacts{display:none}
+@media (max-width:767px){
+  .mobile-nav{align-content:start;overflow-y:auto;padding-top:calc(var(--header-height) + 34px);padding-bottom:34px}
+  .mobile-nav a{font-size:clamp(26px,8vw,34px);line-height:1.08;padding:7px 0}
+  .mobile-nav__contacts{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12)}
+  .mobile-nav__phone{display:inline-flex!important;align-items:center;gap:9px!important;padding:0!important;font-family:var(--font-ui)!important;font-size:14px!important;line-height:1.2!important;color:rgba(255,255,255,.82)}
+  .mobile-nav__phone svg{width:19px;height:19px;flex:0 0 19px}
+  .mobile-nav__socials{display:flex;align-items:center;gap:8px}
+  .mobile-nav__socials .social-link{display:grid!important;place-items:center;width:38px;height:38px;padding:0!important;border:1px solid rgba(255,255,255,.2);border-radius:50%;font-size:0!important}
+  .mobile-nav__socials .social-link img,.mobile-nav__socials .social-link svg{width:17px;height:17px}
+  .mobile-nav__meta{margin-top:20px;gap:7px;font-size:11px;line-height:1.35}
+  .mobile-nav__booking{width:100%;margin-top:20px}
+}
+@media (max-width:767px){
+  .header-inner{grid-template-columns:minmax(0,1fr) auto;gap:12px}
+  .brand{grid-column:1;grid-row:1;justify-self:start}
+  .header-actions{grid-column:2;grid-row:1;justify-self:end;justify-content:flex-end;width:auto}
+  .tea-showcase .section-tail{width:100%;justify-content:stretch}
+  .tea-showcase .section-tail .button{width:100%}
+  .mobile-nav__meta strong,.mobile-nav__meta a{font-family:var(--font-ui);font-size:11px!important;font-weight:500;line-height:1.35;padding:3px 0;color:rgba(255,255,255,.64)}
+  .mobile-nav__meta strong{font-weight:600}
+}
+body .site-footer h3{margin-bottom:18px;color:var(--color-gold);font-family:var(--font-ui);font-size:12px;font-weight:800;line-height:1.25;letter-spacing:.14em;text-transform:uppercase}
+@media (max-width:860px){
+  .footer-bottom{display:grid;grid-template-columns:1fr;justify-items:start;gap:10px;margin-top:38px;text-align:left}
+  .footer-bottom__links{justify-content:flex-start;gap:7px 16px}
+}
+@media (max-width:767px){
+  body .site-footer h3{font-size:9px;line-height:1.25;letter-spacing:.12em;margin-bottom:12px}
+}
+@media (max-width:560px){
+  .footer-bottom__links{display:grid;gap:6px}
+}
+
+@media(min-width:768px) and (max-width:1366px){
+  .site-header .brand img,
+  .mobile-nav .brand img{
+    width:50px;
+    height:50px;
+  }
+  .site-header .brand strong,
+  .mobile-nav .brand strong{font-size:23px}
+  .site-header .brand small,
+  .mobile-nav .brand small{
+    margin-top:5px;
+    font-size:9px;
+  }
+}
+
+/* Cart indicator: store state from stage 57, cart link from stage 58. */
+.cart-indicator{
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:50%;
+  color:#fff;
+  text-decoration:none;
+  transition:border-color .2s ease,background .2s ease;
+}
+.cart-indicator:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.06)}
+.cart-indicator[aria-current="page"]{border-color:var(--color-gold)}
+.cart-indicator svg{width:20px;height:20px}
+.cart-indicator__count{
+  position:absolute;
+  top:-4px;
+  right:-4px;
+  display:grid;
+  min-width:18px;
+  height:18px;
+  place-items:center;
+  padding:0 4px;
+  border:2px solid #17130f;
+  border-radius:999px;
+  background:var(--color-gold);
+  color:var(--color-ink);
+  font-size:10px;
+  font-weight:800;
+  line-height:1;
+}
+@media (min-width:700px) and (max-width:1240px){
+  .header-actions>.cart-indicator{order:4}
+  .header-actions>.menu-toggle{order:5}
+}
+@media (max-width:767px){
+  .cart-indicator{width:40px;height:40px;flex-basis:40px}
+}
+

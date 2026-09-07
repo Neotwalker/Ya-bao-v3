@@ -1,0 +1,12 @@
+Stage 44 migration QA
+=====================
+physical_html_files=31
+redirect_rows=34
+unique_internal_html_rewrites=54
+missing_internal_mappings=0
+physical_html_without_mapping_except_404=0
+404_redirected=no
+static_html_modified=no (только добавлена папка seo-migration)
+
+missing_internal=[]
+physical_missing=[]

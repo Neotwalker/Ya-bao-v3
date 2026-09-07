@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Знак чайного дома Я Бао Завари</title>
+  <circle cx="32" cy="32" r="28" fill="none" stroke="#d5ad63" stroke-width="1.8"/>
+  <circle cx="32" cy="32" r="23" fill="none" stroke="#d5ad63" stroke-width=".7" opacity=".55"/>
+  <path d="M14 22c6-2 10-7 12-13M50 22c-6-2-10-7-12-13M14 43c6 2 10 7 12 13M50 43c-6 2-10 7-12 13" fill="none" stroke="#d5ad63" stroke-width="1.2" stroke-linecap="round" opacity=".75"/>
+  <text x="32" y="41" text-anchor="middle" font-size="29" font-family="Georgia,serif" fill="#f0d49b">茶</text>
+</svg>
