@@ -75,7 +75,7 @@ if ( 'menu_order' !== $current_order ) {
 				<div class="shop-filter-panel" id="shop-filter-panel" data-wc-filter-panel>
 					<label class="shop-control" for="shop-category">
 						<span class="shop-control__label">Категория</span>
-						<span class="shop-select-field"><select id="shop-category" name="product_cat" aria-controls="shop-grid" data-wc-auto-submit>
+						<span class="shop-select-field"><select id="shop-category" name="product_cat" data-shop-category aria-controls="shop-grid" data-wc-auto-submit>
 							<option value="">Все категории</option>
 							<?php if ( ! is_wp_error( $terms ) ) : foreach ( $terms as $term ) : ?>
 								<option value="<?php echo esc_attr( $term->slug ); ?>"<?php selected( $current_cat, $term->slug ); ?>><?php echo esc_html( $term->name ); ?></option>
@@ -84,7 +84,7 @@ if ( 'menu_order' !== $current_order ) {
 					</label>
 					<label class="shop-control" for="shop-sort">
 						<span class="shop-control__label">Сортировка</span>
-						<span class="shop-select-field"><select id="shop-sort" name="orderby" aria-controls="shop-grid" data-wc-auto-submit>
+						<span class="shop-select-field"><select id="shop-sort" name="orderby" data-shop-sort aria-controls="shop-grid" data-wc-auto-submit>
 							<?php foreach ( $orderby_options as $id => $name ) : ?>
 								<option value="<?php echo esc_attr( $id ); ?>"<?php selected( $current_order, $id ); ?>><?php echo esc_html( $name ); ?></option>
 							<?php endforeach; ?>

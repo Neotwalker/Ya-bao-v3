@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_THEME_VERSION = '0.2.2';
+const YABAO_THEME_VERSION = '0.2.3';
 
 function yabao_asset_url( string $path = '' ): string {
 	return trailingslashit( get_template_directory_uri() ) . 'assets/' . ltrim( $path, '/' );

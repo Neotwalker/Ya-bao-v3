@@ -1,4 +1,5 @@
 import { initRelatedArticlesSwipers } from './components/related-articles-swiper.js';
+import { initCustomSelects } from './components/forms/custom-select.js';
 
 let catalogRequest = null;
 let catalogSearchTimer = null;
@@ -82,6 +83,10 @@ async function updateCatalog(url, { push = true, focusGrid = false } = {}) {
 function initCatalogControls(form) {
   if (!form || form.dataset.catalogReady === 'true') return;
   form.dataset.catalogReady = 'true';
+
+  // Reuse the exact custom-select component from the approved static frontend.
+  // This is intentionally re-run here because AJAX replaces the catalog shell.
+  initCustomSelects(form);
 
   const toggle = form.querySelector('[data-wc-filters-toggle]');
   const panel = form.querySelector('[data-wc-filter-panel]');
