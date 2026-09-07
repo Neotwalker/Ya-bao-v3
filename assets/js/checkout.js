@@ -48,8 +48,10 @@ if (root) {
   const submit = form?.querySelector('[type="submit"]');
   const formStatus = form?.querySelector('[data-form-status]');
   const fulfillmentInputs = [...(form?.querySelectorAll('input[name="fulfillment"]') || [])];
-  const addressField = form?.querySelector('[data-delivery-address-field]');
   const addressInput = form?.querySelector('[name="address"]');
+  const fulfillmentInfo = [...(form?.querySelectorAll('[data-fulfillment-info]') || [])];
+  const fulfillmentSummary = root.querySelector('[data-checkout-fulfillment-summary]');
+  const deliveryNote = root.querySelector('[data-checkout-delivery-note]');
 
   let feedStatus = 'loading';
   let productsById = new Map();
@@ -57,13 +59,28 @@ if (root) {
 
   const getAssessment = item => assessCartItem(item, productsById.get(item.productId), feedStatus);
 
-  const syncAddressField = () => {
-    if (!addressField || !addressInput) return;
-    const isDelivery = form?.querySelector('input[name="fulfillment"]:checked')?.value === 'delivery';
-    addressField.hidden = !isDelivery;
-    addressInput.disabled = !isDelivery;
-    addressInput.required = isDelivery;
-    if (!isDelivery) setFieldError(addressInput, '');
+  const syncFulfillment = () => {
+    const method = form?.querySelector('input[name="fulfillment"]:checked')?.value === 'delivery' ? 'delivery' : 'pickup';
+    const isDelivery = method === 'delivery';
+
+    fulfillmentInfo.forEach(panel => {
+      panel.hidden = panel.dataset.fulfillmentInfo !== method;
+    });
+
+    if (addressInput) {
+      addressInput.disabled = !isDelivery;
+      addressInput.required = isDelivery;
+      if (!isDelivery) setFieldError(addressInput, '');
+    }
+
+    if (fulfillmentSummary) {
+      fulfillmentSummary.textContent = isDelivery ? 'Доставка' : 'Самовывоз';
+    }
+    if (deliveryNote) {
+      deliveryNote.textContent = isDelivery
+        ? 'Зона, стоимость и сроки доставки пока уточняются. В итог включены только товары.'
+        : 'Самовывоз: Челябинск, Кирова, 94. В итог включены только товары.';
+    }
   };
 
   const summaryItemMarkup = item => {
@@ -181,11 +198,11 @@ if (root) {
 
   if (form) {
     wireFormErrors(form);
-    syncAddressField();
+    syncFulfillment();
 
     fulfillmentInputs.forEach(input => {
       input.addEventListener('change', () => {
-        syncAddressField();
+        syncFulfillment();
         clearFormStatus();
       });
     });
