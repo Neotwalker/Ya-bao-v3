@@ -127,9 +127,11 @@ export const addCartItem = source => {
   return { ...(state.items.find(item => item.key === next.key) || next) };
 };
 
-export const updateCartItemQuantity = (key, quantity) => {
+export const updateCartItemQuantity = (key, quantity, options = {}) => {
   const item = state.items.find(entry => entry.key === key);
   if (!item) return null;
+  const overrideMax = Number.parseInt(options?.maxQuantity, 10);
+  if (Number.isInteger(overrideMax) && overrideMax > 0) item.maxQuantity = overrideMax;
   const parsed = Number.parseInt(quantity, 10);
   if (!Number.isFinite(parsed) || parsed <= 0) { removeCartItem(key); return null; }
   item.quantity = item.maxQuantity ? Math.min(parsed, item.maxQuantity) : parsed;

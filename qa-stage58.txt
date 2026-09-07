@@ -1,0 +1,50 @@
+Я Бао Завари — Stage 58 QA (v4.52)
+Дата: 07.09.2026
+Baseline GitHub main: b46310d515c50a280b625c5a9fe0af6a53868185 (v4.51.1)
+
+Scope
+- Добавлена /cart/ (noindex,follow), без checkout.
+- Состав заказа, вариант/вес, количество, цена за единицу, сумма строки, промежуточный итог.
+- Изменение количества, удаление позиции, очистка корзины.
+- Сверка snapshot корзины с текущим data/products.json.
+- Состояния: цена изменилась / вариант недоступен / товар закончился / unit-остаток стал меньше количества.
+- Индикатор корзины на всех страницах теперь ведёт в /cart/.
+- store.js расширен совместимым options.maxQuantity для актуализации unit-лимита.
+
+Runtime QA
+PASS — price changed: сохранённая цена 900 -> текущая 950, в subtotal используется 950.
+PASS — weight variant missing: variant-unavailable, позиция исключена из subtotal.
+PASS — product out_of_stock: product-ended, позиция исключена из subtotal.
+PASS — unit quantity 10 при текущем stock 4: stock-limited, доступный максимум 4, позиция исключена до исправления.
+PASS — products feed error: snapshot корзины сохраняется и помечается unverified.
+PASS — store: unit max можно актуализировать 8 -> 10; quantity 9 принимается.
+PASS — store: при max 4 quantity 8 ограничивается до 4.
+PASS — remove: позиция удаляется, count обновляется.
+
+Static QA
+PASS — HTML: 40 файлов.
+PASS — локальные href/src/srcset/poster: 2691 проверка, битых 0.
+PASS — duplicate id: 0.
+PASS — JSON-LD parse errors: 0.
+PASS — cart indicator: 40/40 — ссылка, все href разрешаются в cart/index.html.
+PASS — cart/index.html содержит noindex,follow.
+PASS — /cart/ отсутствует в sitemap.xml.
+PASS — booking.html отсутствует.
+PASS — products.json валидируется по products.schema.json.
+PASS — assets/images: 39 файлов, изменений относительно baseline 0.
+PASS — products.json и products.schema.json без изменений.
+PASS — JS: 25/25 node --check.
+PASS — CSS: 8 файлов, parse errors 0.
+PASS — duplicate selector + media context: 0.
+PASS — повторные declarations внутри qualified CSS rules: 0.
+PASS — существующие 39 HTML изменены только в cart-indicator span -> ссылка на /cart/.
+PASS — assets/js/shop.js byte-identical baseline v4.51.1.
+
+Browser smoke
+Локальный Chromium headless в текущей среде не завершил запуск за 18 секунд (timeout, DBus/environment errors), поэтому визуальный smoke здесь недоступен. После загрузки на GitHub Pages проверить /cart/ на desktop и телефоне.
+
+Границы этапа
+- /checkout/ не создавался.
+- Доставка и платёжный flow не реализовывались.
+- Числовые остатки tea variants не выдумывались.
+- Реальные server-side stock/price checks остаются production/WooCommerce этапом.

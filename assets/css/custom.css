@@ -260,7 +260,7 @@ body .site-footer h3{margin-bottom:18px;color:var(--color-gold);font-family:var(
   }
 }
 
-/* Stage 51: static cart indicator. Store state is connected only at stage 57. */
+/* Cart indicator: store state from stage 57, cart link from stage 58. */
 .cart-indicator{
   position:relative;
   display:grid;
@@ -271,7 +271,11 @@ body .site-footer h3{margin-bottom:18px;color:var(--color-gold);font-family:var(
   border:1px solid rgba(255,255,255,.24);
   border-radius:50%;
   color:#fff;
+  text-decoration:none;
+  transition:border-color .2s ease,background .2s ease;
 }
+.cart-indicator:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.06)}
+.cart-indicator[aria-current="page"]{border-color:var(--color-gold)}
 .cart-indicator svg{width:20px;height:20px}
 .cart-indicator__count{
   position:absolute;
