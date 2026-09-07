@@ -553,3 +553,12 @@ GitHub Pages версия сайта чайной «Я Бао Завари» в 
 - Product schema не добавлялась: все demo product pages остаются `noindex,follow`; `/cart/`, `/checkout/`, `/order-success/`, `/order-failed/` также остаются noindex;
 - `products.json`, schema, cart/store, checkout/payment flow и изображения не менялись.
 
+
+
+### v4.56.1 — UX fix этапа 62
+
+- Блок гидов в `/shop/` переведён с `cards-grid cards-grid--three` на существующий Swiper-компонент related articles с теми же брейкпоинтами, что у эталонного `.guide-grid-v4`: 1 карточка на мобильном, 2 с 700 px, 3 с 1100 px.
+- Переиспользованы существующие `related-article-card`, `related-articles-swiper.js`, навигация и пагинация; отдельный новый slider-компонент не создавался.
+- `/shop/` подключает уже имеющиеся Swiper bundle CSS/JS только для этого блока.
+- `shop-seo-links` на мобильных стал компактнее: 2 колонки, меньшие gap, высота, padding и размер текста.
+- SEO-семантика, перелинковка, product data, cart/checkout/payment flow и изображения не менялись.

@@ -22,8 +22,10 @@
 <link href="../assets/css/responsive.css" rel="stylesheet"/>
 <link href="../assets/css/custom.css" rel="stylesheet"/>
 <link href="../assets/css/shop.css" rel="stylesheet"/>
+<link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet"/>
 <link href="../data/products.json" rel="preload" as="fetch" type="application/json" crossorigin="anonymous"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://neotwalker.github.io/Ya-bao-v3/#website","url":"https://neotwalker.github.io/Ya-bao-v3/","name":"Я Бао Завари","inLanguage":"ru-RU"},{"@type":"WebPage","@id":"https://neotwalker.github.io/Ya-bao-v3/shop/#webpage","url":"https://neotwalker.github.io/Ya-bao-v3/shop/","name":"Китайский чай в Челябинске | Магазин Я Бао Завари","description":"Каталог китайского чая, пуэра, чайной посуды и аксессуаров «Я Бао Завари» в Челябинске.","isPartOf":{"@id":"https://neotwalker.github.io/Ya-bao-v3/#website"},"inLanguage":"ru-RU"},{"@type":"BreadcrumbList","@id":"https://neotwalker.github.io/Ya-bao-v3/shop/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://neotwalker.github.io/Ya-bao-v3/"},{"@type":"ListItem","position":2,"name":"Магазин","item":"https://neotwalker.github.io/Ya-bao-v3/shop/"}]}]}</script><script src="../assets/js/app.js" type="module"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://neotwalker.github.io/Ya-bao-v3/#website","url":"https://neotwalker.github.io/Ya-bao-v3/","name":"Я Бао Завари","inLanguage":"ru-RU"},{"@type":"WebPage","@id":"https://neotwalker.github.io/Ya-bao-v3/shop/#webpage","url":"https://neotwalker.github.io/Ya-bao-v3/shop/","name":"Китайский чай в Челябинске | Магазин Я Бао Завари","description":"Каталог китайского чая, пуэра, чайной посуды и аксессуаров «Я Бао Завари» в Челябинске.","isPartOf":{"@id":"https://neotwalker.github.io/Ya-bao-v3/#website"},"inLanguage":"ru-RU"},{"@type":"BreadcrumbList","@id":"https://neotwalker.github.io/Ya-bao-v3/shop/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://neotwalker.github.io/Ya-bao-v3/"},{"@type":"ListItem","position":2,"name":"Магазин","item":"https://neotwalker.github.io/Ya-bao-v3/shop/"}]}]}</script><script defer fetchpriority="low" src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="../assets/js/app.js" type="module"></script>
 <script src="../assets/js/shop.js" type="module"></script>
 </head>
 <body class="page-shop page-inner"><a class="skip-link" href="#main-content">К основному содержанию</a><noscript><div class="no-js-note">Для работы меню и формы включите JavaScript.</div></noscript>
@@ -161,15 +163,24 @@
 </div>
 </div>
 </section>
-<section class="section section--dark shop-guides" aria-labelledby="shop-guides-title">
+<section class="section section--dark shop-guides related-articles" aria-labelledby="shop-guides-title">
 <div class="container">
 <div class="section-heading reveal"><div><p class="eyebrow">Гиды по чаю</p><h2 id="shop-guides-title">Помочь с выбором и завариванием</h2></div><p>Информационные материалы отвечают на вопросы о видах чая и способах заваривания, а магазин остаётся отдельной коммерческой страницей.</p></div>
-<div class="cards-grid cards-grid--three">
-<a class="related-article-card reveal" href="../blog-kak-vybrat-kitayskiy-chay.html"><span>Выбор чая</span><h3>Как выбрать китайский чай</h3><p>С чего начать, если названия и категории пока ничего не говорят.</p><strong>Читать <span aria-hidden="true">→</span></strong></a>
-<a class="related-article-card reveal" href="../blog-chto-takoe-puer.html"><span>Пуэр</span><h3>Что такое пуэр</h3><p>Шэн, Шу, прессовка и основные различия без перегруженной терминологии.</p><strong>Читать <span aria-hidden="true">→</span></strong></a>
-<a class="related-article-card reveal" href="../blog-kak-zavarivat-puer.html"><span>Заваривание</span><h3>Как заваривать пуэр</h3><p>Стартовая схема, температура, пропорции и логика коротких проливов.</p><strong>Читать <span aria-hidden="true">→</span></strong></a>
-<a class="related-article-card reveal" href="../blog-chto-takoe-gaba.html"><span>Габа</span><h3>Что такое Габа чай</h3><p>Как устроена технология GABA и почему это не один конкретный сорт.</p><strong>Читать <span aria-hidden="true">→</span></strong></a>
-<a class="related-article-card reveal" href="../blog-kak-zavarivat-gaba.html"><span>Заваривание</span><h3>Как заваривать Габа</h3><p>Базовая точка отсчёта для температуры, пропорций и времени.</p><strong>Читать <span aria-hidden="true">→</span></strong></a>
+<div class="related-articles__shell reveal" data-related-articles-shell="">
+<div class="related-articles__slider swiper" data-related-articles-swiper="">
+<div class="swiper-wrapper">
+<div class="swiper-slide"><a class="related-article-card" href="../blog-kak-vybrat-kitayskiy-chay.html"><span>Выбор чая</span><h3>Как выбрать китайский чай</h3><p>С чего начать, если названия и категории пока ничего не говорят.</p><strong>Читать <span aria-hidden="true">→</span></strong></a></div>
+<div class="swiper-slide"><a class="related-article-card" href="../blog-chto-takoe-puer.html"><span>Пуэр</span><h3>Что такое пуэр</h3><p>Шэн, Шу, прессовка и основные различия без перегруженной терминологии.</p><strong>Читать <span aria-hidden="true">→</span></strong></a></div>
+<div class="swiper-slide"><a class="related-article-card" href="../blog-kak-zavarivat-puer.html"><span>Заваривание</span><h3>Как заваривать пуэр</h3><p>Стартовая схема, температура, пропорции и логика коротких проливов.</p><strong>Читать <span aria-hidden="true">→</span></strong></a></div>
+<div class="swiper-slide"><a class="related-article-card" href="../blog-chto-takoe-gaba.html"><span>Габа</span><h3>Что такое Габа чай</h3><p>Как устроена технология GABA и почему это не один конкретный сорт.</p><strong>Читать <span aria-hidden="true">→</span></strong></a></div>
+<div class="swiper-slide"><a class="related-article-card" href="../blog-kak-zavarivat-gaba.html"><span>Заваривание</span><h3>Как заваривать Габа</h3><p>Базовая точка отсчёта для температуры, пропорций и времени.</p><strong>Читать <span aria-hidden="true">→</span></strong></a></div>
+</div>
+</div>
+<div aria-label="Навигация по материалам" class="related-articles__controls" role="group">
+<button aria-label="Предыдущие материалы" class="related-articles__button related-articles__button--prev" data-related-articles-prev="" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="m15 18-6-6 6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg></button>
+<div aria-hidden="true" class="related-articles__pagination" data-related-articles-pagination=""></div>
+<button aria-label="Следующие материалы" class="related-articles__button related-articles__button--next" data-related-articles-next="" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="m9 18 6-6-6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg></button>
+</div>
 </div>
 </div>
 </section>

@@ -1,4 +1,5 @@
 import { addCartItem, getCartState } from './store.js';
+import { initRelatedArticlesSwipers } from './components/related-articles-swiper.js';
 
 const initProductGallery = gallery => {
   if (gallery.dataset.galleryReady === 'true') return;
@@ -131,6 +132,7 @@ const initCardGalleries = (root = document) => {
 
 initProductGalleries();
 initCardGalleries();
+initRelatedArticlesSwipers();
 
 const initProductVariantPicker = picker => {
   if (picker.dataset.variantReady === 'true') return;
