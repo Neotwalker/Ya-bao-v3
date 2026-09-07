@@ -8,6 +8,22 @@
 .page-product .yabao-wc-add-to-cart .single_add_to_cart_button:disabled,
 .page-product .yabao-wc-add-to-cart .single_add_to_cart_button.disabled{opacity:.5;cursor:not-allowed;transform:none}
 
+/* Woo integration has a legacy pill rule; product CTA must match the approved .button exactly. */
+.page-product .yabao-wc-add-to-cart .single_add_to_cart_button.button{
+  min-height:54px;
+  padding:14px 24px;
+  border:1px solid transparent;
+  border-radius:var(--radius-sm);
+  background:var(--color-walnut);
+  color:var(--color-white);
+  font-size:14px;
+  font-weight:750;
+  line-height:1.2;
+}
+.page-product .yabao-wc-add-to-cart .single_add_to_cart_button.button:hover{background:var(--color-walnut-dark)}
+.page-product .yabao-wc-add-to-cart>.stock{display:none!important}
+.page-product .woocommerce-error .wc-forward{display:none!important}
+
 .page-product .yabao-wc-add-to-cart .product-quantity-picker{display:grid;gap:8px;margin:0;padding:0;border:0}
 .page-product .yabao-wc-add-to-cart .product-quantity-picker legend{margin:0;padding:0;color:var(--color-ink);font-size:14px;font-weight:700}
 .page-product .yabao-wc-add-to-cart .product-quantity-picker__control{display:grid;grid-template-columns:44px 64px 44px;width:max-content;overflow:hidden;border:1px solid var(--color-line);border-radius:12px;background:rgba(255,255,255,.44)}

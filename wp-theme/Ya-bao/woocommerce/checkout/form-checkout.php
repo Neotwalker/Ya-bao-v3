@@ -7,7 +7,18 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 	echo esc_html( apply_filters( 'woocommerce_checkout_must_be_logged_in_message', __( 'You must be logged in to checkout.', 'woocommerce' ) ) );
 	return;
 }
+
+// Current delivery scope is Russia only. Keep Woo's country value in the form
+// for taxes/shipping/order data, but do not ask the customer to choose it.
+if ( WC()->customer ) {
+	WC()->customer->set_billing_country( 'RU' );
+	WC()->customer->set_shipping_country( 'RU' );
+}
 ?>
+<style id="yabao-checkout-russia-only">
+.page-checkout #billing_country_field,
+.page-checkout #shipping_country_field{display:none!important}
+</style>
 <form name="checkout" method="post" class="checkout woocommerce-checkout checkout-layout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data" aria-label="Оформление заказа">
 	<div class="checkout-form">
 		<?php if ( $checkout->get_checkout_fields() ) : ?>

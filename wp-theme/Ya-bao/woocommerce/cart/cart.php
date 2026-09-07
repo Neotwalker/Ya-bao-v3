@@ -1,5 +1,10 @@
 <?php
 defined( 'ABSPATH' ) || exit;
+
+// v0.4.3 cart behaviour is loaded under a new handle/file so a browser cannot
+// reuse the old v0.4.0 module that submitted the form and reloaded the page.
+wp_enqueue_script( 'yabao-wp-cart-v043', yabao_asset_url( 'js/wp-cart-v043.js' ), array(), '0.4.3', true );
+
 do_action( 'woocommerce_before_cart' );
 ?>
 <form class="woocommerce-cart-form cart-layout" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">

@@ -4,8 +4,8 @@ defined( 'ABSPATH' ) || exit;
 
 // Stage 66 QA parity layer. Product-only and versioned independently so the
 // browser cannot keep an older product CSS/JS build after this patch.
-wp_enqueue_style( 'yabao-wc-product-parity', yabao_asset_url( 'css/wp-product-parity.css' ), array( 'yabao-wp' ), '0.4.2' );
-wp_enqueue_script( 'yabao-wc-product-parity', yabao_asset_url( 'js/wp-product-parity.js' ), array( 'jquery', 'wc-add-to-cart-variation', 'wc-cart-fragments' ), '0.4.2', true );
+wp_enqueue_style( 'yabao-wc-product-parity', yabao_asset_url( 'css/wp-product-parity.css' ), array( 'yabao-wp' ), '0.4.3' );
+wp_enqueue_script( 'yabao-wc-product-parity', yabao_asset_url( 'js/wp-product-parity.js' ), array( 'jquery', 'wc-add-to-cart-variation', 'wc-cart-fragments' ), '0.4.3', true );
 
 get_header();
 
@@ -21,6 +21,10 @@ if ( ! $product ) {
 $image_ids = array_filter( array_merge( array( $product->get_image_id() ), $product->get_gallery_image_ids() ) );
 $image_ids = array_values( array_unique( $image_ids ) );
 $category  = yabao_product_terms_text( $product );
+$stock_detail = trim( wp_strip_all_tags( wc_get_stock_html( $product ) ) );
+if ( '' === $stock_detail ) {
+	$stock_detail = $product->is_in_stock() ? 'В наличии' : 'Нет в наличии';
+}
 
 // A variable product normally renders a price range until Woo JS resolves the
 // selected variation. The approved static page starts on the first available
@@ -89,6 +93,7 @@ if ( $product->is_type( 'variable' ) ) {
 						<?php if ( $product->get_sku() ) : ?><div><dt>Артикул</dt><dd><?php echo esc_html( $product->get_sku() ); ?></dd></div><?php endif; ?>
 						<div><dt>Тип товара</dt><dd><?php echo esc_html( $product->is_type( 'variable' ) ? 'С вариантами' : 'Простой товар' ); ?></dd></div>
 						<div><dt>Категория</dt><dd><?php echo esc_html( $category ); ?></dd></div>
+						<div><dt>Наличие</dt><dd><?php echo esc_html( $stock_detail ); ?></dd></div>
 					</dl>
 					<div class="yabao-wc-add-to-cart"><?php woocommerce_template_single_add_to_cart(); ?></div>
 					<div class="product-summary__actions"><a class="button button--outline-walnut" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) ); ?>">Вернуться в магазин</a></div>

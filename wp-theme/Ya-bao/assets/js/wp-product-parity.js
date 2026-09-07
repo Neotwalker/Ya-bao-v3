@@ -92,7 +92,9 @@
     if (!html) return '';
     const documentFromResponse = new DOMParser().parseFromString(html, 'text/html');
     const error = documentFromResponse.querySelector('.woocommerce-error, .woocommerce-error li, .wc-block-components-notice-banner.is-error');
-    return error?.textContent?.replace(/\s+/g, ' ').trim() || '';
+    if (!error) return '';
+    error.querySelectorAll('.wc-forward').forEach(link => link.remove());
+    return error.textContent?.replace(/\s+/g, ' ').trim() || '';
   }
 
   function enableAjaxAddToCart(form) {
