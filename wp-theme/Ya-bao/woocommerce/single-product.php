@@ -94,7 +94,6 @@ if ( $product->is_type( 'variable' ) ) {
 					<?php if ( $product->get_short_description() ) : ?><div class="lead"><?php echo wp_kses_post( wpautop( $product->get_short_description() ) ); ?></div><?php endif; ?>
 					<dl class="product-facts">
 						<?php if ( $product->get_sku() ) : ?><div><dt>Артикул</dt><dd><?php echo esc_html( $product->get_sku() ); ?></dd></div><?php endif; ?>
-						<div><dt>Тип товара</dt><dd><?php echo esc_html( $product->is_type( 'variable' ) ? 'С вариантами' : 'Простой товар' ); ?></dd></div>
 						<div><dt>Категория</dt><dd><?php echo esc_html( $category ); ?></dd></div>
 						<div><dt>Наличие</dt><dd><?php echo esc_html( $stock_detail ); ?></dd></div>
 					</dl>
