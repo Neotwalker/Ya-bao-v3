@@ -123,7 +123,7 @@ function yabao_module_script_tag( string $tag, string $handle, string $src ): st
 	if ( ! in_array( $handle, $module_handles, true ) ) {
 		return $tag;
 	}
-	return sprintf( '<script type="module" src="%s" id="%s-js"></script>\n', esc_url( $src ), esc_attr( $handle ) );
+	return sprintf( '<script type="module" src="%s" id="%s-js"></script>', esc_url( $src ), esc_attr( $handle ) ) . PHP_EOL;
 }
 add_filter( 'script_loader_tag', 'yabao_module_script_tag', 10, 3 );
 
