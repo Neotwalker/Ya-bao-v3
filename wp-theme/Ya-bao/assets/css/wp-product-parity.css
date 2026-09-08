@@ -52,3 +52,22 @@
 
 /* Keep the selected Woo variation price in the approved top price slot only. */
 .page-product .yabao-weight-form .woocommerce-variation-price{display:none!important}
+
+@media(max-width:640px){
+  .page-product .yabao-wc-add-to-cart .product-quantity-picker__control{
+    grid-template-columns:34px 42px 34px;
+    border-radius:10px
+  }
+  .page-product .yabao-wc-add-to-cart .product-quantity-picker__control>button{
+    width:34px;
+    height:36px;
+    font-size:18px
+  }
+  .page-product .yabao-wc-add-to-cart .product-quantity-picker__control .qty{
+    width:42px;
+    height:36px;
+    min-height:36px;
+    font-size:14px
+  }
+}
+

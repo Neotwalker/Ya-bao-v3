@@ -1,5 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || exit;
+
+add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
 global $product;
 if ( ! $product instanceof WC_Product || ! $product->is_visible() ) {
 	return;
@@ -16,10 +18,26 @@ $price_html = $product->get_price_html();
 if ( $product->is_type( 'variable' ) ) {
 	$minimum_price = $product->get_variation_price( 'min', true );
 	if ( is_numeric( $minimum_price ) ) {
-		$price_html = 'от ' . wc_price( (float) $minimum_price, array( 'decimals' => 0 ) );
+		$price_html = 'от ' . wc_price( (float) $minimum_price );
 	}
 }
 ?>
+<?php
+if ( ! defined( 'YABAO_STAGE66_V045_SHOP_STYLE_PRINTED' ) ) :
+	define( 'YABAO_STAGE66_V045_SHOP_STYLE_PRINTED', true );
+?>
+<style id="yabao-shop-v045">
+@media(max-width:640px){
+  .page-shop .shop-filter-bar .shop-filter{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    line-height:1.2
+  }
+}
+</style>
+<?php endif; ?>
 <article <?php wc_product_class( 'shop-card' . ( $out ? ' shop-card--out' : '' ), $product ); ?> data-type="<?php echo esc_attr( $type_slug ); ?>">
 	<a class="shop-card__link" href="<?php echo esc_url( $link ); ?>">
 		<div class="shop-card__media"<?php echo count( $image_ids ) > 1 ? ' data-card-gallery' : ''; ?>>

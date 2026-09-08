@@ -1,5 +1,9 @@
 <?php
 defined( 'ABSPATH' ) || exit;
+
+// Mini-cart fragments are rendered through Woo AJAX without header.php.
+add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
+
 $items = WC()->cart ? WC()->cart->get_cart() : array();
 ?>
 <?php if ( $items ) : ?>

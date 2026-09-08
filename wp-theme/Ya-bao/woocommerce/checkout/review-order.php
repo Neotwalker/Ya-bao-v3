@@ -1,5 +1,8 @@
 <?php
 defined( 'ABSPATH' ) || exit;
+
+// update_order_review is rendered over Woo AJAX, so keep zero trimming here too.
+add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
 ?>
 <div class="woocommerce-checkout-review-order-table">
 <div class="checkout-items">
