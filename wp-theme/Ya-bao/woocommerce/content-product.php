@@ -1,15 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
-wp_enqueue_script(
-	'yabao-shop-card-cart-v047',
-	yabao_asset_url( 'js/wp-shop-card-cart-v047.js' ),
-	array( 'jquery', 'wc-cart-fragments' ),
-	'0.4.7',
-	true
-);
-
 global $product;
 if ( ! $product instanceof WC_Product || ! $product->is_visible() ) {
 	return;
@@ -132,60 +123,6 @@ if ( $product->is_type( 'variable' ) ) {
 	}
 }
 ?>
-<?php
-if ( ! defined( 'YABAO_STAGE66_V048_SHOP_CARD_STYLE_PRINTED' ) ) :
-	define( 'YABAO_STAGE66_V048_SHOP_CARD_STYLE_PRINTED', true );
-?>
-<style id="yabao-shop-card-cart-v048">
-.shop-card{display:flex;min-width:0;flex-direction:column}
-.shop-card__media-link{display:block;color:inherit;text-decoration:none}
-.shop-card__media-link:focus-visible,.shop-card__title-link:focus-visible{outline:3px solid rgba(139,97,55,.32);outline-offset:3px}
-.shop-card__title-link{color:inherit;text-decoration:none}
-.shop-card__title-link:hover{text-decoration:underline;text-underline-offset:3px}
-.shop-card>.shop-card__body{display:flex;min-width:0;flex:1;flex-direction:column}
-.shop-card__cart{display:grid;gap:11px;margin-top:auto;padding-top:14px}
-.shop-card__variants{min-width:0;margin:0;padding:0;border:0}
-.shop-card__variant-list{display:flex;flex-wrap:wrap;gap:6px}
-.shop-card__variant{
-  display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:6px 10px;
-  border:1px solid var(--color-line);border-radius:999px;background:rgba(255,255,255,.42);
-  color:var(--color-muted);font:inherit;font-size:11px;font-weight:700;line-height:1;cursor:pointer;
-  transition:background .18s ease,color .18s ease,border-color .18s ease
-}
-.shop-card__variant:hover:not(:disabled){border-color:rgba(95,70,48,.42);color:var(--color-ink)}
-.shop-card__variant[aria-checked="true"]{border-color:var(--color-walnut);background:var(--color-walnut);color:#fff}
-.shop-card__variant:disabled{cursor:not-allowed;opacity:.38}
-.shop-card__purchase{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:center}
-.shop-card__quantity{display:block;min-width:0}
-.shop-card .product-quantity-picker__control--card{
-  grid-template-columns:32px 40px 32px;width:max-content;border-radius:10px;background:rgba(255,255,255,.42)
-}
-.shop-card .product-quantity-picker__control--card button,
-.shop-card .product-quantity-picker__control--card input.qty{
-  width:auto;min-width:0;height:38px;min-height:0;padding:0;border:0;border-radius:0;background:transparent;color:var(--color-ink);font:inherit
-}
-.shop-card .product-quantity-picker__control--card button{font-size:17px}
-.shop-card .product-quantity-picker__control--card input.qty{width:40px;border-inline:1px solid var(--color-line);text-align:center;-moz-appearance:textfield}
-.shop-card .product-quantity-picker__control--card input.qty::-webkit-inner-spin-button,
-.shop-card .product-quantity-picker__control--card input.qty::-webkit-outer-spin-button{margin:0;-webkit-appearance:none}
-.shop-card__add{width:100%;min-height:38px;padding:8px 11px;font-size:12px;line-height:1.1;white-space:nowrap}
-.shop-card__cart.is-loading{opacity:.68}
-.shop-card__feedback{margin:0;color:#526044;font-size:11px;line-height:1.35}
-.shop-card__feedback:empty{display:none}
-.shop-card__feedback.is-error{color:var(--color-walnut)}
-.shop-card__choose{width:100%;margin-top:auto}
-@media(max-width:640px){
-  .page-shop .shop-filter-bar .shop-filter{display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1.2}
-  .shop-card__cart{gap:10px;padding-top:12px}
-  .shop-card__variant{min-height:30px;padding:6px 9px;font-size:11px}
-  .shop-card .product-quantity-picker__control--card{grid-template-columns:30px 38px 30px}
-  .shop-card .product-quantity-picker__control--card button,
-  .shop-card .product-quantity-picker__control--card input.qty{height:36px}
-  .shop-card .product-quantity-picker__control--card input.qty{width:38px}
-  .shop-card__add{min-height:36px}
-}
-</style>
-<?php endif; ?>
 <article <?php wc_product_class( 'shop-card' . ( $out ? ' shop-card--out' : '' ), $product ); ?> data-type="<?php echo esc_attr( $type_slug ); ?>">
 	<a class="shop-card__media-link" href="<?php echo esc_url( $link ); ?>" aria-label="Открыть <?php echo esc_attr( $product->get_name() ); ?>">
 		<div class="shop-card__media"<?php echo count( $image_ids ) > 1 ? ' data-card-gallery' : ''; ?>>

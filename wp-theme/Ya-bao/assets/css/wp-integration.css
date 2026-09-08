@@ -33,8 +33,9 @@
 .yabao-wc-add-to-cart form.cart{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:0}
 .yabao-wc-add-to-cart .quantity{display:block}
 .yabao-wc-add-to-cart .quantity .qty{width:84px;height:46px;padding:0 10px;border:1px solid var(--color-line);border-radius:var(--radius-sm);background:var(--color-ivory);text-align:center}
-.yabao-wc-add-to-cart .single_add_to_cart_button{min-height:46px;padding:10px 18px;border:1px solid var(--color-walnut);border-radius:999px;background:var(--color-walnut);color:var(--color-white);font:inherit;font-weight:700;cursor:pointer}
-.yabao-wc-add-to-cart .single_add_to_cart_button:disabled{opacity:.5;cursor:not-allowed}
+.yabao-wc-add-to-cart .single_add_to_cart_button{min-height:54px;padding:14px 24px;border:1px solid transparent;border-radius:var(--radius-sm);background:var(--color-walnut);color:var(--color-white);font:inherit;font-size:14px;font-weight:750;line-height:1.2;cursor:pointer}
+.yabao-wc-add-to-cart .single_add_to_cart_button:hover{background:var(--color-walnut-dark)}
+.yabao-wc-add-to-cart .single_add_to_cart_button:disabled,.yabao-wc-add-to-cart .single_add_to_cart_button.disabled{opacity:.5;cursor:not-allowed;transform:none}
 .yabao-wc-add-to-cart .variations{width:100%;margin:0;border-collapse:collapse}
 .yabao-wc-add-to-cart .variations tr{display:grid;gap:7px;margin-bottom:12px}
 .yabao-wc-add-to-cart .variations th,.yabao-wc-add-to-cart .variations td{padding:0;text-align:left}
@@ -88,4 +89,285 @@
   .yabao-wc-add-to-cart form.cart{display:grid}
   .yabao-wc-add-to-cart .single_add_to_cart_button{width:100%}
   .yabao-cart-actions .button{width:100%}
+}
+
+
+/* Stage 67: consolidated single-product integration rules. */
+.page-product [hidden]{display:none!important}
+
+/* Woo keeps the commercial form; this layer restores the approved controls. */
+.page-product .yabao-wc-add-to-cart{display:block}
+.page-product .yabao-wc-add-to-cart form.cart.yabao-product-form{display:grid;gap:14px;margin:0}
+.page-product .yabao-wc-add-to-cart .stock{margin:0;color:var(--color-muted);font-size:14px}
+
+.page-product .yabao-wc-add-to-cart>.stock{display:none!important}
+.page-product .woocommerce-error .wc-forward{display:none!important}
+
+.page-product .yabao-wc-add-to-cart .product-quantity-picker{display:grid;gap:8px;margin:0;padding:0;border:0}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker legend{margin:0;padding:0;color:var(--color-ink);font-size:14px;font-weight:700}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control{display:grid;grid-template-columns:44px 64px 44px;width:max-content;overflow:hidden;border:1px solid var(--color-line);border-radius:12px;background:rgba(255,255,255,.44)}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control>button{display:grid;width:44px;height:44px;place-items:center;padding:0;border:0;background:transparent;color:var(--color-ink);font:inherit;font-size:20px;cursor:pointer;touch-action:manipulation}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control>button:disabled{cursor:not-allowed;opacity:.35}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control .quantity{display:contents}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control .qty{width:64px;height:44px;min-width:0;padding:0;border:0;border-inline:1px solid var(--color-line);border-radius:0;background:transparent;text-align:center;font:inherit;-moz-appearance:textfield}
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control .qty::-webkit-inner-spin-button,
+.page-product .yabao-wc-add-to-cart .product-quantity-picker__control .qty::-webkit-outer-spin-button{margin:0;-webkit-appearance:none}
+
+/* Weight pills inherit the exact approved legend typography/spacing from shop.css. */
+.page-product .yabao-wc-weight-picker{margin:0;padding:0;border:0}
+.page-product .yabao-wc-weight-picker .shop-filter-bar{margin:0}
+.page-product .yabao-weight-form .yabao-product-options{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-end;
+  gap:14px 18px;
+}
+.page-product .yabao-weight-form .yabao-product-options>.product-variant-picker,
+.page-product .yabao-weight-form .yabao-product-options>.product-quantity-picker{
+  display:grid;
+  flex:0 0 auto;
+  gap:8px;
+  margin:0;
+}
+.page-product .yabao-weight-form .yabao-product-options legend{
+  margin:0;
+  padding:0;
+  color:var(--color-ink);
+  font-size:14px;
+  font-weight:700;
+}
+.page-product .yabao-weight-form .variations,
+.page-product .yabao-weight-form .reset_variations,
+.page-product .yabao-weight-form .single_variation{display:none!important}
+.page-product .yabao-weight-form .single_variation_wrap{display:block;width:100%}
+.page-product .yabao-weight-form .variations_button{display:block!important}
+
+.page-product .product-summary__actions.yabao-wc-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0}
+.page-product .product-summary__actions.yabao-wc-actions .button{margin:0}
+.page-product .product-summary>.product-summary__actions:empty{display:none}
+.page-product .yabao-cart-feedback{margin:0;color:var(--color-muted);font-size:13px;line-height:1.4}
+.page-product .yabao-cart-feedback.is-error{color:var(--color-error)}
+
+/* Keep the selected Woo variation price in the approved top price slot only. */
+.page-product .yabao-weight-form .woocommerce-variation-price{display:none!important}
+
+@media(max-width:640px){
+  .page-product .yabao-weight-form .yabao-product-options{gap:10px 12px}
+  .page-product .yabao-wc-add-to-cart .product-quantity-picker__control{
+    grid-template-columns:34px 42px 34px;
+    border-radius:10px
+  }
+  .page-product .yabao-wc-add-to-cart .product-quantity-picker__control>button{
+    width:34px;
+    height:36px;
+    font-size:18px
+  }
+  .page-product .yabao-wc-add-to-cart .product-quantity-picker__control .qty{
+    width:42px;
+    height:36px;
+    min-height:36px;
+    font-size:14px
+  }
+}
+
+/* Stage 67: consolidated catalogue card purchase controls. */
+.shop-card{display:flex;min-width:0;flex-direction:column}
+.shop-card__media-link{display:block;color:inherit;text-decoration:none}
+.shop-card__media-link:focus-visible,.shop-card__title-link:focus-visible{outline:3px solid rgba(139,97,55,.32);outline-offset:3px}
+.shop-card__title-link{color:inherit;text-decoration:none}
+.shop-card__title-link:hover{text-decoration:underline;text-underline-offset:3px}
+.shop-card>.shop-card__body{display:flex;min-width:0;flex:1;flex-direction:column}
+.shop-card__cart{display:grid;gap:11px;margin-top:auto;padding-top:14px}
+.shop-card__variants{min-width:0;margin:0;padding:0;border:0}
+.shop-card__variant-list{display:flex;flex-wrap:wrap;gap:6px}
+.shop-card__variant{
+  display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:6px 10px;
+  border:1px solid var(--color-line);border-radius:999px;background:rgba(255,255,255,.42);
+  color:var(--color-muted);font:inherit;font-size:11px;font-weight:700;line-height:1;cursor:pointer;
+  transition:background .18s ease,color .18s ease,border-color .18s ease
+}
+.shop-card__variant:hover:not(:disabled){border-color:rgba(95,70,48,.42);color:var(--color-ink)}
+.shop-card__variant[aria-checked="true"]{border-color:var(--color-walnut);background:var(--color-walnut);color:#fff}
+.shop-card__variant:disabled{cursor:not-allowed;opacity:.38}
+.shop-card__purchase{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:center}
+.shop-card__quantity{display:block;min-width:0}
+.shop-card .product-quantity-picker__control--card{
+  grid-template-columns:32px 40px 32px;width:max-content;border-radius:10px;background:rgba(255,255,255,.42)
+}
+.shop-card .product-quantity-picker__control--card button,
+.shop-card .product-quantity-picker__control--card input.qty{
+  width:auto;min-width:0;height:38px;min-height:0;padding:0;border:0;border-radius:0;background:transparent;color:var(--color-ink);font:inherit
+}
+.shop-card .product-quantity-picker__control--card button{font-size:17px}
+.shop-card .product-quantity-picker__control--card input.qty{width:40px;border-inline:1px solid var(--color-line);text-align:center;-moz-appearance:textfield}
+.shop-card .product-quantity-picker__control--card input.qty::-webkit-inner-spin-button,
+.shop-card .product-quantity-picker__control--card input.qty::-webkit-outer-spin-button{margin:0;-webkit-appearance:none}
+.shop-card__add{width:100%;min-height:38px;padding:8px 11px;font-size:12px;line-height:1.1;white-space:nowrap}
+.shop-card__cart.is-loading{opacity:.68}
+.shop-card__feedback{margin:0;color:#526044;font-size:11px;line-height:1.35}
+.shop-card__feedback:empty{display:none}
+.shop-card__feedback.is-error{color:var(--color-walnut)}
+.shop-card__choose{width:100%;margin-top:auto}
+@media(max-width:640px){
+  .page-shop .shop-filter-bar .shop-filter{display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1.2}
+  .shop-card__cart{gap:10px;padding-top:12px}
+  .shop-card__variant{min-height:30px;padding:6px 9px;font-size:11px}
+  .shop-card .product-quantity-picker__control--card{grid-template-columns:30px 38px 30px}
+  .shop-card .product-quantity-picker__control--card button,
+  .shop-card .product-quantity-picker__control--card input.qty{height:36px}
+  .shop-card .product-quantity-picker__control--card input.qty{width:38px}
+  .shop-card__add{min-height:36px}
+}
+
+/* Stage 67: consolidated cart quantity controls. */
+.page-cart .woocommerce-cart-form .product-quantity-picker__control .qty{
+	width:100%;min-width:0;min-height:0;padding:0;border:0;border-inline:1px solid var(--color-line);border-radius:0;background:transparent;text-align:center
+}
+@media(max-width:640px){
+	.page-cart .product-quantity-picker__control{
+		grid-template-columns:34px 42px 34px;
+		width:max-content;
+		border-radius:10px
+	}
+	.page-cart .product-quantity-picker__control button{
+		width:34px;
+		height:36px;
+		padding:0;
+		font-size:18px
+	}
+	.page-cart .woocommerce-cart-form .product-quantity-picker__control .qty{
+		width:100%;
+		height:36px;
+		font-size:14px
+	}
+}
+
+/* Stage 67: consolidated checkout refinements. */
+.page-checkout #billing_country_field,
+.page-checkout #shipping_country_field{display:none!important}
+
+/* Woo inserts validation notices as a direct child of the two-column checkout grid. */
+.page-checkout .checkout-layout>.woocommerce-NoticeGroup-checkout{
+	grid-column:1/-1;
+	min-width:0;
+	margin:0
+}
+
+/* Coupon: compact toggle + one-row desktop form, stacked mobile form. */
+.page-checkout .woocommerce-form-coupon-toggle{margin:0 0 12px}
+.page-checkout .woocommerce-form-coupon-toggle .woocommerce-info{
+	display:flex;
+	align-items:center;
+	justify-content:space-between;
+	gap:16px;
+	margin:0;
+	padding:14px 16px;
+	border:1px solid var(--color-line);
+	border-radius:var(--radius-sm);
+	background:rgba(255,255,255,.34)
+}
+.page-checkout .woocommerce-form-coupon-toggle .showcoupon{
+	flex:0 0 auto;
+	margin-left:auto;
+	color:var(--color-walnut);
+	font-weight:700;
+	text-decoration:underline;
+	text-underline-offset:3px
+}
+.page-checkout form.checkout_coupon.woocommerce-form-coupon{
+	margin:0 0 18px;
+	padding:12px;
+	border:1px solid var(--color-line);
+	border-radius:var(--radius-sm);
+	background:rgba(255,255,255,.34)
+}
+.page-checkout form.checkout_coupon.woocommerce-form-coupon:not([style*="display:none"]):not([style*="display: none"]){
+	display:grid!important;
+	grid-template-columns:minmax(0,1fr) auto;
+	gap:10px;
+	align-items:stretch
+}
+.page-checkout form.checkout_coupon.woocommerce-form-coupon .form-row{
+	float:none;
+	width:auto;
+	margin:0
+}
+.page-checkout form.checkout_coupon.woocommerce-form-coupon .clear{display:none}
+.page-checkout form.checkout_coupon.woocommerce-form-coupon input.input-text{
+	height:54px;
+	min-height:54px;
+	padding:0 14px;
+	border:1px solid var(--color-line);
+	border-radius:var(--radius-sm);
+	background:var(--color-ivory)
+}
+.page-checkout form.checkout_coupon.woocommerce-form-coupon input.input-text:focus{
+	outline:0;
+	border-color:var(--color-walnut);
+	box-shadow:0 0 0 3px rgba(95,70,48,.10)
+}
+.page-checkout form.checkout_coupon.woocommerce-form-coupon button.button{
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	min-height:54px;
+	padding:14px 24px;
+	border:1px solid transparent;
+	border-radius:var(--radius-sm);
+	background:var(--color-walnut);
+	color:var(--color-white);
+	font:inherit;
+	font-size:14px;
+	font-weight:750;
+	line-height:1.2;
+	text-align:center;
+	cursor:pointer;
+	transition:background var(--duration),color var(--duration),border-color var(--duration),transform var(--duration),box-shadow var(--duration)
+}
+.page-checkout form.checkout_coupon.woocommerce-form-coupon button.button:hover{
+	background:var(--color-walnut-dark)
+}
+
+/* Current checkout uses billing address as the delivery address.
+   The Woo shipping container is empty here, so keep it out of the visual flow. */
+.page-checkout .checkout-panel[aria-labelledby="checkout-shipping-title"] .woocommerce-shipping-fields{display:none}
+.page-checkout .checkout-panel[aria-labelledby="checkout-shipping-title"] .woocommerce-additional-fields{margin-top:20px}
+.page-checkout .checkout-panel[aria-labelledby="checkout-shipping-title"] .woocommerce-additional-fields>h3{
+	margin:0 0 14px
+}
+
+@media(max-width:640px){
+	.page-checkout .woocommerce-form-coupon-toggle .woocommerce-info{
+		align-items:flex-start;
+		flex-direction:column;
+		gap:7px;
+		padding:12px
+	}
+	.page-checkout .woocommerce-form-coupon-toggle .showcoupon{margin-left:0}
+	.page-checkout form.checkout_coupon.woocommerce-form-coupon{
+		padding:10px
+	}
+	.page-checkout form.checkout_coupon.woocommerce-form-coupon:not([style*="display:none"]):not([style*="display: none"]){
+		grid-template-columns:1fr
+	}
+	.page-checkout form.checkout_coupon.woocommerce-form-coupon input.input-text{
+		height:46px;
+		min-height:46px
+	}
+	.page-checkout form.checkout_coupon.woocommerce-form-coupon button.button{
+		width:100%;
+		min-height:46px;
+		padding:11px 16px
+	}
+	.page-checkout .checkout-panel[aria-labelledby="checkout-shipping-title"] .checkout-panel__heading{
+		align-items:flex-start;
+		flex-wrap:wrap;
+		row-gap:7px
+	}
+	.page-checkout .checkout-panel[aria-labelledby="checkout-shipping-title"] .woocommerce-additional-fields{
+		margin-top:16px
+	}
+	.page-checkout .checkout-panel[aria-labelledby="checkout-shipping-title"] .woocommerce-additional-fields>h3{
+		margin-bottom:12px
+	}
 }

@@ -1,37 +1,8 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
-
-// v0.4.4 cart behaviour is loaded under a new handle/file so a browser cannot
-// reuse the old v0.4.0/v0.4.3 modules that submitted the form or rendered stale notices.
-wp_enqueue_script( 'yabao-wp-cart-v044', yabao_asset_url( 'js/wp-cart-v044.js' ), array(), '0.4.4', true );
-
 do_action( 'woocommerce_before_cart' );
 ?>
-<style id="yabao-cart-v044">
-.page-cart .woocommerce-cart-form .product-quantity-picker__control .qty{
-	width:100%;min-width:0;min-height:0;padding:0;border:0;border-inline:1px solid var(--color-line);border-radius:0;background:transparent;text-align:center
-}
-@media(max-width:640px){
-	.page-cart .product-quantity-picker__control{
-		grid-template-columns:34px 42px 34px;
-		width:max-content;
-		border-radius:10px
-	}
-	.page-cart .product-quantity-picker__control button{
-		width:34px;
-		height:36px;
-		padding:0;
-		font-size:18px
-	}
-	.page-cart .woocommerce-cart-form .product-quantity-picker__control .qty{
-		width:100%;
-		height:36px;
-		font-size:14px
-	}
-}
-</style>
 <form class="woocommerce-cart-form cart-layout" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
 	<section class="cart-items" aria-labelledby="cart-items-title">
 		<div class="cart-section-heading"><div><p class="eyebrow">Состав заказа</p><h2 id="cart-items-title">Ваши товары</h2></div><button class="cart-clear" type="submit" name="yabao_clear_cart" value="1">Очистить корзину</button></div>
