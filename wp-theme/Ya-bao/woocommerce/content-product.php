@@ -58,12 +58,21 @@ if ( $product->is_type( 'variable' ) ) {
 		$variation_attribute_ui = wc_attribute_label( $variation_attribute, $product );
 		$available_variations   = $product->get_available_variations( 'objects' );
 
+		$variation_attribute_key = 'attribute_' . sanitize_title( $variation_attribute );
+
 		foreach ( $available_variations as $variation ) {
 			if ( ! $variation instanceof WC_Product_Variation || ! $variation->is_purchasable() ) {
 				continue;
 			}
 
-			$value = (string) $variation->get_attribute( $variation_attribute );
+			// WooCommerce validates variation attributes against the raw stored value.
+			// For taxonomy attributes this is the term slug (for example `250-g`),
+			// while get_attribute() returns the human-readable term name (`250 г`).
+			// Submit the raw variation value and keep the readable term name only for UI.
+			$raw_variation_attributes = $variation->get_variation_attributes( true );
+			$value = isset( $raw_variation_attributes[ $variation_attribute_key ] )
+				? (string) $raw_variation_attributes[ $variation_attribute_key ]
+				: '';
 			if ( '' === $value ) {
 				continue;
 			}
@@ -124,10 +133,10 @@ if ( $product->is_type( 'variable' ) ) {
 }
 ?>
 <?php
-if ( ! defined( 'YABAO_STAGE66_V047_SHOP_CARD_STYLE_PRINTED' ) ) :
-	define( 'YABAO_STAGE66_V047_SHOP_CARD_STYLE_PRINTED', true );
+if ( ! defined( 'YABAO_STAGE66_V048_SHOP_CARD_STYLE_PRINTED' ) ) :
+	define( 'YABAO_STAGE66_V048_SHOP_CARD_STYLE_PRINTED', true );
 ?>
-<style id="yabao-shop-card-cart-v047">
+<style id="yabao-shop-card-cart-v048">
 .shop-card{display:flex;min-width:0;flex-direction:column}
 .shop-card__media-link{display:block;color:inherit;text-decoration:none}
 .shop-card__media-link:focus-visible,.shop-card__title-link:focus-visible{outline:3px solid rgba(139,97,55,.32);outline-offset:3px}
@@ -136,7 +145,6 @@ if ( ! defined( 'YABAO_STAGE66_V047_SHOP_CARD_STYLE_PRINTED' ) ) :
 .shop-card>.shop-card__body{display:flex;min-width:0;flex:1;flex-direction:column}
 .shop-card__cart{display:grid;gap:11px;margin-top:auto;padding-top:14px}
 .shop-card__variants{min-width:0;margin:0;padding:0;border:0}
-.shop-card__variants legend{margin:0 0 7px;padding:0;color:var(--color-muted);font-size:11px;font-weight:700;line-height:1.2}
 .shop-card__variant-list{display:flex;flex-wrap:wrap;gap:6px}
 .shop-card__variant{
   display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:6px 10px;
@@ -206,8 +214,7 @@ if ( ! defined( 'YABAO_STAGE66_V047_SHOP_CARD_STYLE_PRINTED' ) ) :
 				<input type="hidden" name="product_id" value="<?php echo esc_attr( (string) $product_id ); ?>">
 				<input type="hidden" name="variation_id" value="<?php echo esc_attr( (string) $selected_variation['id'] ); ?>" data-shop-card-variation-id>
 				<input type="hidden" name="attribute_<?php echo esc_attr( sanitize_title( $variation_attribute ) ); ?>" value="<?php echo esc_attr( $selected_variation['value'] ); ?>" data-shop-card-attribute-input>
-				<fieldset class="shop-card__variants">
-					<legend><?php echo esc_html( $variation_attribute_ui ?: 'Вариант' ); ?></legend>
+				<fieldset class="shop-card__variants" aria-label="<?php echo esc_attr( $variation_attribute_ui ?: 'Выберите вариант' ); ?>">
 					<div class="shop-card__variant-list" role="radiogroup" aria-label="<?php echo esc_attr( $variation_attribute_ui ?: 'Выберите вариант' ); ?>">
 					<?php foreach ( $card_variations as $variation_data ) :
 						$is_selected = (int) $variation_data['id'] === (int) $selected_variation['id'];
