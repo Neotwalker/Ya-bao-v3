@@ -7,8 +7,8 @@ add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
 
 // Stage 66 QA parity layer. Product-only and versioned independently so the
 // browser cannot keep an older product CSS/JS build after this patch.
-wp_enqueue_style( 'yabao-wc-product-parity', yabao_asset_url( 'css/wp-product-parity.css' ), array( 'yabao-wp' ), '0.4.5' );
-wp_enqueue_script( 'yabao-wc-product-parity', yabao_asset_url( 'js/wp-product-parity.js' ), array( 'jquery', 'wc-add-to-cart-variation', 'wc-cart-fragments' ), '0.4.3', true );
+wp_enqueue_style( 'yabao-wc-product-parity', yabao_asset_url( 'css/wp-product-parity.css' ), array( 'yabao-wp' ), '0.4.9' );
+wp_enqueue_script( 'yabao-wc-product-parity', yabao_asset_url( 'js/wp-product-parity.js' ), array( 'jquery', 'wc-add-to-cart-variation', 'wc-cart-fragments' ), '0.4.9', true );
 
 get_header();
 

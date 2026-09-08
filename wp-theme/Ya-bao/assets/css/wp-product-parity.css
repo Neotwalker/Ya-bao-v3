@@ -37,10 +37,29 @@
 /* Weight pills inherit the exact approved legend typography/spacing from shop.css. */
 .page-product .yabao-wc-weight-picker{margin:0;padding:0;border:0}
 .page-product .yabao-wc-weight-picker .shop-filter-bar{margin:0}
+.page-product .yabao-weight-form .yabao-product-options{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-end;
+  gap:14px 18px;
+}
+.page-product .yabao-weight-form .yabao-product-options>.product-variant-picker,
+.page-product .yabao-weight-form .yabao-product-options>.product-quantity-picker{
+  display:grid;
+  flex:0 0 auto;
+  gap:8px;
+  margin:0;
+}
+.page-product .yabao-weight-form .yabao-product-options legend{
+  margin:0;
+  padding:0;
+  color:var(--color-ink);
+  font-size:14px;
+  font-weight:700;
+}
 .page-product .yabao-weight-form .variations,
 .page-product .yabao-weight-form .reset_variations,
-.page-product .yabao-weight-form .single_variation,
-.page-product .yabao-weight-form .quantity{display:none!important}
+.page-product .yabao-weight-form .single_variation{display:none!important}
 .page-product .yabao-weight-form .single_variation_wrap{display:block;width:100%}
 .page-product .yabao-weight-form .variations_button{display:block!important}
 
@@ -54,6 +73,7 @@
 .page-product .yabao-weight-form .woocommerce-variation-price{display:none!important}
 
 @media(max-width:640px){
+  .page-product .yabao-weight-form .yabao-product-options{gap:10px 12px}
   .page-product .yabao-wc-add-to-cart .product-quantity-picker__control{
     grid-template-columns:34px 42px 34px;
     border-radius:10px

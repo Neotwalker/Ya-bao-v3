@@ -6,11 +6,10 @@
   function enhanceQuantity(form) {
     const quantity = form.querySelector('.quantity');
     const input = quantity?.querySelector('input.qty');
-    if (!quantity || !input || quantity.closest('.product-quantity-picker')) return;
+    if (!quantity || !input) return null;
 
-    const min = Number.parseInt(input.min || '1', 10) || 1;
-    const rawMax = Number.parseInt(input.max || '', 10);
-    const max = Number.isFinite(rawMax) && rawMax > 0 ? rawMax : Number.MAX_SAFE_INTEGER;
+    const existing = quantity.closest('.product-quantity-picker');
+    if (existing) return existing;
 
     const fieldset = document.createElement('fieldset');
     fieldset.className = 'product-quantity-picker';
@@ -31,7 +30,15 @@
     plus.setAttribute('aria-label', 'Увеличить количество');
     plus.textContent = '+';
 
+    const bounds = () => {
+      const min = Number.parseInt(input.min || '1', 10) || 1;
+      const rawMax = Number.parseInt(input.max || '', 10);
+      const max = Number.isFinite(rawMax) && rawMax > 0 ? rawMax : Number.MAX_SAFE_INTEGER;
+      return { min, max };
+    };
+
     const setValue = next => {
+      const { min, max } = bounds();
       const parsed = Number.parseInt(String(next), 10);
       const value = clamp(Number.isFinite(parsed) ? parsed : min, min, max);
       input.value = String(value);
@@ -48,6 +55,7 @@
     control.append(minus, quantity, plus);
     fieldset.append(legend, control);
     setValue(input.value);
+    return fieldset;
   }
 
   function moveActions(form, target) {
@@ -215,18 +223,39 @@
     };
 
     fieldset.append(legend, bar);
-    facts.before(fieldset);
     select.addEventListener('change', syncButtons);
 
-    const quantity = variationButton.querySelector('.quantity input.qty');
-    if (quantity) quantity.value = '1';
+    const quantityPicker = enhanceQuantity(form);
+    const optionsRow = document.createElement('div');
+    optionsRow.className = 'yabao-product-options';
+    optionsRow.append(fieldset);
+    if (quantityPicker) optionsRow.append(quantityPicker);
+    form.prepend(optionsRow);
+
+    const quantity = form.querySelector('.product-quantity-picker input.qty');
+    if (quantity) {
+      quantity.value = '1';
+      quantity.dispatchEvent(new Event('change', { bubbles: true }));
+    }
     moveActions(form, variationButton);
     enableAjaxAddToCart(form);
 
     const topPrice = summary.querySelector('.product-summary__price');
-    if (window.jQuery && topPrice) {
+    if (window.jQuery) {
       window.jQuery(form).on('found_variation.yabaoParity', function (_event, variation) {
-        if (variation?.price_html) topPrice.innerHTML = variation.price_html;
+        if (topPrice && variation?.price_html) topPrice.innerHTML = variation.price_html;
+        if (!quantity || !variation) return;
+
+        window.setTimeout(() => {
+          const minQty = Number.parseInt(String(variation.min_qty ?? '1'), 10);
+          const maxQty = Number.parseInt(String(variation.max_qty ?? ''), 10);
+          quantity.min = String(Number.isFinite(minQty) && minQty > 0 ? minQty : 1);
+          if (Number.isFinite(maxQty) && maxQty > 0) quantity.max = String(maxQty);
+          else quantity.removeAttribute('max');
+          if (variation.step) quantity.step = String(variation.step);
+          quantity.value = quantity.min || '1';
+          quantity.dispatchEvent(new Event('change', { bubbles: true }));
+        }, 0);
       });
     }
 
