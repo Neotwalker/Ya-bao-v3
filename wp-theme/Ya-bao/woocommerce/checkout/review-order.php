@@ -22,31 +22,9 @@ add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
 <div class="checkout-summary__row"><span>Товаров</span><strong><?php echo esc_html( (string) WC()->cart->get_cart_contents_count() ); ?></strong></div>
 <div class="checkout-summary__row"><span>Товары</span><strong><?php wc_cart_totals_subtotal_html(); ?></strong></div>
 
-<?php
-// Stage 68 QA fix: the custom checkout renders its own shipping selector.
-// WooCommerce may leave WC()->shipping()->get_packages() empty until an address
-// is entered (for example when "hide shipping costs until address" is enabled).
-// Our current commercial scope is Russia-only, so calculate the physical-cart
-// packages explicitly with RU as the canonical destination country before the
-// custom selector asks the shipping object for its rates. Real carrier/plugin
-// rates still win; inc/delivery.php only injects fallback rates when none exist.
-if ( function_exists( 'yabao_delivery_render_checkout_shipping' ) && WC()->cart->needs_shipping() ) {
-	$shipping_packages = WC()->cart->get_shipping_packages();
-	foreach ( $shipping_packages as &$shipping_package ) {
-		if ( ! isset( $shipping_package['destination'] ) || ! is_array( $shipping_package['destination'] ) ) {
-			$shipping_package['destination'] = array();
-		}
-		$shipping_package['destination']['country'] = 'RU';
-	}
-	unset( $shipping_package );
-
-	if ( $shipping_packages ) {
-		WC()->shipping()->calculate_shipping( $shipping_packages );
-	}
-
-	yabao_delivery_render_checkout_shipping();
-}
-?>
+<?php if ( function_exists( 'yabao_delivery_render_checkout_shipping' ) ) : ?>
+	<?php yabao_delivery_render_checkout_shipping(); ?>
+<?php endif; ?>
 
 <?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
 <div class="checkout-summary__row coupon-<?php echo esc_attr( sanitize_title( $code ) ); ?>"><span>Купон: <?php echo esc_html( wc_cart_totals_coupon_label( $coupon, false ) ); ?></span><strong><?php wc_cart_totals_coupon_html( $coupon ); ?></strong></div>
