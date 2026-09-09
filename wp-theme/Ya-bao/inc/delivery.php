@@ -75,6 +75,27 @@ function yabao_delivery_cart_goods_total(): float {
 	return max( 0.0, (float) WC()->cart->get_cart_contents_total() );
 }
 
+/**
+ * WooCommerce 11 returns false from WC_Cart::needs_shipping() when the store
+ * has zero configured shipping methods, before product state is inspected.
+ * Stage 68 has code-owned fallback fulfillment methods, so use the physical
+ * cart contents as the source of truth instead of Woo's method-count gate.
+ */
+function yabao_delivery_cart_requires_fulfilment(): bool {
+	if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+		return false;
+	}
+
+	foreach ( WC()->cart->get_cart() as $item ) {
+		$product = $item['data'] ?? null;
+		if ( $product instanceof WC_Product && $product->needs_shipping() ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 function yabao_delivery_is_pickup_method( string $method_id ): bool {
 	return str_starts_with( $method_id, 'yabao_pickup' ) || str_contains( $method_id, 'local_pickup' );
 }
@@ -158,6 +179,44 @@ function yabao_delivery_add_fallback_rates( array $rates, array $package ): arra
 }
 add_filter( 'woocommerce_package_rates', 'yabao_delivery_add_fallback_rates', 100, 2 );
 
+/**
+ * Calculate physical-cart packages even when Woo has no admin-configured
+ * shipping method. This is intentionally scoped to the Stage 68 fallback.
+ */
+function yabao_delivery_calculate_packages(): array {
+	if ( ! yabao_delivery_cart_requires_fulfilment() || ! WC()->shipping() ) {
+		return array();
+	}
+
+	$packages = WC()->cart->get_shipping_packages();
+	if ( empty( $packages ) ) {
+		return array();
+	}
+
+	foreach ( $packages as &$package ) {
+		if ( ! isset( $package['destination'] ) || ! is_array( $package['destination'] ) ) {
+			$package['destination'] = array();
+		}
+		$package['destination']['country'] = 'RU';
+	}
+	unset( $package );
+
+	$calculated = WC()->shipping()->calculate_shipping( $packages );
+	if ( ! is_array( $calculated ) || empty( $calculated ) ) {
+		$calculated = $packages;
+	}
+
+	foreach ( $calculated as &$package ) {
+		$rates = isset( $package['rates'] ) && is_array( $package['rates'] ) ? $package['rates'] : array();
+		if ( empty( $rates ) ) {
+			$package['rates'] = yabao_delivery_add_fallback_rates( array(), $package );
+		}
+	}
+	unset( $package );
+
+	return $calculated;
+}
+
 function yabao_delivery_rate_detail( WC_Shipping_Rate $rate, float $goods_total ): string {
 	$id = (string) $rate->get_id();
 
@@ -175,20 +234,32 @@ function yabao_delivery_rate_detail( WC_Shipping_Rate $rate, float $goods_total 
 	return 'Стоимость и срок рассчитаны выбранной службой доставки.';
 }
 
+function yabao_delivery_method_title( string $method_id ): string {
+	$labels = array(
+		'yabao_pickup'                => 'Самовывоз — Кирова, 94',
+		'yabao_delivery_avito'        => 'Авито Доставка',
+		'yabao_delivery_cdek'         => 'СДЭК',
+		'yabao_delivery_5post'        => '5Post',
+		'yabao_delivery_russian_post' => 'Почта России',
+	);
+	return $labels[ $method_id ] ?? 'Доставка';
+}
+
 /**
  * Render shipping methods inside the custom order-review template.
  */
 function yabao_delivery_render_checkout_shipping(): void {
-	if ( ! function_exists( 'WC' ) || ! WC()->cart || ! WC()->cart->needs_shipping() ) {
+	if ( ! function_exists( 'WC' ) || ! WC()->cart || ! yabao_delivery_cart_requires_fulfilment() ) {
 		return;
 	}
 
-	$packages = WC()->shipping()->get_packages();
+	$packages = yabao_delivery_calculate_packages();
 	if ( empty( $packages ) ) {
 		return;
 	}
 
 	$chosen_methods = WC()->session ? (array) WC()->session->get( 'chosen_shipping_methods', array() ) : array();
+	$posted_method  = yabao_delivery_selected_method_id();
 	$goods_total    = yabao_delivery_cart_goods_total();
 
 	echo '<section class="checkout-summary__shipping" aria-labelledby="yabao-shipping-title">';
@@ -202,9 +273,13 @@ function yabao_delivery_render_checkout_shipping(): void {
 		}
 
 		$chosen = isset( $chosen_methods[ $index ] ) ? (string) $chosen_methods[ $index ] : '';
+		if ( 0 === (int) $index && '' !== $posted_method && isset( $rates[ $posted_method ] ) ) {
+			$chosen = $posted_method;
+		}
 		if ( '' === $chosen || ! isset( $rates[ $chosen ] ) ) {
 			$chosen = (string) array_key_first( $rates );
 		}
+		$chosen_methods[ $index ] = $chosen;
 
 		echo '<div class="checkout-choices checkout-choices--shipping">';
 		foreach ( $rates as $rate ) {
@@ -227,6 +302,10 @@ function yabao_delivery_render_checkout_shipping(): void {
 			);
 		}
 		echo '</div>';
+	}
+
+	if ( WC()->session ) {
+		WC()->session->set( 'chosen_shipping_methods', $chosen_methods );
 	}
 
 	$selected = yabao_delivery_selected_method_id();
@@ -288,6 +367,25 @@ function yabao_delivery_mark_order( WC_Order $order, array $data ): void {
 
 	if ( $pending ) {
 		$order->update_meta_data( '_yabao_delivery_quote_threshold', wc_format_decimal( YABAO_FREE_SHIPPING_THRESHOLD, 0 ) );
+	}
+
+	if ( '' !== $method && ( yabao_delivery_is_pickup_method( $method ) || yabao_delivery_is_manual_carrier_method( $method ) ) && empty( $order->get_items( 'shipping' ) ) && class_exists( 'WC_Order_Item_Shipping' ) ) {
+		$item = new WC_Order_Item_Shipping();
+		$item->set_method_title( yabao_delivery_method_title( $method ) );
+		$item->set_method_id( $method );
+		$item->set_total( 0 );
+		$order->add_item( $item );
+	}
+
+	if ( '' !== $method && ! yabao_delivery_is_pickup_method( $method ) ) {
+		$order->set_shipping_first_name( $order->get_billing_first_name() );
+		$order->set_shipping_last_name( $order->get_billing_last_name() );
+		$order->set_shipping_address_1( $order->get_billing_address_1() );
+		$order->set_shipping_address_2( $order->get_billing_address_2() );
+		$order->set_shipping_city( $order->get_billing_city() );
+		$order->set_shipping_state( $order->get_billing_state() );
+		$order->set_shipping_postcode( $order->get_billing_postcode() );
+		$order->set_shipping_country( 'RU' );
 	}
 }
 add_action( 'woocommerce_checkout_create_order', 'yabao_delivery_mark_order', 30, 2 );
