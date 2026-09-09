@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ya Bao × ApiShip Adapter
  * Description: Companion layer between the official ApiShip WooCommerce plugin and the custom Ya Bao checkout.
- * Version: 0.1.1
+ * Version: 0.1.2
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * Requires Plugins: woocommerce
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_APISHIP_ADAPTER_VERSION = '0.1.1';
+const YABAO_APISHIP_ADAPTER_VERSION = '0.1.2';
 
 /**
  * Stage 68.1 deliberately keeps ApiShip as a third-party dependency.
@@ -37,6 +37,79 @@ function yabao_apiship_package_goods_total( array $package ): float {
 	}
 	return max( 0.0, $total );
 }
+
+/**
+ * The Ya Bao checkout intentionally exposes one customer address only: the
+ * billing fields are also the delivery destination. WooCommerce normally keeps
+ * billing/shipping destinations in sync during update_order_review(), but the
+ * custom Stage 68 shipping renderer can request packages again in the same AJAX
+ * cycle. Make the package destination explicit from the freshest posted billing
+ * data before ApiShip builds its calculator request.
+ *
+ * This stays in the companion adapter because it is integration glue, not a
+ * change to the official ApiShip plugin.
+ */
+function yabao_apiship_checkout_posted_data(): array {
+	$posted = array();
+
+	if ( isset( $_POST['post_data'] ) && is_string( $_POST['post_data'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		parse_str( wp_unslash( $_POST['post_data'] ), $posted ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	}
+
+	if ( empty( $posted ) ) {
+		foreach ( array( 'billing_country', 'billing_state', 'billing_postcode', 'billing_city', 'billing_address_1', 'billing_address_2' ) as $key ) {
+			if ( isset( $_POST[ $key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				$posted[ $key ] = wp_unslash( $_POST[ $key ] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			}
+		}
+	}
+
+	return is_array( $posted ) ? $posted : array();
+}
+
+function yabao_apiship_destination_value( array $posted, string $posted_key, string $customer_getter, string $default = '' ): string {
+	if ( isset( $posted[ $posted_key ] ) ) {
+		return wc_clean( (string) $posted[ $posted_key ] );
+	}
+
+	if ( function_exists( 'WC' ) && WC()->customer && is_callable( array( WC()->customer, $customer_getter ) ) ) {
+		return wc_clean( (string) WC()->customer->{$customer_getter}() );
+	}
+
+	return $default;
+}
+
+function yabao_apiship_sync_checkout_destination( array $packages ): array {
+	if ( ! function_exists( 'WC' ) || ! WC()->customer ) {
+		return $packages;
+	}
+
+	if ( is_admin() && ! wp_doing_ajax() ) {
+		return $packages;
+	}
+
+	$posted = yabao_apiship_checkout_posted_data();
+
+	$destination = array(
+		'country'   => strtoupper( yabao_apiship_destination_value( $posted, 'billing_country', 'get_billing_country', 'RU' ) ?: 'RU' ),
+		'state'     => yabao_apiship_destination_value( $posted, 'billing_state', 'get_billing_state' ),
+		'postcode'  => yabao_apiship_destination_value( $posted, 'billing_postcode', 'get_billing_postcode' ),
+		'city'      => yabao_apiship_destination_value( $posted, 'billing_city', 'get_billing_city' ),
+		'address'   => yabao_apiship_destination_value( $posted, 'billing_address_1', 'get_billing_address_1' ),
+		'address_2' => yabao_apiship_destination_value( $posted, 'billing_address_2', 'get_billing_address_2' ),
+	);
+
+	foreach ( $packages as &$package ) {
+		if ( ! isset( $package['destination'] ) || ! is_array( $package['destination'] ) ) {
+			$package['destination'] = array();
+		}
+		$package['destination'] = array_merge( $package['destination'], $destination );
+	}
+	unset( $package );
+
+	return $packages;
+}
+add_filter( 'woocommerce_cart_shipping_packages', 'yabao_apiship_sync_checkout_destination', 90 );
 
 /**
  * WC_Shipping_Rate meta is an associative array in current WooCommerce, but
