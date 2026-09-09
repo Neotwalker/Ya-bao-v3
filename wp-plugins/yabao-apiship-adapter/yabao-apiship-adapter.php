@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ya Bao × ApiShip Adapter
  * Description: Companion layer between the official ApiShip WooCommerce plugin and the custom Ya Bao checkout.
- * Version: 0.1.2
+ * Version: 0.1.3
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * Requires Plugins: woocommerce
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_APISHIP_ADAPTER_VERSION = '0.1.2';
+const YABAO_APISHIP_ADAPTER_VERSION = '0.1.3';
 
 /**
  * Stage 68.1 deliberately keeps ApiShip as a third-party dependency.
@@ -110,6 +110,41 @@ function yabao_apiship_sync_checkout_destination( array $packages ): array {
 	return $packages;
 }
 add_filter( 'woocommerce_cart_shipping_packages', 'yabao_apiship_sync_checkout_destination', 90 );
+
+/**
+ * The official ApiShip module treats every payment method except BACS as cash
+ * on delivery and therefore sends codCost = assessedCost to /calculator. The
+ * Stage 68 quote gateway does not collect money and is not COD: it only parks
+ * the order until the delivery total is known. Normalize only this ApiShip HTTP
+ * request so test/real carriers calculate it as prepaid/non-COD delivery.
+ */
+function yabao_apiship_normalize_quote_calculator_request( array $args, string $url ): array {
+	$host = (string) wp_parse_url( $url, PHP_URL_HOST );
+	$path = (string) wp_parse_url( $url, PHP_URL_PATH );
+
+	if ( ! str_ends_with( $host, 'apiship.ru' ) || ! str_ends_with( rtrim( $path, '/' ), '/calculator' ) ) {
+		return $args;
+	}
+
+	$payment_method = isset( $_POST['payment_method'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		? sanitize_text_field( wp_unslash( $_POST['payment_method'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		: '';
+
+	if ( 'yabao_delivery_quote' !== $payment_method || ! isset( $args['body'] ) || ! is_string( $args['body'] ) ) {
+		return $args;
+	}
+
+	$body = json_decode( $args['body'], true );
+	if ( ! is_array( $body ) ) {
+		return $args;
+	}
+
+	$body['codCost'] = 0;
+	$args['body']    = wp_json_encode( $body, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+
+	return $args;
+}
+add_filter( 'http_request_args', 'yabao_apiship_normalize_quote_calculator_request', 999, 2 );
 
 /**
  * WC_Shipping_Rate meta is an associative array in current WooCommerce, but
