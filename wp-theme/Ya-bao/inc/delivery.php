@@ -298,10 +298,10 @@ function yabao_delivery_render_checkout_shipping(): void {
 		return;
 	}
 
-	$chosen_methods  = WC()->session ? (array) WC()->session->get( 'chosen_shipping_methods', array() ) : array();
-	$posted_method   = yabao_delivery_selected_method_id();
+	$chosen_methods   = WC()->session ? (array) WC()->session->get( 'chosen_shipping_methods', array() ) : array();
+	$posted_method    = yabao_delivery_selected_method_id();
 	$rendered_methods = array();
-	$goods_total     = yabao_delivery_cart_goods_total();
+	$goods_total      = yabao_delivery_cart_goods_total();
 
 	echo '<section class="checkout-summary__shipping" aria-labelledby="yabao-shipping-title">';
 	echo '<div class="checkout-summary__shipping-heading"><span class="eyebrow">Получение</span><strong id="yabao-shipping-title">Способ получения</strong></div>';
@@ -383,7 +383,7 @@ function yabao_delivery_validate_checkout( array $data, WP_Error $errors ): void
 	);
 
 	foreach ( $required as $key => $message ) {
-		if ( empty( trim( (string) ( $data[ $key ] ?? '' ) ) ) {
+		if ( empty( trim( (string) ( $data[ $key ] ?? '' ) ) ) ) {
 			$errors->add( 'yabao_' . $key, $message );
 		}
 	}
