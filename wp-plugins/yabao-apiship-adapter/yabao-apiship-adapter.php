@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ya Bao × ApiShip Adapter
  * Description: Companion layer between the official ApiShip WooCommerce plugin and the custom Ya Bao checkout.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * Requires Plugins: woocommerce
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_APISHIP_ADAPTER_VERSION = '0.1.0';
+const YABAO_APISHIP_ADAPTER_VERSION = '0.1.1';
 
 /**
  * Stage 68.1 deliberately keeps ApiShip as a third-party dependency.
@@ -40,7 +40,7 @@ function yabao_apiship_package_goods_total( array $package ): float {
 
 /**
  * WC_Shipping_Rate meta is an associative array in current WooCommerce, but
- * keep a defensive fallback for older versions used by third-party plugins.
+ * keep a defensive fallback for versions used by third-party integrations.
  *
  * @return mixed
  */
@@ -52,10 +52,6 @@ function yabao_apiship_rate_meta( WC_Shipping_Rate $rate, string $key, $default 
 		}
 	}
 
-	if ( isset( $rate->meta_data ) && is_array( $rate->meta_data ) && array_key_exists( $key, $rate->meta_data ) ) {
-		return $rate->meta_data[ $key ];
-	}
-
 	return $default;
 }
 
@@ -63,6 +59,47 @@ function yabao_apiship_is_rate( $rate ): bool {
 	return $rate instanceof WC_Shipping_Rate
 		&& 'WPApiShip' === (string) yabao_apiship_rate_meta( $rate, 'integrator', '' );
 }
+
+/**
+ * When ApiShip returns real rates, the Stage 68 all-or-nothing fallback no
+ * longer injects the tea-room pickup option. Keep the approved store pickup
+ * next to real ApiShip rates without duplicating any existing pickup method.
+ */
+function yabao_apiship_keep_store_pickup( array $rates, array $package ): array {
+	if ( empty( $rates ) || ! class_exists( 'WC_Shipping_Rate' ) ) {
+		return $rates;
+	}
+
+	$has_apiship = false;
+	foreach ( $rates as $rate ) {
+		if ( yabao_apiship_is_rate( $rate ) ) {
+			$has_apiship = true;
+		}
+		if ( $rate instanceof WC_Shipping_Rate ) {
+			$id = (string) $rate->get_id();
+			if ( str_starts_with( $id, 'yabao_pickup' ) || str_contains( $id, 'local_pickup' ) ) {
+				return $rates;
+			}
+		}
+	}
+
+	if ( ! $has_apiship ) {
+		return $rates;
+	}
+
+	$pickup = new WC_Shipping_Rate(
+		'yabao_pickup',
+		'Самовывоз — Кирова, 94',
+		0,
+		array(),
+		'yabao_pickup',
+		0
+	);
+	$pickup->add_meta_data( 'yabao_kind', 'pickup' );
+
+	return array( 'yabao_pickup' => $pickup ) + $rates;
+}
+add_filter( 'woocommerce_package_rates', 'yabao_apiship_keep_store_pickup', 115, 2 );
 
 /**
  * Store rule: the buyer pays no delivery charge from 5,000 RUB.
@@ -104,7 +141,7 @@ function yabao_apiship_selected_rate(): ?array {
 	$chosen   = (array) WC()->session->get( 'chosen_shipping_methods', array() );
 
 	foreach ( (array) $packages as $index => $package ) {
-		$rates      = (array) ( $package['rates'] ?? array() );
+		$rates       = (array) ( $package['rates'] ?? array() );
 		$selected_id = isset( $chosen[ $index ] ) ? (string) $chosen[ $index ] : '';
 
 		if ( '' === $selected_id || ! isset( $rates[ $selected_id ] ) ) {
@@ -187,7 +224,9 @@ function yabao_apiship_render_poc_controls(): void {
 	$controls = trim( (string) ob_get_clean() );
 
 	if ( '' !== $controls ) {
-		echo '<div class="yabao-apiship-poc__controls">' . wp_kses_post( $controls ) . '</div>';
+		// Trusted output from the official shipping plugin hook. Re-sanitizing it
+		// with wp_kses_post() can remove hidden inputs/data attributes used by PVZ.
+		echo '<div class="yabao-apiship-poc__controls">' . $controls . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	} else {
 		echo '<p class="yabao-apiship-poc__note">Тариф ApiShip получен. Для этого тарифа дополнительный выбор ПВЗ не требуется или модуль не вывел контрол.</p>';
 	}
