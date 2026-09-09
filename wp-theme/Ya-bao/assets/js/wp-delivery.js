@@ -24,6 +24,21 @@
     return method.indexOf('yabao_pickup') === 0 || method.indexOf('local_pickup') !== -1;
   }
 
+  function normalizeOptionalStateField() {
+    const row = document.getElementById('billing_state_field');
+    const input = document.getElementById('billing_state');
+
+    if (row) {
+      row.classList.remove('validate-required');
+      row.querySelectorAll('.required').forEach(marker => marker.remove());
+    }
+
+    if (input) {
+      input.required = false;
+      input.setAttribute('aria-required', 'false');
+    }
+  }
+
   function syncAddressFields() {
     const method = selectedMethod();
     const pickup = method ? isPickup(method) : true;
@@ -41,6 +56,8 @@
       input.required = !pickup;
       input.setAttribute('aria-required', pickup ? 'false' : 'true');
     });
+
+    normalizeOptionalStateField();
   }
 
   document.addEventListener('change', event => {
