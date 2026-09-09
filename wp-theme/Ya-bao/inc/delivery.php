@@ -180,42 +180,80 @@ function yabao_delivery_add_fallback_rates( array $rates, array $package ): arra
 add_filter( 'woocommerce_package_rates', 'yabao_delivery_add_fallback_rates', 100, 2 );
 
 /**
- * Calculate physical-cart packages even when Woo has no admin-configured
- * shipping method. This is intentionally scoped to the Stage 68 fallback.
+ * Return only the shipping packages WooCommerce has already calculated.
+ * Rendering checkout HTML must not initiate network calculations or mutate
+ * checkout session state.
  */
-function yabao_delivery_calculate_packages(): array {
-	if ( ! yabao_delivery_cart_requires_fulfilment() || ! WC()->shipping() ) {
+function yabao_delivery_current_packages(): array {
+	if ( ! function_exists( 'WC' ) || ! WC()->shipping() ) {
 		return array();
 	}
 
-	$packages = WC()->cart->get_shipping_packages();
-	if ( empty( $packages ) ) {
-		return array();
-	}
-
-	foreach ( $packages as &$package ) {
-		if ( ! isset( $package['destination'] ) || ! is_array( $package['destination'] ) ) {
-			$package['destination'] = array();
-		}
-		$package['destination']['country'] = 'RU';
-	}
-	unset( $package );
-
-	$calculated = WC()->shipping()->calculate_shipping( $packages );
-	if ( ! is_array( $calculated ) || empty( $calculated ) ) {
-		$calculated = $packages;
-	}
-
-	foreach ( $calculated as &$package ) {
-		$rates = isset( $package['rates'] ) && is_array( $package['rates'] ) ? $package['rates'] : array();
-		if ( empty( $rates ) ) {
-			$package['rates'] = yabao_delivery_add_fallback_rates( array(), $package );
-		}
-	}
-	unset( $package );
-
-	return $calculated;
+	$packages = WC()->shipping()->get_packages();
+	return is_array( $packages ) ? $packages : array();
 }
+
+/**
+ * Prepare the Stage 68 fallback before the order-review template is rendered.
+ *
+ * Normally WooCommerce calculates shipping itself. The only exceptional path
+ * is a store with zero configured methods, where WC_Cart::needs_shipping()
+ * short-circuits before our code-owned fallback can run. Handle that once in
+ * the totals lifecycle, then let WooCommerce normalize the chosen method.
+ */
+function yabao_delivery_prepare_checkout_shipping( WC_Cart $cart ): void {
+	$checkout_context = ( function_exists( 'is_checkout' ) && is_checkout() )
+		|| ( defined( 'WOOCOMMERCE_CHECKOUT' ) && WOOCOMMERCE_CHECKOUT );
+
+	if (
+		! $checkout_context ||
+		! yabao_delivery_cart_requires_fulfilment() ||
+		! function_exists( 'WC' ) ||
+		! WC()->shipping()
+	) {
+		return;
+	}
+
+	$packages = yabao_delivery_current_packages();
+
+	if ( empty( $packages ) ) {
+		$packages = $cart->get_shipping_packages();
+		if ( empty( $packages ) ) {
+			return;
+		}
+
+		foreach ( $packages as &$package ) {
+			if ( ! isset( $package['destination'] ) || ! is_array( $package['destination'] ) ) {
+				$package['destination'] = array();
+			}
+			$package['destination']['country'] = 'RU';
+		}
+		unset( $package );
+
+		$packages = WC()->shipping()->calculate_shipping( $packages );
+	}
+
+	if (
+		empty( $packages ) ||
+		! WC()->session ||
+		! function_exists( 'wc_get_chosen_shipping_method_for_package' )
+	) {
+		return;
+	}
+
+	$chosen_methods = (array) WC()->session->get( 'chosen_shipping_methods', array() );
+	foreach ( $packages as $index => $package ) {
+		$rates  = isset( $package['rates'] ) && is_array( $package['rates'] ) ? $package['rates'] : array();
+		$chosen = isset( $chosen_methods[ $index ] ) ? (string) $chosen_methods[ $index ] : '';
+
+		if ( empty( $rates ) || ( '' !== $chosen && isset( $rates[ $chosen ] ) ) ) {
+			continue;
+		}
+
+		wc_get_chosen_shipping_method_for_package( $index, $package );
+	}
+}
+add_action( 'woocommerce_after_calculate_totals', 'yabao_delivery_prepare_checkout_shipping', 40 );
 
 function yabao_delivery_rate_detail( WC_Shipping_Rate $rate, float $goods_total ): string {
 	$id = (string) $rate->get_id();
@@ -247,20 +285,23 @@ function yabao_delivery_method_title( string $method_id ): string {
 
 /**
  * Render shipping methods inside the custom order-review template.
+ * This function is deliberately read-only: no rate calculation and no session
+ * writes belong in the view layer.
  */
 function yabao_delivery_render_checkout_shipping(): void {
 	if ( ! function_exists( 'WC' ) || ! WC()->cart || ! yabao_delivery_cart_requires_fulfilment() ) {
 		return;
 	}
 
-	$packages = yabao_delivery_calculate_packages();
+	$packages = yabao_delivery_current_packages();
 	if ( empty( $packages ) ) {
 		return;
 	}
 
-	$chosen_methods = WC()->session ? (array) WC()->session->get( 'chosen_shipping_methods', array() ) : array();
-	$posted_method  = yabao_delivery_selected_method_id();
-	$goods_total    = yabao_delivery_cart_goods_total();
+	$chosen_methods  = WC()->session ? (array) WC()->session->get( 'chosen_shipping_methods', array() ) : array();
+	$posted_method   = yabao_delivery_selected_method_id();
+	$rendered_methods = array();
+	$goods_total     = yabao_delivery_cart_goods_total();
 
 	echo '<section class="checkout-summary__shipping" aria-labelledby="yabao-shipping-title">';
 	echo '<div class="checkout-summary__shipping-heading"><span class="eyebrow">Получение</span><strong id="yabao-shipping-title">Способ получения</strong></div>';
@@ -279,7 +320,7 @@ function yabao_delivery_render_checkout_shipping(): void {
 		if ( '' === $chosen || ! isset( $rates[ $chosen ] ) ) {
 			$chosen = (string) array_key_first( $rates );
 		}
-		$chosen_methods[ $index ] = $chosen;
+		$rendered_methods[ $index ] = $chosen;
 
 		echo '<div class="checkout-choices checkout-choices--shipping">';
 		foreach ( $rates as $rate ) {
@@ -304,18 +345,11 @@ function yabao_delivery_render_checkout_shipping(): void {
 		echo '</div>';
 	}
 
-	if ( WC()->session ) {
-		WC()->session->set( 'chosen_shipping_methods', $chosen_methods );
-	}
-
-	$selected = yabao_delivery_selected_method_id();
-	if ( '' === $selected && ! empty( $chosen_methods[0] ) ) {
-		$selected = (string) $chosen_methods[0];
-	}
+	$selected = isset( $rendered_methods[0] ) ? (string) $rendered_methods[0] : '';
 
 	if ( yabao_delivery_method_needs_quote( $selected, $goods_total ) ) {
 		echo '<p class="checkout-shipping-quote"><strong>Стоимость доставки рассчитывается отдельно.</strong> Заказ будет сохранён без списания денег. После расчёта тарифа магазин подтвердит полную сумму до оплаты.</p>';
-	} elseif ( ! yabao_delivery_is_pickup_method( $selected ) && $goods_total >= YABAO_FREE_SHIPPING_THRESHOLD ) {
+	} elseif ( '' !== $selected && ! yabao_delivery_is_pickup_method( $selected ) && $goods_total >= YABAO_FREE_SHIPPING_THRESHOLD ) {
 		echo '<p class="checkout-shipping-quote checkout-shipping-quote--free"><strong>Бесплатная доставка.</strong> Порог 5 000 ₽ проверяется сервером по стоимости товаров после скидок.</p>';
 	}
 
@@ -349,7 +383,7 @@ function yabao_delivery_validate_checkout( array $data, WP_Error $errors ): void
 	);
 
 	foreach ( $required as $key => $message ) {
-		if ( empty( trim( (string) ( $data[ $key ] ?? '' ) ) ) ) {
+		if ( empty( trim( (string) ( $data[ $key ] ?? '' ) ) ) {
 			$errors->add( 'yabao_' . $key, $message );
 		}
 	}
