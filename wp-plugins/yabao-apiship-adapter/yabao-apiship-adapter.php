@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ya Bao × ApiShip Adapter
  * Description: Companion layer between the official ApiShip WooCommerce plugin and the custom Ya Bao checkout.
- * Version: 0.1.3
+ * Version: 0.2.0
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * Requires Plugins: woocommerce
@@ -13,12 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_APISHIP_ADAPTER_VERSION = '0.1.3';
+const YABAO_APISHIP_ADAPTER_VERSION = '0.2.0';
 
 /**
- * Stage 68.1 deliberately keeps ApiShip as a third-party dependency.
- * Never copy/fork ApiShip internals into this plugin: this adapter should only
- * consume public WooCommerce rates/hooks so the official plugin can be updated.
+ * Stage 68.1 keeps ApiShip as a third-party dependency. This adapter owns only
+ * Ya Bao policy and compatibility glue around the official WooCommerce rates.
  */
 function yabao_apiship_threshold(): float {
 	return defined( 'YABAO_FREE_SHIPPING_THRESHOLD' )
@@ -39,16 +38,23 @@ function yabao_apiship_package_goods_total( array $package ): float {
 }
 
 /**
- * The Ya Bao checkout intentionally exposes one customer address only: the
- * billing fields are also the delivery destination. WooCommerce normally keeps
- * billing/shipping destinations in sync during update_order_review(), but the
- * custom Stage 68 shipping renderer can request packages again in the same AJAX
- * cycle. Make the package destination explicit from the freshest posted billing
- * data before ApiShip builds its calculator request.
+ * Checkout destination persistence.
  *
- * This stays in the companion adapter because it is integration glue, not a
- * change to the official ApiShip plugin.
+ * The approved checkout exposes one customer address. Keep the freshest form
+ * values in the WooCommerce session so a full reload can calculate the same
+ * rates before the first update_order_review AJAX request.
  */
+function yabao_apiship_checkout_draft_fields(): array {
+	return array(
+		'billing_country',
+		'billing_state',
+		'billing_postcode',
+		'billing_city',
+		'billing_address_1',
+		'billing_address_2',
+	);
+}
+
 function yabao_apiship_checkout_posted_data(): array {
 	$posted = array();
 
@@ -57,8 +63,8 @@ function yabao_apiship_checkout_posted_data(): array {
 	}
 
 	if ( empty( $posted ) ) {
-		foreach ( array( 'billing_country', 'billing_state', 'billing_postcode', 'billing_city', 'billing_address_1', 'billing_address_2' ) as $key ) {
-			if ( isset( $_POST[ $key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		foreach ( yabao_apiship_checkout_draft_fields() as $key ) {
+			if ( array_key_exists( $key, $_POST ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 				$posted[ $key ] = wp_unslash( $_POST[ $key ] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			}
 		}
@@ -67,36 +73,82 @@ function yabao_apiship_checkout_posted_data(): array {
 	return is_array( $posted ) ? $posted : array();
 }
 
-function yabao_apiship_destination_value( array $posted, string $posted_key, string $customer_getter, string $default = '' ): string {
-	if ( isset( $posted[ $posted_key ] ) ) {
-		return wc_clean( (string) $posted[ $posted_key ] );
+function yabao_apiship_capture_checkout_draft( string $post_data ): void {
+	if ( ! function_exists( 'WC' ) || ! WC()->session || '' === $post_data ) {
+		return;
 	}
 
+	$posted = array();
+	parse_str( $post_data, $posted );
+	if ( ! is_array( $posted ) ) {
+		return;
+	}
+
+	$draft = array();
+	foreach ( yabao_apiship_checkout_draft_fields() as $field ) {
+		if ( array_key_exists( $field, $posted ) ) {
+			$draft[ $field ] = wc_clean( (string) $posted[ $field ] );
+		}
+	}
+
+	if ( ! empty( $draft ) ) {
+		WC()->session->set( 'yabao_apiship_checkout_draft', $draft );
+	}
+}
+add_action( 'woocommerce_checkout_update_order_review', 'yabao_apiship_capture_checkout_draft', 5 );
+
+function yabao_apiship_checkout_value( $value, string $input ) {
+	if ( null !== $value && '' !== $value ) {
+		return $value;
+	}
+	if ( ! function_exists( 'WC' ) || ! WC()->session ) {
+		return $value;
+	}
+
+	$draft = (array) WC()->session->get( 'yabao_apiship_checkout_draft', array() );
+	return array_key_exists( $input, $draft ) ? $draft[ $input ] : $value;
+}
+add_filter( 'woocommerce_checkout_get_value', 'yabao_apiship_checkout_value', 20, 2 );
+
+function yabao_apiship_destination_value(
+	array $posted,
+	array $draft,
+	string $posted_key,
+	string $customer_getter,
+	string $default = ''
+): string {
+	if ( array_key_exists( $posted_key, $posted ) ) {
+		return wc_clean( (string) $posted[ $posted_key ] );
+	}
+	if ( array_key_exists( $posted_key, $draft ) ) {
+		return wc_clean( (string) $draft[ $posted_key ] );
+	}
 	if ( function_exists( 'WC' ) && WC()->customer && is_callable( array( WC()->customer, $customer_getter ) ) ) {
 		return wc_clean( (string) WC()->customer->{$customer_getter}() );
 	}
-
 	return $default;
 }
 
 function yabao_apiship_sync_checkout_destination( array $packages ): array {
+	if ( is_admin() && ! wp_doing_ajax() ) {
+		return $packages;
+	}
 	if ( ! function_exists( 'WC' ) || ! WC()->customer ) {
 		return $packages;
 	}
 
-	if ( is_admin() && ! wp_doing_ajax() ) {
-		return $packages;
-	}
-
 	$posted = yabao_apiship_checkout_posted_data();
+	$draft  = WC()->session ? (array) WC()->session->get( 'yabao_apiship_checkout_draft', array() ) : array();
 
+	$address = yabao_apiship_destination_value( $posted, $draft, 'billing_address_1', 'get_billing_address_1' );
 	$destination = array(
-		'country'   => strtoupper( yabao_apiship_destination_value( $posted, 'billing_country', 'get_billing_country', 'RU' ) ?: 'RU' ),
-		'state'     => yabao_apiship_destination_value( $posted, 'billing_state', 'get_billing_state' ),
-		'postcode'  => yabao_apiship_destination_value( $posted, 'billing_postcode', 'get_billing_postcode' ),
-		'city'      => yabao_apiship_destination_value( $posted, 'billing_city', 'get_billing_city' ),
-		'address'   => yabao_apiship_destination_value( $posted, 'billing_address_1', 'get_billing_address_1' ),
-		'address_2' => yabao_apiship_destination_value( $posted, 'billing_address_2', 'get_billing_address_2' ),
+		'country'   => strtoupper( yabao_apiship_destination_value( $posted, $draft, 'billing_country', 'get_billing_country', 'RU' ) ?: 'RU' ),
+		'state'     => yabao_apiship_destination_value( $posted, $draft, 'billing_state', 'get_billing_state' ),
+		'postcode'  => yabao_apiship_destination_value( $posted, $draft, 'billing_postcode', 'get_billing_postcode' ),
+		'city'      => yabao_apiship_destination_value( $posted, $draft, 'billing_city', 'get_billing_city' ),
+		'address'   => $address,
+		'address_1' => $address,
+		'address_2' => yabao_apiship_destination_value( $posted, $draft, 'billing_address_2', 'get_billing_address_2' ),
 	);
 
 	foreach ( $packages as &$package ) {
@@ -112,25 +164,27 @@ function yabao_apiship_sync_checkout_destination( array $packages ): array {
 add_filter( 'woocommerce_cart_shipping_packages', 'yabao_apiship_sync_checkout_destination', 90 );
 
 /**
- * The official ApiShip module treats every payment method except BACS as cash
- * on delivery and therefore sends codCost = assessedCost to /calculator. The
- * Stage 68 quote gateway does not collect money and is not COD: it only parks
- * the order until the delivery total is known. Normalize only this ApiShip HTTP
- * request so test/real carriers calculate it as prepaid/non-COD delivery.
+ * ApiShip request policy.
+ *
+ * Ya Bao currently has no cash-on-delivery payment flow. The official module
+ * treats an empty or unknown WooCommerce payment method as COD, so normalize
+ * calculator requests to prepaid/non-COD unless COD is explicitly enabled.
  */
-function yabao_apiship_normalize_quote_calculator_request( array $args, string $url ): array {
-	$host = (string) wp_parse_url( $url, PHP_URL_HOST );
+function yabao_apiship_is_calculator_url( string $url ): bool {
+	$host = strtolower( rtrim( (string) wp_parse_url( $url, PHP_URL_HOST ), '.' ) );
 	$path = (string) wp_parse_url( $url, PHP_URL_PATH );
+	$is_apiship_host = 'apiship.ru' === $host || str_ends_with( $host, '.apiship.ru' );
+	return $is_apiship_host && str_ends_with( rtrim( $path, '/' ), '/calculator' );
+}
 
-	if ( ! str_ends_with( $host, 'apiship.ru' ) || ! str_ends_with( rtrim( $path, '/' ), '/calculator' ) ) {
+function yabao_apiship_force_non_cod( array $args, string $url ): array {
+	if ( ! yabao_apiship_is_calculator_url( $url ) ) {
 		return $args;
 	}
-
-	$payment_method = isset( $_POST['payment_method'] ) // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		? sanitize_text_field( wp_unslash( $_POST['payment_method'] ) ) // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		: '';
-
-	if ( 'yabao_delivery_quote' !== $payment_method || ! isset( $args['body'] ) || ! is_string( $args['body'] ) ) {
+	if ( defined( 'YABAO_APISHIP_ENABLE_COD' ) && YABAO_APISHIP_ENABLE_COD ) {
+		return $args;
+	}
+	if ( ! isset( $args['body'] ) || ! is_string( $args['body'] ) ) {
 		return $args;
 	}
 
@@ -141,26 +195,21 @@ function yabao_apiship_normalize_quote_calculator_request( array $args, string $
 
 	$body['codCost'] = 0;
 	$args['body']    = wp_json_encode( $body, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
-
 	return $args;
 }
-add_filter( 'http_request_args', 'yabao_apiship_normalize_quote_calculator_request', 999, 2 );
+add_filter( 'http_request_args', 'yabao_apiship_force_non_cod', 1001, 2 );
 
 /**
- * WC_Shipping_Rate meta is an associative array in current WooCommerce, but
- * keep a defensive fallback for versions used by third-party integrations.
- *
- * @return mixed
+ * ApiShip rate helpers.
  */
-function yabao_apiship_rate_meta( WC_Shipping_Rate $rate, string $key, $default = null ) {
-	if ( method_exists( $rate, 'get_meta_data' ) ) {
-		$meta = $rate->get_meta_data();
-		if ( is_array( $meta ) && array_key_exists( $key, $meta ) ) {
-			return $meta[ $key ];
-		}
-	}
+function yabao_apiship_rate_meta_array( WC_Shipping_Rate $rate ): array {
+	$meta = method_exists( $rate, 'get_meta_data' ) ? $rate->get_meta_data() : array();
+	return is_array( $meta ) ? $meta : array();
+}
 
-	return $default;
+function yabao_apiship_rate_meta( WC_Shipping_Rate $rate, string $key, $default = null ) {
+	$meta = yabao_apiship_rate_meta_array( $rate );
+	return array_key_exists( $key, $meta ) ? $meta[ $key ] : $default;
 }
 
 function yabao_apiship_is_rate( $rate ): bool {
@@ -168,10 +217,140 @@ function yabao_apiship_is_rate( $rate ): bool {
 		&& 'WPApiShip' === (string) yabao_apiship_rate_meta( $rate, 'integrator', '' );
 }
 
+function yabao_apiship_provider_key( WC_Shipping_Rate $rate ): string {
+	return strtolower( trim( (string) yabao_apiship_rate_meta( $rate, 'tariffProviderKey', '' ) ) );
+}
+
 /**
- * When ApiShip returns real rates, the Stage 68 all-or-nothing fallback no
- * longer injects the tea-room pickup option. Keep the approved store pickup
- * next to real ApiShip rates without duplicating any existing pickup method.
+ * Carrier policy.
+ *
+ * The map is intentionally extensible: when another approved manual carrier is
+ * backed by ApiShip, add its provider key here (or through the filter) without
+ * adding provider-specific transition code.
+ */
+function yabao_apiship_manual_provider_map(): array {
+	$map = array(
+		'yabao_delivery_cdek'  => 'cdek',
+		'yabao_delivery_5post' => 'x5',
+	);
+	return (array) apply_filters( 'yabao_apiship_manual_provider_map', $map );
+}
+
+function yabao_apiship_allowed_providers(): array {
+	$providers = array_values( yabao_apiship_manual_provider_map() );
+
+	if ( defined( 'YABAO_APISHIP_ALLOWED_PROVIDERS' ) ) {
+		$configured = YABAO_APISHIP_ALLOWED_PROVIDERS;
+		if ( is_string( $configured ) ) {
+			$providers = preg_split( '/\s*,\s*/', $configured, -1, PREG_SPLIT_NO_EMPTY );
+		} elseif ( is_array( $configured ) ) {
+			$providers = $configured;
+		}
+	}
+
+	$providers = array_map(
+		static fn( $provider ): string => strtolower( trim( (string) $provider ) ),
+		(array) $providers
+	);
+	$providers = array_values( array_unique( array_filter( $providers ) ) );
+	return array_values( (array) apply_filters( 'yabao_apiship_allowed_providers', $providers ) );
+}
+
+/**
+ * Remove unexpected real ApiShip providers before the Stage 68 fallback runs.
+ * If no approved real rates remain, the existing fallback layer can still take
+ * over at priority 100.
+ */
+function yabao_apiship_filter_allowed_rates( array $rates, array $package ): array {
+	$allowed = yabao_apiship_allowed_providers();
+	if ( empty( $allowed ) ) {
+		return $rates;
+	}
+
+	foreach ( $rates as $key => $rate ) {
+		if ( ! yabao_apiship_is_rate( $rate ) ) {
+			continue;
+		}
+		if ( ! in_array( yabao_apiship_provider_key( $rate ), $allowed, true ) ) {
+			unset( $rates[ $key ] );
+		}
+	}
+	return $rates;
+}
+add_filter( 'woocommerce_package_rates', 'yabao_apiship_filter_allowed_rates', 95, 2 );
+
+/**
+ * ApiShip's shipping method requires its provider cache to parse calculator
+ * tariffs. Prefer the official cron hook, then use a narrowly scoped self-heal
+ * only when approved providers are still missing from the cache.
+ */
+function yabao_apiship_provider_cache_complete( $cached, array $required ): bool {
+	if ( ! is_array( $cached ) || empty( $cached ) ) {
+		return false;
+	}
+	foreach ( $required as $provider ) {
+		if ( ! isset( $cached[ $provider ] ) ) {
+			return false;
+		}
+	}
+	return true;
+}
+
+function yabao_apiship_prime_provider_cache(): void {
+	$required = yabao_apiship_allowed_providers();
+	if ( empty( $required ) ) {
+		return;
+	}
+
+	$cached = get_option( 'wp_apiship_providers_list', array() );
+	if ( yabao_apiship_provider_cache_complete( $cached, $required ) ) {
+		return;
+	}
+
+	if ( has_action( 'wp_apiship_providers_cron_hook' ) ) {
+		do_action( 'wp_apiship_providers_cron_hook' );
+		$cached = get_option( 'wp_apiship_providers_list', array() );
+		if ( yabao_apiship_provider_cache_complete( $cached, $required ) ) {
+			return;
+		}
+	}
+
+	if ( get_transient( 'yabao_apiship_provider_cache_retry' ) ) {
+		return;
+	}
+	set_transient( 'yabao_apiship_provider_cache_retry', 1, 10 * MINUTE_IN_SECONDS );
+
+	if ( ! class_exists( '\\ApiShip\\HTTP\\ApiShip_HTTP' ) ) {
+		return;
+	}
+
+	$response = \ApiShip\HTTP\ApiShip_HTTP::get( 'lists/providers?limit=999' );
+	if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
+		return;
+	}
+
+	$body = json_decode( wp_remote_retrieve_body( $response ) );
+	if ( ! is_object( $body ) || empty( $body->rows ) || ! is_array( $body->rows ) ) {
+		return;
+	}
+
+	$list = array();
+	foreach ( $body->rows as $row ) {
+		if ( is_object( $row ) && ! empty( $row->key ) ) {
+			$list[ (string) $row->key ] = (array) $row;
+		}
+	}
+	if ( empty( $list ) ) {
+		return;
+	}
+
+	update_option( 'wp_apiship_providers_list', $list, false );
+	delete_transient( 'yabao_apiship_provider_cache_retry' );
+}
+add_action( 'wp_loaded', 'yabao_apiship_prime_provider_cache', 20 );
+
+/**
+ * Keep the approved store pickup next to real ApiShip rates.
  */
 function yabao_apiship_keep_store_pickup( array $rates, array $package ): array {
 	if ( empty( $rates ) || ! class_exists( 'WC_Shipping_Rate' ) ) {
@@ -204,15 +383,13 @@ function yabao_apiship_keep_store_pickup( array $rates, array $package ): array 
 		0
 	);
 	$pickup->add_meta_data( 'yabao_kind', 'pickup' );
-
 	return array( 'yabao_pickup' => $pickup ) + $rates;
 }
 add_filter( 'woocommerce_package_rates', 'yabao_apiship_keep_store_pickup', 115, 2 );
 
 /**
- * Store rule: the buyer pays no delivery charge from 5,000 RUB.
- * ApiShip still calculates the real carrier cost; preserve that value in rate
- * metadata before zeroing the customer-facing WooCommerce shipping cost.
+ * Store rule: buyer-facing carrier delivery is free from 5,000 RUB. Preserve
+ * the carrier's actual cost in metadata before zeroing the WooCommerce rate.
  */
 function yabao_apiship_apply_free_shipping_rule( array $rates, array $package ): array {
 	if ( empty( $rates ) || yabao_apiship_package_goods_total( $package ) < yabao_apiship_threshold() ) {
@@ -223,149 +400,251 @@ function yabao_apiship_apply_free_shipping_rule( array $rates, array $package ):
 		if ( ! yabao_apiship_is_rate( $rate ) ) {
 			continue;
 		}
-
 		$actual_cost = max( 0.0, (float) $rate->get_cost() );
 		$rate->add_meta_data( 'yabao_apiship_actual_cost', (string) $actual_cost );
 		$rate->add_meta_data( 'yabao_apiship_customer_cost', '0' );
 		$rate->set_cost( 0 );
 		$rate->set_taxes( array() );
 	}
-
 	return $rates;
 }
 add_filter( 'woocommerce_package_rates', 'yabao_apiship_apply_free_shipping_rule', 120, 2 );
 
 /**
- * Resolve the currently selected real ApiShip rate from calculated packages.
- *
- * @return array{rate:WC_Shipping_Rate,index:int}|null
+ * Preserve carrier intent when a manual fallback is replaced by a real ApiShip
+ * rate during the same checkout update. This is provider-agnostic.
  */
-function yabao_apiship_selected_rate(): ?array {
-	if ( ! function_exists( 'WC' ) || ! WC()->shipping() || ! WC()->session ) {
-		return null;
+function yabao_apiship_posted_shipping_methods(): array {
+	$methods = array();
+
+	if ( isset( $_POST['shipping_method'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$raw = wp_unslash( $_POST['shipping_method'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( is_array( $raw ) ) {
+			foreach ( $raw as $index => $method ) {
+				if ( is_scalar( $method ) ) {
+					$methods[ $index ] = wc_clean( (string) $method );
+				}
+			}
+		}
 	}
 
-	$packages = WC()->shipping()->get_packages();
-	$chosen   = (array) WC()->session->get( 'chosen_shipping_methods', array() );
+	if ( empty( $methods ) && isset( $_POST['post_data'] ) && is_string( $_POST['post_data'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$posted = array();
+		parse_str( wp_unslash( $_POST['post_data'] ), $posted ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$raw = $posted['shipping_method'] ?? array();
+		if ( is_array( $raw ) ) {
+			foreach ( $raw as $index => $method ) {
+				if ( is_scalar( $method ) ) {
+					$methods[ $index ] = wc_clean( (string) $method );
+				}
+			}
+		}
+	}
 
-	foreach ( (array) $packages as $index => $package ) {
-		$rates       = (array) ( $package['rates'] ?? array() );
-		$selected_id = isset( $chosen[ $index ] ) ? (string) $chosen[ $index ] : '';
+	return $methods;
+}
 
-		if ( '' === $selected_id || ! isset( $rates[ $selected_id ] ) ) {
+function yabao_apiship_promote_manual_selection( array $rates, array $package ): array {
+	if ( empty( $rates ) || ! function_exists( 'WC' ) || ! WC()->session ) {
+		return $rates;
+	}
+
+	$map    = yabao_apiship_manual_provider_map();
+	$posted = yabao_apiship_posted_shipping_methods();
+	if ( empty( $posted ) ) {
+		return $rates;
+	}
+
+	foreach ( $posted as $index => $manual_method ) {
+		$provider = strtolower( trim( (string) ( $map[ $manual_method ] ?? '' ) ) );
+		if ( '' === $provider ) {
 			continue;
 		}
 
-		$rate = $rates[ $selected_id ];
-		if ( yabao_apiship_is_rate( $rate ) ) {
-			return array(
-				'rate'  => $rate,
-				'index' => (int) $index,
-			);
+		foreach ( $rates as $rate ) {
+			if ( ! yabao_apiship_is_rate( $rate ) || $provider !== yabao_apiship_provider_key( $rate ) ) {
+				continue;
+			}
+			$chosen = (array) WC()->session->get( 'chosen_shipping_methods', array() );
+			$chosen[ $index ] = (string) $rate->get_id();
+			WC()->session->set( 'chosen_shipping_methods', $chosen );
+			break;
 		}
 	}
 
-	return null;
+	return $rates;
 }
-
-function yabao_apiship_days_text( WC_Shipping_Rate $rate ): string {
-	$min = absint( yabao_apiship_rate_meta( $rate, 'daysMin', 0 ) );
-	$max = absint( yabao_apiship_rate_meta( $rate, 'daysMax', 0 ) );
-
-	if ( $min && $max && $max !== $min ) {
-		return sprintf( '%d–%d дн.', $min, $max );
-	}
-	if ( $min ) {
-		return sprintf( '%d дн.', $min );
-	}
-	if ( $max ) {
-		return sprintf( 'до %d дн.', $max );
-	}
-	return '';
-}
+add_filter( 'woocommerce_package_rates', 'yabao_apiship_promote_manual_selection', 124, 2 );
 
 /**
- * PoC bridge for ApiShip pickup-point UI.
- *
- * The Ya Bao theme renders its own shipping cards and therefore does not call
- * WooCommerce's standard `woocommerce_after_shipping_rate` hook per rate.
- * ApiShip uses that hook for its PVZ controls. For the PoC we replay the hook
- * once for the selected ApiShip rate below the custom shipping list. If this
- * proves stable, Stage 68.1 will move the control inside the selected card.
+ * Collapse buyer-identical ApiShip tariff duplicates while retaining the most
+ * suitable merchant handoff variant.
  */
-function yabao_apiship_render_poc_controls(): void {
-	if ( ! function_exists( 'is_checkout' ) || ! is_checkout() || is_order_received_page() ) {
-		return;
+function yabao_apiship_tariff_payload( WC_Shipping_Rate $rate ): array {
+	$raw = yabao_apiship_rate_meta( $rate, 'tariff', '' );
+	if ( is_array( $raw ) ) {
+		return $raw;
 	}
-
-	$selected = yabao_apiship_selected_rate();
-	if ( ! $selected ) {
-		return;
+	if ( ! is_string( $raw ) || '' === $raw ) {
+		return array();
 	}
-
-	/** @var WC_Shipping_Rate $rate */
-	$rate = $selected['rate'];
-	$days = yabao_apiship_days_text( $rate );
-	$cost = (float) $rate->get_cost();
-
-	echo '<section class="yabao-apiship-poc" aria-labelledby="yabao-apiship-poc-title">';
-	echo '<div class="yabao-apiship-poc__head">';
-	echo '<strong id="yabao-apiship-poc-title">ApiShip подключён</strong>';
-	echo '<span>PoC Stage 68.1</span>';
-	echo '</div>';
-
-	echo '<p class="yabao-apiship-poc__summary">';
-	echo esc_html( $rate->get_label() );
-	if ( $days ) {
-		echo ' · ' . esc_html( $days );
-	}
-	echo ' · ';
-	if ( $cost <= 0.0 ) {
-		echo '<strong>бесплатно для покупателя</strong>';
-	} else {
-		echo '<strong>' . wp_kses_post( wc_price( $cost ) ) . '</strong>';
-	}
-	echo '</p>';
-
-	ob_start();
-	do_action( 'woocommerce_after_shipping_rate', $rate, $selected['index'] );
-	$controls = trim( (string) ob_get_clean() );
-
-	if ( '' !== $controls ) {
-		// Trusted output from the official shipping plugin hook. Re-sanitizing it
-		// with wp_kses_post() can remove hidden inputs/data attributes used by PVZ.
-		echo '<div class="yabao-apiship-poc__controls">' . $controls . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	} else {
-		echo '<p class="yabao-apiship-poc__note">Тариф ApiShip получен. Для этого тарифа дополнительный выбор ПВЗ не требуется или модуль не вывел контрол.</p>';
-	}
-
-	echo '</section>';
+	$decoded = json_decode( $raw, true );
+	return is_array( $decoded ) ? $decoded : array();
 }
-add_action( 'woocommerce_review_order_before_payment', 'yabao_apiship_render_poc_controls', 5 );
+
+function yabao_apiship_normalized_service( WC_Shipping_Rate $rate ): string {
+	$key  = yabao_apiship_provider_key( $rate );
+	$name = wp_strip_all_tags( (string) yabao_apiship_rate_meta( $rate, 'tariffName', $rate->get_label() ) );
+	if ( '' !== $key && '' !== $name ) {
+		$name = preg_replace( '/^' . preg_quote( $key, '/' ) . '\s*[-–—]\s*/iu', '', $name );
+	}
+	return mb_strtolower( trim( preg_replace( '/\s+/u', ' ', (string) $name ) ) );
+}
+
+function yabao_apiship_actual_cost( WC_Shipping_Rate $rate ): float {
+	$stored = yabao_apiship_rate_meta( $rate, 'yabao_apiship_actual_cost', null );
+	return null !== $stored ? max( 0.0, (float) $stored ) : max( 0.0, (float) $rate->get_cost() );
+}
+
+function yabao_apiship_rate_rank( WC_Shipping_Rate $rate ): array {
+	$payload   = yabao_apiship_tariff_payload( $rate );
+	$preferred = defined( 'YABAO_APISHIP_ORIGIN_HANDOFF' )
+		? strtolower( (string) YABAO_APISHIP_ORIGIN_HANDOFF )
+		: 'point';
+	$origin    = strtolower( (string) ( $payload['from'] ?? '' ) );
+	$tariff_id = absint( $payload['tariffId'] ?? yabao_apiship_rate_meta( $rate, 'tariffId', 0 ) );
+
+	return array(
+		( '' !== $preferred && $preferred === $origin ) ? 0 : 1,
+		yabao_apiship_actual_cost( $rate ),
+		$tariff_id ?: PHP_INT_MAX,
+	);
+}
+
+function yabao_apiship_candidate_is_better( WC_Shipping_Rate $candidate, WC_Shipping_Rate $current ): bool {
+	$candidate_rank = yabao_apiship_rate_rank( $candidate );
+	$current_rank   = yabao_apiship_rate_rank( $current );
+
+	for ( $i = 0, $count = count( $candidate_rank ); $i < $count; $i++ ) {
+		if ( $candidate_rank[ $i ] < $current_rank[ $i ] ) {
+			return true;
+		}
+		if ( $candidate_rank[ $i ] > $current_rank[ $i ] ) {
+			return false;
+		}
+	}
+	return false;
+}
+
+function yabao_apiship_dedupe_rates( array $rates, array $package ): array {
+	$groups       = array();
+	$replacements = array();
+
+	foreach ( $rates as $rate_key => $rate ) {
+		if ( ! yabao_apiship_is_rate( $rate ) ) {
+			continue;
+		}
+
+		$payload  = yabao_apiship_tariff_payload( $rate );
+		$provider = yabao_apiship_provider_key( $rate );
+		$type     = strtolower( (string) ( $payload['deliveryType'] ?? '' ) );
+		$min      = absint( yabao_apiship_rate_meta( $rate, 'daysMin', $payload['daysMin'] ?? 0 ) );
+		$max      = absint( yabao_apiship_rate_meta( $rate, 'daysMax', $payload['daysMax'] ?? 0 ) );
+		$cost     = number_format( max( 0.0, (float) $rate->get_cost() ), 2, '.', '' );
+		$group    = implode( '|', array( $provider, yabao_apiship_normalized_service( $rate ), $type, $cost, $min, $max ) );
+
+		if ( ! isset( $groups[ $group ] ) ) {
+			$groups[ $group ] = (string) $rate_key;
+			continue;
+		}
+
+		$current_key = $groups[ $group ];
+		$current     = $rates[ $current_key ] ?? null;
+		if ( ! $current instanceof WC_Shipping_Rate ) {
+			$groups[ $group ] = (string) $rate_key;
+			continue;
+		}
+
+		if ( yabao_apiship_candidate_is_better( $rate, $current ) ) {
+			$replacements[ (string) $current->get_id() ] = (string) $rate->get_id();
+			unset( $rates[ $current_key ] );
+			$groups[ $group ] = (string) $rate_key;
+		} else {
+			$replacements[ (string) $rate->get_id() ] = (string) $current->get_id();
+			unset( $rates[ $rate_key ] );
+		}
+	}
+
+	if ( ! empty( $replacements ) && function_exists( 'WC' ) && WC()->session ) {
+		$chosen  = (array) WC()->session->get( 'chosen_shipping_methods', array() );
+		$changed = false;
+		foreach ( $chosen as $index => $chosen_id ) {
+			$resolved = (string) $chosen_id;
+			$guard    = 0;
+			while ( isset( $replacements[ $resolved ] ) && $guard < 10 ) {
+				$resolved = $replacements[ $resolved ];
+				$guard++;
+			}
+			if ( $resolved !== (string) $chosen_id ) {
+				$chosen[ $index ] = $resolved;
+				$changed = true;
+			}
+		}
+		if ( $changed ) {
+			WC()->session->set( 'chosen_shipping_methods', $chosen );
+		}
+	}
+
+	return $rates;
+}
+add_filter( 'woocommerce_package_rates', 'yabao_apiship_dedupe_rates', 127, 2 );
 
 /**
- * Temporary PoC styling. Final Stage 68.1 styling will live with the Ya Bao
- * checkout after we see the real ApiShip/PVZ markup on the local site.
+ * Compact customer-facing labels for the custom Ya Bao shipping cards.
  */
-function yabao_apiship_enqueue_poc_styles(): void {
-	if ( ! function_exists( 'is_checkout' ) || ! is_checkout() || is_order_received_page() ) {
-		return;
-	}
-
-	$css = '
-	.yabao-apiship-poc{margin:14px 0;padding:14px 16px;border:1px solid rgba(31,49,40,.14);border-radius:14px;background:#fff}
-	.yabao-apiship-poc__head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
-	.yabao-apiship-poc__head strong{font-size:14px}.yabao-apiship-poc__head span{font-size:11px;opacity:.55}
-	.yabao-apiship-poc__summary,.yabao-apiship-poc__note{margin:0;font-size:12px;line-height:1.45;color:rgba(31,49,40,.72)}
-	.yabao-apiship-poc__controls{margin-top:10px}.yabao-apiship-poc__controls button,.yabao-apiship-poc__controls a{max-width:100%}
-	';
-
-	if ( wp_style_is( 'yabao-delivery', 'enqueued' ) ) {
-		wp_add_inline_style( 'yabao-delivery', $css );
-	} else {
-		wp_register_style( 'yabao-apiship-poc', false, array(), YABAO_APISHIP_ADAPTER_VERSION );
-		wp_enqueue_style( 'yabao-apiship-poc' );
-		wp_add_inline_style( 'yabao-apiship-poc', $css );
-	}
+function yabao_apiship_provider_names(): array {
+	$names = array(
+		'cdek' => 'СДЭК',
+		'x5'   => '5Post',
+	);
+	return (array) apply_filters( 'yabao_apiship_provider_names', $names );
 }
-add_action( 'wp_enqueue_scripts', 'yabao_apiship_enqueue_poc_styles', 80 );
+
+function yabao_apiship_clean_labels( array $rates, array $package ): array {
+	$provider_names = yabao_apiship_provider_names();
+
+	foreach ( $rates as $rate ) {
+		if ( ! yabao_apiship_is_rate( $rate ) ) {
+			continue;
+		}
+
+		$key      = yabao_apiship_provider_key( $rate );
+		$provider = $provider_names[ $key ] ?? strtoupper( $key ?: 'Доставка' );
+		$service  = wp_strip_all_tags( (string) yabao_apiship_rate_meta( $rate, 'tariffName', '' ) );
+		if ( '' !== $key && '' !== $service ) {
+			$service = preg_replace( '/^' . preg_quote( $key, '/' ) . '\s*[-–—]\s*/iu', '', $service );
+		}
+		$service = trim( preg_replace( '/\s+/u', ' ', (string) $service ) );
+		if ( '' === $service ) {
+			$service = 'Доставка';
+		}
+
+		$label = $provider . ' — ' . $service;
+		$cost  = max( 0.0, (float) $rate->get_cost() );
+		$label .= $cost > 0
+			? ' · ' . trim( wp_strip_all_tags( wc_price( $cost ) ) )
+			: ' · бесплатно';
+
+		$min = absint( yabao_apiship_rate_meta( $rate, 'daysMin', 0 ) );
+		$max = absint( yabao_apiship_rate_meta( $rate, 'daysMax', 0 ) );
+		if ( $min && $max && $min !== $max ) {
+			$label .= sprintf( ' · %d–%d дней', $min, $max );
+		} elseif ( $min ) {
+			$label .= sprintf( ' · %d дней', $min );
+		}
+
+		$rate->set_label( $label );
+	}
+	return $rates;
+}
+add_filter( 'woocommerce_package_rates', 'yabao_apiship_clean_labels', 130, 2 );
