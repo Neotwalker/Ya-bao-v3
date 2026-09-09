@@ -22,6 +22,10 @@ add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
 <div class="checkout-summary__row"><span>Товаров</span><strong><?php echo esc_html( (string) WC()->cart->get_cart_contents_count() ); ?></strong></div>
 <div class="checkout-summary__row"><span>Товары</span><strong><?php wc_cart_totals_subtotal_html(); ?></strong></div>
 
+<?php if ( function_exists( 'yabao_delivery_render_checkout_shipping' ) ) : ?>
+	<?php yabao_delivery_render_checkout_shipping(); ?>
+<?php endif; ?>
+
 <?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
 <div class="checkout-summary__row coupon-<?php echo esc_attr( sanitize_title( $code ) ); ?>"><span>Купон: <?php echo esc_html( wc_cart_totals_coupon_label( $coupon, false ) ); ?></span><strong><?php wc_cart_totals_coupon_html( $coupon ); ?></strong></div>
 <?php endforeach; ?>

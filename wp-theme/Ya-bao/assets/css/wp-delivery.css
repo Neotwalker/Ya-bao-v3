@@ -1,0 +1,40 @@
+/* Stage 68: checkout delivery/pickup integration. */
+.checkout-summary__shipping{
+  display:grid;
+  gap:12px;
+  padding-top:12px;
+  border-top:1px solid var(--color-line);
+}
+.checkout-summary__shipping-heading{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:14px;
+}
+.checkout-summary__shipping-heading .eyebrow{margin:0}
+.checkout-summary__shipping-heading>strong{font-size:14px}
+.checkout-choices--shipping{margin-top:0}
+.checkout-choices--shipping .checkout-choice{padding:12px}
+.checkout-choices--shipping .checkout-choice strong{font-size:14px}
+.checkout-choices--shipping .checkout-choice small{font-size:12px}
+.checkout-shipping-quote{
+  margin:0;
+  padding:12px 13px;
+  border:1px solid rgba(95,70,48,.16);
+  border-radius:var(--radius-sm);
+  background:rgba(95,70,48,.045);
+  color:var(--color-muted);
+  font-size:12px;
+  line-height:1.5;
+}
+.checkout-shipping-quote strong{color:var(--color-ink)}
+.checkout-shipping-quote--free{
+  border-color:rgba(113,132,95,.22);
+  background:rgba(113,132,95,.08);
+}
+.yabao-checkout-field--hidden{display:none!important}
+
+@media(max-width:640px){
+  .checkout-summary__shipping-heading{display:grid;gap:4px}
+  .checkout-choices--shipping .checkout-choice{padding:11px}
+}

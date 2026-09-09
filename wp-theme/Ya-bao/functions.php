@@ -7,13 +7,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_THEME_VERSION = '0.5.1';
+const YABAO_THEME_VERSION = '0.6.0';
 const YABAO_SWIPER_VERSION = '14.2.0';
 
 require_once get_template_directory() . '/inc/product-mapping.php';
 require_once get_template_directory() . '/inc/product-importer.php';
 require_once get_template_directory() . '/inc/product-importer-admin.php';
 require_once get_template_directory() . '/inc/security-hardening.php';
+require_once get_template_directory() . '/inc/delivery.php';
 
 function yabao_asset_url( string $path = '' ): string {
 	return trailingslashit( get_template_directory_uri() ) . 'assets/' . ltrim( $path, '/' );
