@@ -161,26 +161,6 @@
             "placeholder": "",
             "prepend": "",
             "append": ""
-        },
-        {
-            "key": "field_6aa100abe05df",
-            "label": "Условия доставки",
-            "name": "delivery_rules_text",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "Стоимость и условия определяются правилами выбранной службы доставки. При заказе от 5 000 ₽ доставка бесплатная.",
-            "maxlength": "",
-            "rows": "",
-            "placeholder": "",
-            "new_lines": ""
         }
     ],
     "location": [
@@ -201,5 +181,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1788938078
+    "modified": 1789038000
 }
