@@ -973,7 +973,7 @@ button.format-card-v4{width:100%;font:inherit}
     box-shadow:none;
   }
   .hero-v4__media video,
-  .hero-v4__poster{object-position:64% center}
+  .hero-v4__poster{object-position:83% center}
   .hero-v4__shade{
     background:
       linear-gradient(90deg,rgba(10,8,6,.92) 0%,rgba(10,8,6,.76) 58%,rgba(10,8,6,.3) 100%),

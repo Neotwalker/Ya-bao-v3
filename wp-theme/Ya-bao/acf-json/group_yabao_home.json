@@ -1,0 +1,334 @@
+{
+  "key": "group_yabao_home",
+  "title": "Главная страница",
+  "fields": [
+    {
+      "key": "field_yabao_home_tab_hero",
+      "label": "Первый экран",
+      "name": "",
+      "type": "tab",
+      "placement": "top",
+      "endpoint": 0
+    },
+    {
+      "key": "field_yabao_home_hero_eyebrow",
+      "label": "Надзаголовок",
+      "name": "home_hero_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_hero_title",
+      "label": "H1",
+      "name": "home_hero_title",
+      "type": "textarea",
+      "instructions": "Перенос строки в поле будет сохранён в заголовке.",
+      "required": 0,
+      "default_value": "",
+      "rows": 2,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_home_hero_lead",
+      "label": "Описание",
+      "name": "home_hero_lead",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 4,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_home_hero_secondary_link",
+      "label": "Вторая кнопка",
+      "name": "home_hero_secondary_link",
+      "type": "link",
+      "instructions": "Если ссылка не заполнена, кнопка не выводится.",
+      "required": 0,
+      "return_format": "array"
+    },
+    {
+      "key": "field_yabao_home_hero_note",
+      "label": "Подпись под кнопками",
+      "name": "home_hero_note",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 2,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_home_hero_poster",
+      "label": "Фоновое изображение",
+      "name": "home_hero_poster",
+      "type": "image",
+      "instructions": "Пустое поле не должно создавать изображение-fallback.",
+      "required": 0,
+      "return_format": "id",
+      "preview_size": "medium",
+      "library": "all"
+    },
+    {
+      "key": "field_yabao_home_hero_video",
+      "label": "Фоновое видео",
+      "name": "home_hero_video",
+      "type": "file",
+      "required": 0,
+      "return_format": "id",
+      "library": "all",
+      "mime_types": "mp4,webm"
+    },
+    {
+      "key": "field_yabao_home_hero_video_label",
+      "label": "Описание видео для доступности",
+      "name": "home_hero_video_label",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+
+    {
+      "key": "field_yabao_home_tab_trust",
+      "label": "Первый визит и отзывы",
+      "name": "",
+      "type": "tab",
+      "placement": "top",
+      "endpoint": 0
+    },
+    {
+      "key": "field_yabao_home_trust_eyebrow",
+      "label": "Надзаголовок",
+      "name": "home_trust_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_trust_text",
+      "label": "Текст",
+      "name": "home_trust_text",
+      "type": "wysiwyg",
+      "instructions": "Можно использовать выделение жирным. Пустой текст не выводится.",
+      "required": 0,
+      "default_value": "",
+      "tabs": "visual",
+      "toolbar": "basic",
+      "media_upload": 0,
+      "delay": 0
+    },
+    {
+      "key": "field_yabao_home_yandex_reviews_value",
+      "label": "Яндекс Карты — значение",
+      "name": "home_yandex_reviews_value",
+      "type": "text",
+      "instructions": "Например: 80+. Ссылка берётся из глобальных настроек.",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_yandex_reviews_label",
+      "label": "Яндекс Карты — подпись",
+      "name": "home_yandex_reviews_label",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_2gis_reviews_value",
+      "label": "2ГИС — значение",
+      "name": "home_2gis_reviews_value",
+      "type": "text",
+      "instructions": "Например: 150+. Ссылка берётся из глобальных настроек.",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_2gis_reviews_label",
+      "label": "2ГИС — подпись",
+      "name": "home_2gis_reviews_label",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+
+    {
+      "key": "field_yabao_home_tab_formats",
+      "label": "Форматы посещения",
+      "name": "",
+      "type": "tab",
+      "placement": "top",
+      "endpoint": 0
+    },
+    {
+      "key": "field_yabao_home_formats_eyebrow",
+      "label": "Надзаголовок",
+      "name": "home_formats_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_formats_title",
+      "label": "Заголовок",
+      "name": "home_formats_title",
+      "type": "textarea",
+      "instructions": "Поддерживает ручной перенос строки.",
+      "required": 0,
+      "default_value": "",
+      "rows": 2,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_home_formats_intro",
+      "label": "Описание секции",
+      "name": "home_formats_intro",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_home_formats",
+      "label": "Карточки форматов",
+      "name": "home_formats",
+      "type": "repeater",
+      "instructions": "Незаполненная или некорректная карточка не должна выводиться.",
+      "required": 0,
+      "collapsed": "field_yabao_home_format_title",
+      "min": 0,
+      "max": 0,
+      "layout": "block",
+      "button_label": "Добавить формат",
+      "sub_fields": [
+        {
+          "key": "field_yabao_home_format_index",
+          "label": "Номер",
+          "name": "format_index",
+          "type": "text",
+          "required": 0,
+          "default_value": ""
+        },
+        {
+          "key": "field_yabao_home_format_title",
+          "label": "Заголовок",
+          "name": "format_title",
+          "type": "textarea",
+          "required": 0,
+          "default_value": "",
+          "rows": 2,
+          "new_lines": ""
+        },
+        {
+          "key": "field_yabao_home_format_text",
+          "label": "Описание",
+          "name": "format_text",
+          "type": "textarea",
+          "required": 0,
+          "default_value": "",
+          "rows": 3,
+          "new_lines": ""
+        },
+        {
+          "key": "field_yabao_home_format_featured",
+          "label": "Акцентная карточка",
+          "name": "format_featured",
+          "type": "true_false",
+          "required": 0,
+          "default_value": 0,
+          "ui": 1,
+          "ui_on_text": "Да",
+          "ui_off_text": "Нет"
+        },
+        {
+          "key": "field_yabao_home_format_action_type",
+          "label": "Действие",
+          "name": "format_action_type",
+          "type": "select",
+          "required": 0,
+          "choices": {
+            "link": "Обычная ссылка",
+            "booking": "Открыть бронирование"
+          },
+          "default_value": "",
+          "allow_null": 1,
+          "multiple": 0,
+          "ui": 1,
+          "return_format": "value"
+        },
+        {
+          "key": "field_yabao_home_format_link",
+          "label": "Ссылка",
+          "name": "format_link",
+          "type": "link",
+          "required": 0,
+          "return_format": "array",
+          "conditional_logic": [
+            [
+              {
+                "field": "field_yabao_home_format_action_type",
+                "operator": "==",
+                "value": "link"
+              }
+            ]
+          ]
+        },
+        {
+          "key": "field_yabao_home_format_booking_label",
+          "label": "Текст ссылки бронирования",
+          "name": "format_booking_label",
+          "type": "text",
+          "required": 0,
+          "default_value": "",
+          "conditional_logic": [
+            [
+              {
+                "field": "field_yabao_home_format_action_type",
+                "operator": "==",
+                "value": "booking"
+              }
+            ]
+          ]
+        },
+        {
+          "key": "field_yabao_home_format_booking_context",
+          "label": "Код формата бронирования",
+          "name": "format_booking_context",
+          "type": "text",
+          "instructions": "Техническое значение data-ceremony. Например: couple.",
+          "required": 0,
+          "default_value": "",
+          "conditional_logic": [
+            [
+              {
+                "field": "field_yabao_home_format_action_type",
+                "operator": "==",
+                "value": "booking"
+              }
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "page_type",
+        "operator": "==",
+        "value": "front_page"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Редактируемый контент главной страницы. Пустые значения не имеют runtime fallback.",
+  "show_in_rest": 0,
+  "modified": 1789050000
+}

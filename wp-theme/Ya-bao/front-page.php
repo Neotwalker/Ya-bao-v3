@@ -2,76 +2,553 @@
 /** Front page. Static content is the approved v4.57 reference; ACF migration comes later. */
 get_header();
 ?>
+<?php
+$home_id = get_queried_object_id();
+
+$home_text = static function ( string $name ) use ( $home_id ): string {
+    if ( ! function_exists( 'get_field' ) ) {
+        return '';
+    }
+
+    $value = get_field( $name, $home_id );
+
+    if ( ! is_scalar( $value ) ) {
+        return '';
+    }
+
+    return trim( wp_strip_all_tags( (string) $value ) );
+};
+
+$home_link = static function ( string $name ) use ( $home_id ): array {
+    if ( ! function_exists( 'get_field' ) ) {
+        return array();
+    }
+
+    $value = get_field( $name, $home_id );
+
+    if ( ! is_array( $value ) ) {
+        return array();
+    }
+
+    $url = isset( $value['url'] ) && is_scalar( $value['url'] )
+        ? esc_url_raw( trim( (string) $value['url'] ) )
+        : '';
+
+    $title = isset( $value['title'] ) && is_scalar( $value['title'] )
+        ? trim( wp_strip_all_tags( (string) $value['title'] ) )
+        : '';
+
+    $target = isset( $value['target'] ) && '_blank' === $value['target']
+        ? '_blank'
+        : '';
+
+    if ( '' === $url || '' === $title ) {
+        return array();
+    }
+
+    return array(
+        'url'    => $url,
+        'title'  => $title,
+        'target' => $target,
+    );
+};
+
+$home_attachment_id = static function ( string $name ) use ( $home_id ): int {
+    if ( ! function_exists( 'get_field' ) ) {
+        return 0;
+    }
+
+    return absint( get_field( $name, $home_id, false ) );
+};
+
+/*
+ * Hero.
+ */
+$hero_eyebrow       = $home_text( 'home_hero_eyebrow' );
+$hero_title         = $home_text( 'home_hero_title' );
+$hero_lead          = $home_text( 'home_hero_lead' );
+$hero_secondary     = $home_link( 'home_hero_secondary_link' );
+$hero_note          = $home_text( 'home_hero_note' );
+$hero_video_label   = $home_text( 'home_hero_video_label' );
+$hero_poster_id     = $home_attachment_id( 'home_hero_poster' );
+$hero_video_id      = $home_attachment_id( 'home_hero_video' );
+$hero_booking_label = function_exists( 'yabao_site_text' )
+    ? yabao_site_text( 'booking_cta_label' )
+    : '';
+
+$hero_poster_url = $hero_poster_id
+    ? wp_get_attachment_url( $hero_poster_id )
+    : '';
+
+$hero_video_url = $hero_video_id
+    ? wp_get_attachment_url( $hero_video_id )
+    : '';
+
+$hero_video_mime = $hero_video_id
+    ? get_post_mime_type( $hero_video_id )
+    : '';
+
+if (
+    ! $hero_video_url ||
+    ! is_string( $hero_video_mime ) ||
+    0 !== strpos( $hero_video_mime, 'video/' )
+) {
+    $hero_video_url  = '';
+    $hero_video_mime = '';
+}
+
+$has_hero_actions =
+    '' !== $hero_booking_label ||
+    ! empty( $hero_secondary );
+
+$has_hero_copy =
+    '' !== $hero_eyebrow ||
+    '' !== $hero_title ||
+    '' !== $hero_lead ||
+    $has_hero_actions ||
+    '' !== $hero_note;
+
+$has_hero =
+    $hero_poster_id ||
+    '' !== $hero_video_url ||
+    $has_hero_copy;
+
+/*
+ * First visit / reviews.
+ */
+$trust_eyebrow = $home_text( 'home_trust_eyebrow' );
+
+$trust_text = '';
+
+if ( function_exists( 'get_field' ) ) {
+    $trust_raw = get_field( 'home_trust_text', $home_id );
+
+    if ( is_string( $trust_raw ) ) {
+        $trust_text = trim( $trust_raw );
+    }
+}
+
+$yandex_reviews_value = $home_text( 'home_yandex_reviews_value' );
+$yandex_reviews_label = $home_text( 'home_yandex_reviews_label' );
+$two_gis_reviews_value = $home_text( 'home_2gis_reviews_value' );
+$two_gis_reviews_label = $home_text( 'home_2gis_reviews_label' );
+
+$yandex_maps_url = function_exists( 'yabao_site_url' )
+    ? yabao_site_url( 'yandex_maps_url' )
+    : '';
+
+$two_gis_url = function_exists( 'yabao_site_url' )
+    ? yabao_site_url( 'two_gis_url' )
+    : '';
+
+$has_yandex_review =
+    '' !== $yandex_maps_url &&
+    (
+        '' !== $yandex_reviews_value ||
+        '' !== $yandex_reviews_label
+    );
+
+$has_two_gis_review =
+    '' !== $two_gis_url &&
+    (
+        '' !== $two_gis_reviews_value ||
+        '' !== $two_gis_reviews_label
+    );
+
+$has_trust_intro =
+    '' !== $trust_eyebrow ||
+    '' !== $trust_text;
+
+$has_trust =
+    $has_trust_intro ||
+    $has_yandex_review ||
+    $has_two_gis_review;
+
+/*
+ * Visit formats.
+ */
+$formats_eyebrow = $home_text( 'home_formats_eyebrow' );
+$formats_title    = $home_text( 'home_formats_title' );
+$formats_intro    = $home_text( 'home_formats_intro' );
+
+$format_rows = function_exists( 'get_field' )
+    ? get_field( 'home_formats', $home_id )
+    : array();
+
+if ( ! is_array( $format_rows ) ) {
+    $format_rows = array();
+}
+
+$format_cards = array();
+
+foreach ( $format_rows as $row ) {
+    if ( ! is_array( $row ) ) {
+        continue;
+    }
+
+    $index = isset( $row['format_index'] ) && is_scalar( $row['format_index'] )
+        ? trim( wp_strip_all_tags( (string) $row['format_index'] ) )
+        : '';
+
+    $title = isset( $row['format_title'] ) && is_scalar( $row['format_title'] )
+        ? trim( wp_strip_all_tags( (string) $row['format_title'] ) )
+        : '';
+
+    $text = isset( $row['format_text'] ) && is_scalar( $row['format_text'] )
+        ? trim( wp_strip_all_tags( (string) $row['format_text'] ) )
+        : '';
+
+    $action_type = isset( $row['format_action_type'] ) && is_scalar( $row['format_action_type'] )
+        ? sanitize_key( (string) $row['format_action_type'] )
+        : '';
+
+    $featured = ! empty( $row['format_featured'] );
+
+    $card = array(
+        'index'           => $index,
+        'title'           => $title,
+        'text'            => $text,
+        'featured'        => $featured,
+        'action_type'     => $action_type,
+        'action_url'      => '',
+        'action_label'    => '',
+        'action_target'   => '',
+        'booking_context' => '',
+    );
+
+    if ( '' === $title ) {
+        continue;
+    }
+
+    if ( 'link' === $action_type ) {
+        $link = isset( $row['format_link'] ) && is_array( $row['format_link'] )
+            ? $row['format_link']
+            : array();
+
+        $url = isset( $link['url'] ) && is_scalar( $link['url'] )
+            ? esc_url_raw( trim( (string) $link['url'] ) )
+            : '';
+
+        $label = isset( $link['title'] ) && is_scalar( $link['title'] )
+            ? trim( wp_strip_all_tags( (string) $link['title'] ) )
+            : '';
+
+        $target = isset( $link['target'] ) && '_blank' === $link['target']
+            ? '_blank'
+            : '';
+
+        if ( '' === $url || '' === $label ) {
+            continue;
+        }
+
+        $card['action_url']    = $url;
+        $card['action_label']  = $label;
+        $card['action_target'] = $target;
+    } elseif ( 'booking' === $action_type ) {
+        $label = isset( $row['format_booking_label'] ) && is_scalar( $row['format_booking_label'] )
+            ? trim( wp_strip_all_tags( (string) $row['format_booking_label'] ) )
+            : '';
+
+        $context = isset( $row['format_booking_context'] ) && is_scalar( $row['format_booking_context'] )
+            ? sanitize_key( (string) $row['format_booking_context'] )
+            : '';
+
+        if ( '' === $label ) {
+            continue;
+        }
+
+        $card['action_label']    = $label;
+        $card['booking_context'] = $context;
+    } else {
+        continue;
+    }
+
+    $format_cards[] = $card;
+}
+
+$has_formats_heading =
+    '' !== $formats_eyebrow ||
+    '' !== $formats_title ||
+    '' !== $formats_intro;
+
+$has_formats =
+    $has_formats_heading ||
+    ! empty( $format_cards );
+?>
+
 <main id="main-content">
-<section aria-labelledby="hero-title" class="hero-v4" id="top">
-<div class="container hero-v4__shell">
-<div class="hero-v4__media reveal is-visible" data-hero-media="">
-<img alt="" class="hero-v4__poster" fetchpriority="high" height="1080" loading="eager" sizes="100vw" src="<?php echo esc_url( yabao_asset_url( 'images/hero-poster.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/hero-poster-960.webp' ) ); ?> 960w, <?php echo esc_url( yabao_asset_url( 'images/hero-poster-1440.webp' ) ); ?> 1440w, <?php echo esc_url( yabao_asset_url( 'images/hero-poster.webp' ) ); ?> 1920w" width="1920"/>
-<video aria-label="Чай заваривают за чайным столом" autoplay="" loop="" muted="" playsinline="" poster="<?php echo esc_url( yabao_asset_url( 'images/hero-poster-960.webp' ) ); ?>" preload="none">
-<source data-src="<?php echo esc_url( yabao_asset_url( 'video/hero-tea-loop.mp4' ) ); ?>" type="video/mp4"/>
-</video>
-<div aria-hidden="true" class="hero-v4__shade"></div>
-<div class="hero-v4__copy">
-<p class="hero-v4__eyebrow">Я Бао Завари · Кирова, 94</p>
-<h1 id="hero-title">Чайная в Челябинске<br/>на Кирова</h1>
-<p class="hero-v4__lead">Китайский чай, церемонии с мастером и живые встречи без снобизма. Можно просто зайти, выбрать вкус и провести время в своём ритме.</p>
-<div class="hero-v4__actions">
-<button class="button button--primary button--large" data-modal-open="" data-source="hero" type="button">Забронировать <span aria-hidden="true">→</span></button>
-<a class="button button--hero-ghost button--large" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '' ); ?>">Посмотреть чай</a>
-</div>
-<p class="hero-v4__note">Новичкам рады так же, как тем, кто давно пьёт китайский чай.</p>
-</div>
-</div>
-</div>
+
+<?php if ( $has_hero ) : ?>
+<section<?php if ( '' !== $hero_title ) : ?> aria-labelledby="hero-title"<?php endif; ?> class="hero-v4" id="top">
+    <div class="container hero-v4__shell">
+        <div class="hero-v4__media reveal is-visible" data-hero-media>
+
+            <?php if ( $hero_poster_id ) : ?>
+                <?php
+                echo wp_get_attachment_image(
+                    $hero_poster_id,
+                    'full',
+                    false,
+                    array(
+                        'alt'           => '',
+                        'class'         => 'hero-v4__poster',
+                        'fetchpriority' => 'high',
+                        'loading'       => 'eager',
+                        'decoding'      => 'async',
+                        'sizes'         => '100vw',
+                    )
+                );
+                ?>
+            <?php endif; ?>
+
+            <?php if ( '' !== $hero_video_url ) : ?>
+                <video
+                    <?php if ( '' !== $hero_video_label ) : ?>
+                        aria-label="<?php echo esc_attr( $hero_video_label ); ?>"
+                    <?php else : ?>
+                        aria-hidden="true"
+                    <?php endif; ?>
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    <?php if ( $hero_poster_url ) : ?>
+                        poster="<?php echo esc_url( $hero_poster_url ); ?>"
+                    <?php endif; ?>
+                    preload="none"
+                >
+                    <source
+                        data-src="<?php echo esc_url( $hero_video_url ); ?>"
+                        type="<?php echo esc_attr( $hero_video_mime ); ?>"
+                    >
+                </video>
+            <?php endif; ?>
+
+            <div aria-hidden="true" class="hero-v4__shade"></div>
+
+            <?php if ( $has_hero_copy ) : ?>
+                <div class="hero-v4__copy">
+
+                    <?php if ( '' !== $hero_eyebrow ) : ?>
+                        <p class="hero-v4__eyebrow"><?php echo esc_html( $hero_eyebrow ); ?></p>
+                    <?php endif; ?>
+
+                    <?php if ( '' !== $hero_title ) : ?>
+                        <h1 id="hero-title"><?php echo nl2br( esc_html( $hero_title ) ); ?></h1>
+                    <?php endif; ?>
+
+                    <?php if ( '' !== $hero_lead ) : ?>
+                        <p class="hero-v4__lead"><?php echo esc_html( $hero_lead ); ?></p>
+                    <?php endif; ?>
+
+                    <?php if ( $has_hero_actions ) : ?>
+                        <div class="hero-v4__actions">
+
+                            <?php if ( '' !== $hero_booking_label ) : ?>
+                                <button
+                                    class="button button--primary button--large"
+                                    data-modal-open
+                                    data-source="hero"
+                                    type="button"
+                                >
+                                    <?php echo esc_html( $hero_booking_label ); ?>
+                                    <span aria-hidden="true">→</span>
+                                </button>
+                            <?php endif; ?>
+
+                            <?php if ( $hero_secondary ) : ?>
+                                <a
+                                    class="button button--hero-ghost button--large"
+                                    href="<?php echo esc_url( $hero_secondary['url'] ); ?>"
+                                    <?php if ( '_blank' === $hero_secondary['target'] ) : ?>
+                                        target="_blank"
+                                        rel="noopener"
+                                    <?php endif; ?>
+                                ><?php echo esc_html( $hero_secondary['title'] ); ?></a>
+                            <?php endif; ?>
+
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ( '' !== $hero_note ) : ?>
+                        <p class="hero-v4__note"><?php echo esc_html( $hero_note ); ?></p>
+                    <?php endif; ?>
+
+                </div>
+            <?php endif; ?>
+
+        </div>
+    </div>
 </section>
+<?php endif; ?>
+
+<?php if ( $has_trust ) : ?>
 <section aria-label="О первом визите и отзывах" class="quick-trust">
-<div class="container quick-trust__layout">
-<div class="quick-trust__intro reveal">
-<p class="eyebrow">Первый визит</p>
-<p><strong>Можно зайти без церемонии.</strong> Выберите напиток из меню и проведите время в своём ритме. <strong>В первый раз - нормально.</strong> Разбираться в сортах заранее не нужно.</p>
-</div>
-<div aria-label="Отзывы на картах" class="quick-trust__reviews" role="group">
-<a aria-label="Отзывы Я Бао Завари в Яндекс Картах" class="review-stat reveal" href="https://yandex.ru/maps/org/ya_bao_zavari/112754832500/" rel="noopener" target="_blank">
-<span class="review-stat__top"><span>Яндекс Карты</span><span aria-hidden="true" class="review-stat__arrow"><svg viewbox="0 0 24 24"><path d="M8 16 16 8M10 8h6v6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg></span></span>
-<span class="review-stat__value">80+</span>
-<span class="review-stat__label">отзывов гостей</span>
-</a>
-<a aria-label="Отзывы Я Бао Завари в 2ГИС" class="review-stat review-stat--accent reveal" href="https://2gis.ru/chelyabinsk/firm/70000001110715460" rel="noopener" target="_blank">
-<span class="review-stat__top"><span>2ГИС</span><span aria-hidden="true" class="review-stat__arrow"><svg viewbox="0 0 24 24"><path d="M8 16 16 8M10 8h6v6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg></span></span>
-<span class="review-stat__value">150+</span>
-<span class="review-stat__label">оценок и отзывов</span>
-</a>
-</div>
-</div>
+    <div class="container quick-trust__layout">
+
+        <?php if ( $has_trust_intro ) : ?>
+            <div class="quick-trust__intro reveal">
+
+                <?php if ( '' !== $trust_eyebrow ) : ?>
+                    <p class="eyebrow"><?php echo esc_html( $trust_eyebrow ); ?></p>
+                <?php endif; ?>
+
+                <?php if ( '' !== $trust_text ) : ?>
+                    <?php echo wp_kses_post( $trust_text ); ?>
+                <?php endif; ?>
+
+            </div>
+        <?php endif; ?>
+
+        <?php if ( $has_yandex_review || $has_two_gis_review ) : ?>
+            <div aria-label="Отзывы на картах" class="quick-trust__reviews" role="group">
+
+                <?php if ( $has_yandex_review ) : ?>
+                    <a
+                        aria-label="Отзывы Я Бао Завари в Яндекс Картах"
+                        class="review-stat reveal"
+                        href="<?php echo esc_url( $yandex_maps_url ); ?>"
+                        rel="noopener"
+                        target="_blank"
+                    >
+                        <span class="review-stat__top">
+                            <span>Яндекс Карты</span>
+                            <span aria-hidden="true" class="review-stat__arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M8 16 16 8M10 8h6v6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+                                </svg>
+                            </span>
+                        </span>
+
+                        <?php if ( '' !== $yandex_reviews_value ) : ?>
+                            <span class="review-stat__value"><?php echo esc_html( $yandex_reviews_value ); ?></span>
+                        <?php endif; ?>
+
+                        <?php if ( '' !== $yandex_reviews_label ) : ?>
+                            <span class="review-stat__label"><?php echo esc_html( $yandex_reviews_label ); ?></span>
+                        <?php endif; ?>
+                    </a>
+                <?php endif; ?>
+
+                <?php if ( $has_two_gis_review ) : ?>
+                    <a
+                        aria-label="Отзывы Я Бао Завари в 2ГИС"
+                        class="review-stat review-stat--accent reveal"
+                        href="<?php echo esc_url( $two_gis_url ); ?>"
+                        rel="noopener"
+                        target="_blank"
+                    >
+                        <span class="review-stat__top">
+                            <span>2ГИС</span>
+                            <span aria-hidden="true" class="review-stat__arrow">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M8 16 16 8M10 8h6v6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+                                </svg>
+                            </span>
+                        </span>
+
+                        <?php if ( '' !== $two_gis_reviews_value ) : ?>
+                            <span class="review-stat__value"><?php echo esc_html( $two_gis_reviews_value ); ?></span>
+                        <?php endif; ?>
+
+                        <?php if ( '' !== $two_gis_reviews_label ) : ?>
+                            <span class="review-stat__label"><?php echo esc_html( $two_gis_reviews_label ); ?></span>
+                        <?php endif; ?>
+                    </a>
+                <?php endif; ?>
+
+            </div>
+        <?php endif; ?>
+
+    </div>
 </section>
+<?php endif; ?>
+
+<?php if ( $has_formats ) : ?>
 <section class="section section--paper" id="formats">
-<div class="container">
-<div class="section-heading reveal">
-<div><p class="eyebrow">Формат визита</p><h2>Как можно провести<br/> время в Я Бао Завари</h2></div>
-<p>Без сложного выбора на входе: можно прийти на чай, сесть за церемонию или встретиться вдвоём и небольшой компанией.</p>
-</div>
-<div class="format-grid-v4">
-<a class="format-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '' ); ?>">
-<span class="format-card-v4__index">01</span>
-<h3>Просто<br/>зайти на чай</h3>
-<p>Выбрать чай в магазине и провести время в своём ритме.</p>
-<span class="format-card-v4__link"><span>Перейти в магазин</span><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg></span>
-</a>
-<a class="format-card-v4 format-card-v4--featured reveal" href="<?php echo esc_url( yabao_page_url( 'chaynaya-ceremoniya' ) ); ?>">
-<span class="format-card-v4__index">02</span>
-<h3>Чайная<br/>церемония</h3>
-<p>Мастер помогает выбрать чай и ведёт встречу за чайным столом.</p>
-<span class="format-card-v4__link"><span>Как это проходит</span><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg></span>
-</a>
-<a class="format-card-v4 reveal" data-ceremony="couple" data-modal-open="" data-source="format-meeting" href="#booking-modal">
-<span class="format-card-v4__index">03</span>
-<h3>Вдвоём<br/>или с друзьями</h3>
-<p>Формат для встречи, разговора и знакомства с китайским чаем.</p>
-<span class="format-card-v4__link"><span>Уточнить свободное время</span><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg></span>
-</a>
-</div>
-</div>
+    <div class="container">
+
+        <?php if ( $has_formats_heading ) : ?>
+            <div class="section-heading reveal">
+
+                <?php if ( '' !== $formats_eyebrow || '' !== $formats_title ) : ?>
+                    <div>
+                        <?php if ( '' !== $formats_eyebrow ) : ?>
+                            <p class="eyebrow"><?php echo esc_html( $formats_eyebrow ); ?></p>
+                        <?php endif; ?>
+
+                        <?php if ( '' !== $formats_title ) : ?>
+                            <h2><?php echo nl2br( esc_html( $formats_title ) ); ?></h2>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ( '' !== $formats_intro ) : ?>
+                    <p><?php echo esc_html( $formats_intro ); ?></p>
+                <?php endif; ?>
+
+            </div>
+        <?php endif; ?>
+
+        <?php if ( $format_cards ) : ?>
+            <div class="format-grid-v4">
+
+                <?php foreach ( $format_cards as $card ) : ?>
+                    <?php
+                    $card_class = 'format-card-v4 reveal';
+
+                    if ( $card['featured'] ) {
+                        $card_class .= ' format-card-v4--featured';
+                    }
+                    ?>
+
+                    <?php if ( 'link' === $card['action_type'] ) : ?>
+                        <a
+                            class="<?php echo esc_attr( $card_class ); ?>"
+                            href="<?php echo esc_url( $card['action_url'] ); ?>"
+                            <?php if ( '_blank' === $card['action_target'] ) : ?>
+                                target="_blank"
+                                rel="noopener"
+                            <?php endif; ?>
+                        >
+                    <?php else : ?>
+                        <a
+                            class="<?php echo esc_attr( $card_class ); ?>"
+                            <?php if ( '' !== $card['booking_context'] ) : ?>
+                                data-ceremony="<?php echo esc_attr( $card['booking_context'] ); ?>"
+                            <?php endif; ?>
+                            data-modal-open
+                            data-source="format-meeting"
+                            href="#booking-modal"
+                        >
+                    <?php endif; ?>
+
+                        <?php if ( '' !== $card['index'] ) : ?>
+                            <span class="format-card-v4__index"><?php echo esc_html( $card['index'] ); ?></span>
+                        <?php endif; ?>
+
+                        <h3><?php echo nl2br( esc_html( $card['title'] ) ); ?></h3>
+
+                        <?php if ( '' !== $card['text'] ) : ?>
+                            <p><?php echo esc_html( $card['text'] ); ?></p>
+                        <?php endif; ?>
+
+                        <span class="format-card-v4__link">
+                            <span><?php echo esc_html( $card['action_label'] ); ?></span>
+                            <svg aria-hidden="true" viewBox="0 0 24 24">
+                                <path d="M5 12h14M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+                            </svg>
+                        </span>
+
+                    </a>
+                <?php endforeach; ?>
+
+            </div>
+        <?php endif; ?>
+
+    </div>
 </section>
+<?php endif; ?>
 <section class="section tea-showcase" id="tea">
 <div class="container">
 <div class="section-heading reveal">
