@@ -129,7 +129,7 @@ function yabao_delivery_selected_method_id(): string {
 }
 
 /**
- * Temporary built-in fallback for Stage 68.
+ * Built-in fallback for Stage 68.
  *
  * Once a real carrier plugin or configured WooCommerce shipping zone returns
  * rates, those rates win and this fallback deliberately adds nothing.
@@ -272,17 +272,6 @@ function yabao_delivery_rate_detail( WC_Shipping_Rate $rate, float $goods_total 
 	return 'Стоимость и срок рассчитаны выбранной службой доставки.';
 }
 
-function yabao_delivery_method_title( string $method_id ): string {
-	$labels = array(
-		'yabao_pickup'                => 'Самовывоз — Кирова, 94',
-		'yabao_delivery_avito'        => 'Авито Доставка',
-		'yabao_delivery_cdek'         => 'СДЭК',
-		'yabao_delivery_5post'        => '5Post',
-		'yabao_delivery_russian_post' => 'Почта России',
-	);
-	return $labels[ $method_id ] ?? 'Доставка';
-}
-
 /**
  * Render shipping methods inside the custom order-review template.
  * This function is deliberately read-only: no rate calculation and no session
@@ -383,141 +372,9 @@ function yabao_delivery_validate_checkout( array $data, WP_Error $errors ): void
 	);
 
 	foreach ( $required as $key => $message ) {
-		if ( empty( trim( (string) ( $data[ $key ] ?? '' ) ) ) ) {
+		if ( empty( trim( (string) ( $data[ $key ] ?? '' ) ) ) {
 			$errors->add( 'yabao_' . $key, $message );
 		}
 	}
 }
 add_action( 'woocommerce_after_checkout_validation', 'yabao_delivery_validate_checkout', 30, 2 );
-
-function yabao_delivery_mark_order( WC_Order $order, array $data ): void {
-	$method      = yabao_delivery_selected_method_id();
-	$goods_total = yabao_delivery_cart_goods_total();
-	$pending     = yabao_delivery_method_needs_quote( $method, $goods_total );
-
-	$order->update_meta_data( '_yabao_delivery_method', $method );
-	$order->update_meta_data( '_yabao_delivery_goods_total', wc_format_decimal( $goods_total, wc_get_price_decimals() ) );
-	$order->update_meta_data( '_yabao_delivery_quote_pending', $pending ? 'yes' : 'no' );
-
-	if ( $pending ) {
-		$order->update_meta_data( '_yabao_delivery_quote_threshold', wc_format_decimal( YABAO_FREE_SHIPPING_THRESHOLD, 0 ) );
-	}
-
-	if ( '' !== $method && ( yabao_delivery_is_pickup_method( $method ) || yabao_delivery_is_manual_carrier_method( $method ) ) && empty( $order->get_items( 'shipping' ) ) && class_exists( 'WC_Order_Item_Shipping' ) ) {
-		$item = new WC_Order_Item_Shipping();
-		$item->set_method_title( yabao_delivery_method_title( $method ) );
-		$item->set_method_id( $method );
-		$item->set_total( 0 );
-		$order->add_item( $item );
-	}
-
-	if ( '' !== $method && ! yabao_delivery_is_pickup_method( $method ) ) {
-		$order->set_shipping_first_name( $order->get_billing_first_name() );
-		$order->set_shipping_last_name( $order->get_billing_last_name() );
-		$order->set_shipping_address_1( $order->get_billing_address_1() );
-		$order->set_shipping_address_2( $order->get_billing_address_2() );
-		$order->set_shipping_city( $order->get_billing_city() );
-		$order->set_shipping_state( $order->get_billing_state() );
-		$order->set_shipping_postcode( $order->get_billing_postcode() );
-		$order->set_shipping_country( 'RU' );
-	}
-}
-add_action( 'woocommerce_checkout_create_order', 'yabao_delivery_mark_order', 30, 2 );
-
-/**
- * Non-charging gateway used only while a below-threshold delivery tariff is
- * unknown. This prevents an incomplete product-only total from being paid.
- */
-function yabao_delivery_register_quote_gateway( array $gateways ): array {
-	if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
-		return $gateways;
-	}
-
-	if ( ! class_exists( 'Yabao_Delivery_Quote_Gateway' ) ) {
-		class Yabao_Delivery_Quote_Gateway extends WC_Payment_Gateway {
-			public function __construct() {
-				$this->id                 = 'yabao_delivery_quote';
-				$this->method_title       = 'Расчёт доставки перед оплатой';
-				$this->method_description = 'Служебный сценарий: заказ ставится на удержание до подтверждения тарифа доставки.';
-				$this->has_fields         = false;
-				$this->enabled            = 'yes';
-				$this->title              = 'Оплата после расчёта доставки';
-				$this->description        = 'Сначала подтвердим стоимость доставки выбранной службой. Оплата станет доступна после подтверждения полной суммы.';
-			}
-
-			public function is_available(): bool {
-				return yabao_delivery_method_needs_quote( yabao_delivery_selected_method_id() );
-			}
-
-			public function process_payment( $order_id ): array {
-				$order = wc_get_order( $order_id );
-				if ( ! $order ) {
-					wc_add_notice( 'Не удалось создать заказ. Попробуйте ещё раз.', 'error' );
-					return array( 'result' => 'failure' );
-				}
-
-				$order->update_meta_data( '_yabao_delivery_quote_pending', 'yes' );
-				$order->update_status( 'on-hold', 'Ожидается расчёт стоимости доставки выбранной службой.' );
-				$order->save();
-
-				if ( function_exists( 'WC' ) && WC()->cart ) {
-					WC()->cart->empty_cart();
-				}
-
-				return array(
-					'result'   => 'success',
-					'redirect' => $this->get_return_url( $order ),
-				);
-			}
-		}
-	}
-
-	$gateways[] = 'Yabao_Delivery_Quote_Gateway';
-	return $gateways;
-}
-add_filter( 'woocommerce_payment_gateways', 'yabao_delivery_register_quote_gateway' );
-
-function yabao_delivery_guard_payment_gateways( array $gateways ): array {
-	if ( is_admin() && ! wp_doing_ajax() ) {
-		return $gateways;
-	}
-
-	if ( function_exists( 'is_checkout_pay_page' ) && is_checkout_pay_page() ) {
-		$order_id = absint( get_query_var( 'order-pay' ) );
-		$order    = $order_id ? wc_get_order( $order_id ) : false;
-		if ( $order && 'yes' === $order->get_meta( '_yabao_delivery_quote_pending', true ) ) {
-			return array();
-		}
-	}
-
-	$pending = yabao_delivery_method_needs_quote( yabao_delivery_selected_method_id() );
-	foreach ( array_keys( $gateways ) as $gateway_id ) {
-		if ( $pending && 'yabao_delivery_quote' !== $gateway_id ) {
-			unset( $gateways[ $gateway_id ] );
-		} elseif ( ! $pending && 'yabao_delivery_quote' === $gateway_id ) {
-			unset( $gateways[ $gateway_id ] );
-		}
-	}
-
-	return $gateways;
-}
-add_filter( 'woocommerce_available_payment_gateways', 'yabao_delivery_guard_payment_gateways', 100 );
-
-function yabao_delivery_admin_quote_notice( WC_Order $order ): void {
-	if ( 'yes' !== $order->get_meta( '_yabao_delivery_quote_pending', true ) ) {
-		return;
-	}
-
-	echo '<p class="form-field form-field-wide"><strong>Доставка:</strong> стоимость ещё не подтверждена. Не принимать оплату по этому заказу до добавления фактического тарифа и снятия флага ожидания.</p>';
-}
-add_action( 'woocommerce_admin_order_data_after_shipping_address', 'yabao_delivery_admin_quote_notice' );
-
-function yabao_delivery_thankyou_quote_notice( int $order_id ): void {
-	$order = wc_get_order( $order_id );
-	if ( ! $order || 'yes' !== $order->get_meta( '_yabao_delivery_quote_pending', true ) ) {
-		return;
-	}
-
-	echo '<div class="woocommerce-info">Заказ принят. Стоимость доставки будет рассчитана по тарифу выбранной службы и подтверждена до оплаты.</div>';
-}
-add_action( 'woocommerce_thankyou', 'yabao_delivery_thankyou_quote_notice', 8 );
