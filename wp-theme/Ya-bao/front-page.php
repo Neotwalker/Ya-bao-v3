@@ -608,84 +608,808 @@ $has_formats =
 <div class="section-tail reveal"><a class="button button--light" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '' ); ?>">Открыть магазин <span aria-hidden="true">→</span></a></div>
 </div>
 </section>
+<?php
+/*
+ * Stage 68.2.2b.
+ * Ceremony, beginner, space and location use ACF without editorial fallbacks.
+ */
+
+/*
+ * Resolve the real WooCommerce shop page.
+ * No synthetic /shop/ fallback here.
+ */
+$home_shop_url = '';
+
+if ( function_exists( 'wc_get_page_id' ) ) {
+    $home_shop_id = absint( wc_get_page_id( 'shop' ) );
+
+    if (
+        $home_shop_id &&
+        'publish' === get_post_status( $home_shop_id )
+    ) {
+        $resolved_shop_url = get_permalink( $home_shop_id );
+
+        if ( is_string( $resolved_shop_url ) ) {
+            $home_shop_url = $resolved_shop_url;
+        }
+    }
+}
+
+/*
+ * Beginner.
+ */
+$beginner_eyebrow   = $home_text( 'home_beginner_eyebrow' );
+$beginner_title     = $home_text( 'home_beginner_title' );
+$beginner_lead      = $home_text( 'home_beginner_lead' );
+$beginner_cta_link = $home_link( 'home_beginner_cta_link' );
+
+$beginner_image_id = $home_attachment_id(
+    'home_beginner_image'
+);
+
+if (
+    $beginner_image_id &&
+    ! wp_attachment_is_image( $beginner_image_id )
+) {
+    $beginner_image_id = 0;
+}
+
+$beginner_points_raw = function_exists( 'get_field' )
+    ? get_field( 'home_beginner_points', $home_id )
+    : array();
+
+$beginner_points = array();
+
+if ( is_array( $beginner_points_raw ) ) {
+    foreach ( $beginner_points_raw as $row ) {
+        if ( ! is_array( $row ) ) {
+            continue;
+        }
+
+        $text = isset( $row['point_text'] ) &&
+            is_scalar( $row['point_text'] )
+                ? trim(
+                    wp_strip_all_tags(
+                        (string) $row['point_text']
+                    )
+                )
+                : '';
+
+        if ( '' !== $text ) {
+            $beginner_points[] = $text;
+        }
+    }
+}
+
+$has_beginner_cta =
+    ! empty( $beginner_cta_link );
+
+$has_beginner_copy =
+    '' !== $beginner_eyebrow ||
+    '' !== $beginner_title ||
+    '' !== $beginner_lead ||
+    ! empty( $beginner_points ) ||
+    $has_beginner_cta;
+
+$has_beginner =
+    $has_beginner_copy ||
+    $beginner_image_id;
+
+/*
+ * Ceremony.
+ */
+$ceremony_eyebrow = $home_text(
+    'home_ceremony_eyebrow'
+);
+
+$ceremony_title = $home_text(
+    'home_ceremony_title'
+);
+
+$ceremony_lead = $home_text(
+    'home_ceremony_lead'
+);
+
+$ceremony_booking_context = sanitize_key(
+    $home_text(
+        'home_ceremony_booking_context'
+    )
+);
+
+$ceremony_secondary_label = $home_text(
+    'home_ceremony_secondary_label'
+);
+
+$ceremony_booking_label =
+    isset( $hero_booking_label ) &&
+    is_string( $hero_booking_label )
+        ? $hero_booking_label
+        : '';
+
+$ceremony_image_id = $home_attachment_id(
+    'home_ceremony_image'
+);
+
+if (
+    $ceremony_image_id &&
+    ! wp_attachment_is_image( $ceremony_image_id )
+) {
+    $ceremony_image_id = 0;
+}
+
+$ceremony_steps_raw = function_exists( 'get_field' )
+    ? get_field( 'home_ceremony_steps', $home_id )
+    : array();
+
+$ceremony_steps = array();
+
+if ( is_array( $ceremony_steps_raw ) ) {
+    foreach ( $ceremony_steps_raw as $row ) {
+        if ( ! is_array( $row ) ) {
+            continue;
+        }
+
+        $number = isset( $row['step_number'] ) &&
+            is_scalar( $row['step_number'] )
+                ? trim(
+                    wp_strip_all_tags(
+                        (string) $row['step_number']
+                    )
+                )
+                : '';
+
+        $title = isset( $row['step_title'] ) &&
+            is_scalar( $row['step_title'] )
+                ? trim(
+                    wp_strip_all_tags(
+                        (string) $row['step_title']
+                    )
+                )
+                : '';
+
+        $text = isset( $row['step_text'] ) &&
+            is_scalar( $row['step_text'] )
+                ? trim(
+                    wp_strip_all_tags(
+                        (string) $row['step_text']
+                    )
+                )
+                : '';
+
+        if (
+            '' === $number &&
+            '' === $title &&
+            '' === $text
+        ) {
+            continue;
+        }
+
+        $ceremony_steps[] = array(
+            'number' => $number,
+            'title'  => $title,
+            'text'   => $text,
+        );
+    }
+}
+
+$has_ceremony_secondary =
+    '' !== $ceremony_secondary_label &&
+    $has_beginner;
+
+$has_ceremony_actions =
+    '' !== $ceremony_booking_label ||
+    $has_ceremony_secondary;
+
+$has_ceremony_copy =
+    '' !== $ceremony_eyebrow ||
+    '' !== $ceremony_title ||
+    '' !== $ceremony_lead ||
+    ! empty( $ceremony_steps ) ||
+    $has_ceremony_actions;
+
+$has_ceremony =
+    $ceremony_image_id ||
+    $has_ceremony_copy;
+
+/*
+ * Space / mixed media gallery.
+ */
+$space_eyebrow = $home_text(
+    'home_space_eyebrow'
+);
+
+$space_title = $home_text(
+    'home_space_title'
+);
+
+$space_intro = $home_text(
+    'home_space_intro'
+);
+
+$space_about_link = $home_link(
+    'home_space_about_link'
+);
+
+$space_gallery_raw = function_exists( 'get_field' )
+    ? get_field( 'home_space_gallery', $home_id )
+    : array();
+
+$space_gallery_items = array();
+
+if ( is_array( $space_gallery_raw ) ) {
+    foreach ( $space_gallery_raw as $row ) {
+        if ( ! is_array( $row ) ) {
+            continue;
+        }
+
+        $image_id = isset( $row['image'] )
+            ? absint( $row['image'] )
+            : 0;
+
+        if (
+            $image_id &&
+            ! wp_attachment_is_image( $image_id )
+        ) {
+            $image_id = 0;
+        }
+
+        $video_id = isset( $row['video'] )
+            ? absint( $row['video'] )
+            : 0;
+
+        $video_url  = '';
+        $video_mime = '';
+
+        if ( $video_id ) {
+            $possible_video_url = wp_get_attachment_url(
+                $video_id
+            );
+
+            $possible_video_mime = get_post_mime_type(
+                $video_id
+            );
+
+            if (
+                is_string( $possible_video_url ) &&
+                $possible_video_url &&
+                in_array(
+                    $possible_video_mime,
+                    array(
+                        'video/mp4',
+                        'video/webm',
+                    ),
+                    true
+                )
+            ) {
+                $video_url  = $possible_video_url;
+                $video_mime = $possible_video_mime;
+            }
+        }
+
+        $image_url = $image_id
+            ? wp_get_attachment_url( $image_id )
+            : '';
+
+        $image_thumb_url = $image_id
+            ? wp_get_attachment_image_url(
+                $image_id,
+                'medium'
+            )
+            : '';
+
+        $image_alt = $image_id
+            ? trim(
+                (string) get_post_meta(
+                    $image_id,
+                    '_wp_attachment_image_alt',
+                    true
+                )
+            )
+            : '';
+
+        /*
+         * A valid video takes precedence.
+         * Its image, when present, becomes poster/thumbnail.
+         */
+        if ( '' !== $video_url ) {
+            $space_gallery_items[] = array(
+                'type'       => 'video',
+                'src'        => $video_url,
+                'mime'       => $video_mime,
+                'image_id'   => $image_id,
+                'poster'     => is_string( $image_url )
+                    ? $image_url
+                    : '',
+                'thumb'      => is_string( $image_thumb_url )
+                    ? $image_thumb_url
+                    : '',
+                'alt'        => $image_alt,
+            );
+
+            continue;
+        }
+
+        if (
+            $image_id &&
+            is_string( $image_url ) &&
+            '' !== $image_url
+        ) {
+            $space_gallery_items[] = array(
+                'type'       => 'image',
+                'src'        => $image_url,
+                'mime'       => '',
+                'image_id'   => $image_id,
+                'poster'     => '',
+                'thumb'      => is_string( $image_thumb_url )
+                    ? $image_thumb_url
+                    : '',
+                'alt'        => $image_alt,
+            );
+        }
+    }
+}
+
+$space_preview_items = array_slice(
+    $space_gallery_items,
+    0,
+    3
+);
+
+$space_hidden_items = array_slice(
+    $space_gallery_items,
+    3
+);
+
+$space_hidden_count = count(
+    $space_hidden_items
+);
+
+$has_space_heading =
+    '' !== $space_eyebrow ||
+    '' !== $space_title ||
+    '' !== $space_intro;
+
+$has_space =
+    $has_space_heading ||
+    ! empty( $space_gallery_items ) ||
+    ! empty( $space_about_link );
+
+/*
+ * Location.
+ */
+$location_eyebrow = $home_text(
+    'home_location_eyebrow'
+);
+
+$location_title = $home_text(
+    'home_location_title'
+);
+
+$location_lead = $home_text(
+    'home_location_lead'
+);
+
+$location_two_gis_label = $home_text(
+    'home_location_2gis_label'
+);
+
+$location_yandex_label = $home_text(
+    'home_location_yandex_label'
+);
+
+$location_map_title = $home_text(
+    'home_location_map_title'
+);
+
+$location_map_url = esc_url_raw(
+    $home_text(
+        'home_location_map_embed_url'
+    )
+);
+
+if (
+    $location_map_url &&
+    ! preg_match(
+        '#^https?://#i',
+        $location_map_url
+    )
+) {
+    $location_map_url = '';
+}
+
+$location_two_gis_url =
+    function_exists( 'yabao_site_url' )
+        ? yabao_site_url( 'two_gis_url' )
+        : '';
+
+$location_yandex_url =
+    function_exists( 'yabao_site_url' )
+        ? yabao_site_url( 'yandex_maps_url' )
+        : '';
+
+$has_location_two_gis =
+    '' !== $location_two_gis_label &&
+    '' !== $location_two_gis_url;
+
+$has_location_yandex =
+    '' !== $location_yandex_label &&
+    '' !== $location_yandex_url;
+
+$has_location_actions =
+    $has_location_two_gis ||
+    $has_location_yandex;
+
+$has_location_copy =
+    '' !== $location_eyebrow ||
+    '' !== $location_title ||
+    '' !== $location_lead ||
+    $has_location_actions;
+
+$has_location_map =
+    '' !== $location_map_url &&
+    '' !== $location_map_title;
+
+$has_location =
+    $has_location_copy ||
+    $has_location_map;
+?>
+
+<?php if ( $has_ceremony ) : ?>
 <section class="section section--paper ceremony-v4" id="ceremony">
-<div class="container ceremony-v4__grid">
-<div class="ceremony-v4__media reveal"><img alt="Чайная церемония за чайным столом" decoding="async" height="1086" loading="lazy" sizes="(max-width: 980px) calc(100vw - 44px), 50vw" src="<?php echo esc_url( yabao_asset_url( 'images/ceremony-intro-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/ceremony-intro-real-720.webp' ) ); ?> 720w, <?php echo esc_url( yabao_asset_url( 'images/ceremony-intro-real.webp' ) ); ?> 1448w" width="1448"/></div>
-<div class="ceremony-v4__copy reveal">
-<p class="eyebrow">Чайная церемония</p>
-<h2>Чайная церемония в Челябинске</h2>
-<p class="lead">Не нужно заранее знать сорта и правила. Мастер помогает выбрать чай и объясняет процесс по ходу встречи.</p>
-<ol class="ceremony-steps-v4">
-<li><span>1</span><div><strong>Выбираем формат</strong><p>Для первого знакомства, встречи вдвоём или небольшой компании.</p></div></li>
-<li><span>2</span><div><strong>Подбираем чай</strong><p>Можно отталкиваться от знакомых вкусов и ароматов.</p></div></li>
-<li><span>3</span><div><strong>Садимся за чайный стол</strong><p>Мастер заваривает чай и ведёт церемонию без лекционного тона.</p></div></li>
-</ol>
-<div class="ceremony-v4__actions">
-<button class="button button--primary" data-ceremony="first" data-modal-open="" data-source="ceremony-home" type="button">Забронировать</button>
-<a class="button button--light ceremony-v4__secondary" href="#beginner">Я впервые знакомлюсь с китайским чаем <span aria-hidden="true">→</span></a>
-</div>
-</div>
-</div>
+    <div class="container ceremony-v4__grid">
+
+        <?php if ( $ceremony_image_id ) : ?>
+            <div class="ceremony-v4__media reveal">
+                <?php
+                echo wp_get_attachment_image(
+                    $ceremony_image_id,
+                    'full',
+                    false,
+                    array(
+                        'loading'  => 'lazy',
+                        'decoding' => 'async',
+                        'sizes'    => '(max-width: 980px) calc(100vw - 44px), 50vw',
+                    )
+                );
+                ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ( $has_ceremony_copy ) : ?>
+            <div class="ceremony-v4__copy reveal">
+
+                <?php if ( '' !== $ceremony_eyebrow ) : ?>
+                    <p class="eyebrow"><?php echo esc_html( $ceremony_eyebrow ); ?></p>
+                <?php endif; ?>
+
+                <?php if ( '' !== $ceremony_title ) : ?>
+                    <h2><?php echo esc_html( $ceremony_title ); ?></h2>
+                <?php endif; ?>
+
+                <?php if ( '' !== $ceremony_lead ) : ?>
+                    <p class="lead"><?php echo esc_html( $ceremony_lead ); ?></p>
+                <?php endif; ?>
+
+                <?php if ( $ceremony_steps ) : ?>
+                    <ol class="ceremony-steps-v4">
+                        <?php foreach ( $ceremony_steps as $step ) : ?>
+                            <li>
+
+                                <?php if ( '' !== $step['number'] ) : ?>
+                                    <span><?php echo esc_html( $step['number'] ); ?></span>
+                                <?php endif; ?>
+
+                                <?php if ( '' !== $step['title'] || '' !== $step['text'] ) : ?>
+                                    <div>
+
+                                        <?php if ( '' !== $step['title'] ) : ?>
+                                            <strong><?php echo esc_html( $step['title'] ); ?></strong>
+                                        <?php endif; ?>
+
+                                        <?php if ( '' !== $step['text'] ) : ?>
+                                            <p><?php echo esc_html( $step['text'] ); ?></p>
+                                        <?php endif; ?>
+
+                                    </div>
+                                <?php endif; ?>
+
+                            </li>
+                        <?php endforeach; ?>
+                    </ol>
+                <?php endif; ?>
+
+                <?php if ( $has_ceremony_actions ) : ?>
+                    <div class="ceremony-v4__actions">
+
+                        <?php if ( '' !== $ceremony_booking_label ) : ?>
+                            <button
+                                class="button button--primary"
+                                <?php if ( '' !== $ceremony_booking_context ) : ?>
+                                    data-ceremony="<?php echo esc_attr( $ceremony_booking_context ); ?>"
+                                <?php endif; ?>
+                                data-modal-open
+                                data-source="ceremony-home"
+                                type="button"
+                            ><?php echo esc_html( $ceremony_booking_label ); ?></button>
+                        <?php endif; ?>
+
+                        <?php if ( $has_ceremony_secondary ) : ?>
+                            <a
+                                class="button button--light ceremony-v4__secondary"
+                                href="#beginner"
+                            >
+                                <?php echo esc_html( $ceremony_secondary_label ); ?>
+                                <span aria-hidden="true">→</span>
+                            </a>
+                        <?php endif; ?>
+
+                    </div>
+                <?php endif; ?>
+
+            </div>
+        <?php endif; ?>
+
+    </div>
 </section>
+<?php endif; ?>
+
+<?php if ( $has_beginner ) : ?>
 <section class="section beginner-v4" id="beginner">
-<div class="container beginner-v4__grid">
-<div class="beginner-v4__copy reveal">
-<p class="eyebrow">Для первого визита</p>
-<h2>Впервые знакомитесь с китайским чаем?</h2>
-<p class="lead">Не нужно отличать Шэн от Шу и вспоминать названия посуды. В начале достаточно сказать, что вы обычно любите по вкусу.</p>
-<ul class="plain-checks">
-<li>Не нужно знать сорта заранее.</li>
-<li>Можно попросить объяснить каждый шаг простыми словами.</li>
-<li>Можно просто прийти на чай без церемонии.</li>
-</ul>
-<a class="button button--walnut" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '' ); ?>">Перейти в магазин</a>
-</div>
-<div class="beginner-v4__media reveal"><img alt="Знакомство с китайским чаем" decoding="async" height="1086" loading="lazy" sizes="(max-width: 980px) calc(100vw - 44px), 50vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-beginner.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-beginner-720.webp' ) ); ?> 720w, <?php echo esc_url( yabao_asset_url( 'images/tea-beginner.webp' ) ); ?> 1448w" width="1448"/></div>
-</div>
+    <div class="container beginner-v4__grid">
+
+        <?php if ( $has_beginner_copy ) : ?>
+            <div class="beginner-v4__copy reveal">
+
+                <?php if ( '' !== $beginner_eyebrow ) : ?>
+                    <p class="eyebrow"><?php echo esc_html( $beginner_eyebrow ); ?></p>
+                <?php endif; ?>
+
+                <?php if ( '' !== $beginner_title ) : ?>
+                    <h2><?php echo esc_html( $beginner_title ); ?></h2>
+                <?php endif; ?>
+
+                <?php if ( '' !== $beginner_lead ) : ?>
+                    <p class="lead"><?php echo esc_html( $beginner_lead ); ?></p>
+                <?php endif; ?>
+
+                <?php if ( $beginner_points ) : ?>
+                    <ul class="plain-checks">
+                        <?php foreach ( $beginner_points as $point ) : ?>
+                            <li><?php echo esc_html( $point ); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+
+                <?php if ( $has_beginner_cta ) : ?>
+                    <a
+                        class="button button--walnut"
+                        href="<?php echo esc_url( $beginner_cta_link['url'] ); ?>"
+                        <?php if ( '_blank' === $beginner_cta_link['target'] ) : ?>
+                            target="_blank"
+                            rel="noopener"
+                        <?php endif; ?>
+                    ><?php echo esc_html( $beginner_cta_link['title'] ); ?></a>
+                <?php endif; ?>
+
+            </div>
+        <?php endif; ?>
+
+        <?php if ( $beginner_image_id ) : ?>
+            <div class="beginner-v4__media reveal">
+                <?php
+                echo wp_get_attachment_image(
+                    $beginner_image_id,
+                    'full',
+                    false,
+                    array(
+                        'loading'  => 'lazy',
+                        'decoding' => 'async',
+                        'sizes'    => '(max-width: 980px) calc(100vw - 44px), 50vw',
+                    )
+                );
+                ?>
+            </div>
+        <?php endif; ?>
+
+    </div>
 </section>
+<?php endif; ?>
+
+<?php if ( $has_space ) : ?>
 <section class="section section--dark space-v4" id="space">
-<div class="container">
-<div class="section-heading reveal">
-<div><p class="eyebrow">Пространство</p><h2>Как выглядит Я Бао Завари</h2></div>
-<p>Тёмное дерево, детали чайного стола, живое общение и китайский андеграунд. Здесь одинаково уместны первый визит и привычная встреча за чаем.</p>
-</div>
-<div class="space-gallery-v4">
-<figure class="space-gallery-v4__large reveal">
-<a aria-label="Открыть фото интерьера чайной" data-fancybox="space-gallery" href="<?php echo esc_url( yabao_asset_url( 'images/real-hall.webp' ) ); ?>">
-<span class="space-gallery-v4__hint">Открыть галерею</span>
-<img alt="Интерьер чайной Я Бао Завари" decoding="async" height="1086" loading="lazy" sizes="(max-width: 767px) 60vw, 50vw" src="<?php echo esc_url( yabao_asset_url( 'images/real-hall.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/real-hall-720.webp' ) ); ?> 720w, <?php echo esc_url( yabao_asset_url( 'images/real-hall.webp' ) ); ?> 1448w" width="1448"/>
-</a>
-</figure>
-<figure class="reveal">
-<a aria-label="Открыть фото деталей интерьера" data-fancybox="space-gallery" href="<?php echo esc_url( yabao_asset_url( 'images/real-corner.webp' ) ); ?>">
-<img alt="Детали интерьера Я Бао Завари" decoding="async" height="1086" loading="lazy" sizes="(max-width: 767px) 60vw, 50vw" src="<?php echo esc_url( yabao_asset_url( 'images/real-corner.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/real-corner-720.webp' ) ); ?> 720w, <?php echo esc_url( yabao_asset_url( 'images/real-corner.webp' ) ); ?> 1448w" width="1448"/>
-</a>
-</figure>
-<figure class="reveal">
-<a aria-label="Открыть фото чайного стола" data-fancybox="space-gallery" href="<?php echo esc_url( yabao_asset_url( 'images/gallery-2.webp' ) ); ?>">
-<img alt="Чайный стол" decoding="async" height="800" loading="lazy" sizes="(max-width: 767px) 40vw, 33vw" src="<?php echo esc_url( yabao_asset_url( 'images/gallery-2.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/gallery-2-720.webp' ) ); ?> 720w, <?php echo esc_url( yabao_asset_url( 'images/gallery-2.webp' ) ); ?> 1100w" width="1100"/>
-</a>
-</figure>
-</div>
-<div class="section-tail reveal"><a class="button button--ghost" href="<?php echo esc_url( yabao_page_url( 'about' ) ); ?>">О чайной <span aria-hidden="true">→</span></a></div>
-</div>
+    <div class="container">
+
+        <?php if ( $has_space_heading ) : ?>
+            <div class="section-heading reveal">
+
+                <?php if ( '' !== $space_eyebrow || '' !== $space_title ) : ?>
+                    <div>
+
+                        <?php if ( '' !== $space_eyebrow ) : ?>
+                            <p class="eyebrow"><?php echo esc_html( $space_eyebrow ); ?></p>
+                        <?php endif; ?>
+
+                        <?php if ( '' !== $space_title ) : ?>
+                            <h2><?php echo esc_html( $space_title ); ?></h2>
+                        <?php endif; ?>
+
+                    </div>
+                <?php endif; ?>
+
+                <?php if ( '' !== $space_intro ) : ?>
+                    <p><?php echo esc_html( $space_intro ); ?></p>
+                <?php endif; ?>
+
+            </div>
+        <?php endif; ?>
+
+        <?php if ( $space_preview_items ) : ?>
+            <div class="space-gallery-v4">
+
+                <?php foreach ( $space_preview_items as $space_index => $item ) : ?>
+                    <figure class="<?php echo esc_attr( 0 === $space_index ? 'space-gallery-v4__large reveal' : 'reveal' ); ?>">
+
+                        <a
+                            aria-label="<?php echo esc_attr( 'video' === $item['type'] ? 'Открыть видео галереи' : 'Открыть фото галереи' ); ?>"
+                            data-fancybox="space-gallery"
+                            href="<?php echo esc_url( $item['src'] ); ?>"
+                            <?php if ( '' !== $item['thumb'] ) : ?>
+                                data-thumb-src="<?php echo esc_url( $item['thumb'] ); ?>"
+                            <?php endif; ?>
+                            <?php if ( 'video' === $item['type'] ) : ?>
+                                data-type="html5video"
+                                data-video-format="<?php echo esc_attr( $item['mime'] ); ?>"
+                                <?php if ( '' !== $item['poster'] ) : ?>
+                                    data-poster="<?php echo esc_url( $item['poster'] ); ?>"
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        >
+
+                            <?php if ( $item['image_id'] ) : ?>
+                                <?php
+                                echo wp_get_attachment_image(
+                                    $item['image_id'],
+                                    'full',
+                                    false,
+                                    array(
+                                        'loading'  => 'lazy',
+                                        'decoding' => 'async',
+                                        'sizes'    => '(max-width: 767px) 60vw, 50vw',
+                                    )
+                                );
+                                ?>
+                            <?php elseif ( 'video' === $item['type'] ) : ?>
+                                <span
+                                    aria-hidden="true"
+                                    class="space-gallery-v4__video-placeholder"
+                                ></span>
+                            <?php endif; ?>
+
+                            <?php if ( 'video' === $item['type'] ) : ?>
+                                <span aria-hidden="true" class="space-gallery-v4__play">
+                                    <svg viewBox="0 0 24 24">
+                                        <path
+                                            d="M9 7.5 17 12l-8 4.5z"
+                                            fill="currentColor"
+                                        ></path>
+                                    </svg>
+                                </span>
+                            <?php endif; ?>
+
+                            <?php if ( 0 === $space_index && $space_hidden_count > 0 ) : ?>
+                                <span class="space-gallery-v4__hint">
+                                    Показать ещё <?php echo esc_html( (string) $space_hidden_count ); ?>
+                                </span>
+                            <?php endif; ?>
+
+                        </a>
+                    </figure>
+                <?php endforeach; ?>
+
+                <?php foreach ( $space_hidden_items as $item ) : ?>
+                    <a
+                        aria-hidden="true"
+                        class="space-gallery-v4__hidden"
+                        data-fancybox="space-gallery"
+                        href="<?php echo esc_url( $item['src'] ); ?>"
+                        tabindex="-1"
+                        <?php if ( '' !== $item['thumb'] ) : ?>
+                            data-thumb-src="<?php echo esc_url( $item['thumb'] ); ?>"
+                        <?php endif; ?>
+                        <?php if ( 'video' === $item['type'] ) : ?>
+                            data-type="html5video"
+                            data-video-format="<?php echo esc_attr( $item['mime'] ); ?>"
+                            <?php if ( '' !== $item['poster'] ) : ?>
+                                data-poster="<?php echo esc_url( $item['poster'] ); ?>"
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    ></a>
+                <?php endforeach; ?>
+
+            </div>
+        <?php endif; ?>
+
+        <?php if ( $space_about_link ) : ?>
+            <div class="section-tail reveal">
+                <a
+                    class="button button--ghost"
+                    href="<?php echo esc_url( $space_about_link['url'] ); ?>"
+                    <?php if ( '_blank' === $space_about_link['target'] ) : ?>
+                        target="_blank"
+                        rel="noopener"
+                    <?php endif; ?>
+                >
+                    <?php echo esc_html( $space_about_link['title'] ); ?>
+                    <span aria-hidden="true">→</span>
+                </a>
+            </div>
+        <?php endif; ?>
+
+    </div>
 </section>
+<?php endif; ?>
+
+<?php if ( $has_location ) : ?>
 <section class="section section--paper local-v4" id="location">
-<div class="container local-v4__grid">
-<div class="local-v4__copy reveal">
-<p class="eyebrow">Кировка</p>
-<h2>Чайная на Кировке, в центре Челябинска</h2>
-<p class="lead">Я Бао Завари находится на улице Кирова, 94. Можно зайти во время прогулки по центру или приехать специально на чайную церемонию.</p>
-<div class="local-v4__actions">
-<a class="button button--walnut" href="https://2gis.ru/chelyabinsk/firm/70000001110715460" rel="noopener" target="_blank">Открыть в 2ГИС</a>
-<a class="button button--walnut" href="https://yandex.ru/maps/org/ya_bao_zavari/112754832500/" rel="noopener" target="_blank">Яндекс Карты</a>
-</div>
-</div>
-<div class="local-v4__visual local-v4__map">
-<iframe allowfullscreen="" loading="eager" referrerpolicy="no-referrer-when-downgrade" src="https://yandex.ru/map-widget/v1/?ll=61.402655%2C55.164081&mode=search&oid=112754832500&ol=biz&z=17" title="Я Бао Завари на Яндекс Картах"></iframe>
-</div>
-</div>
+    <div class="container local-v4__grid">
+
+        <?php if ( $has_location_copy ) : ?>
+            <div class="local-v4__copy reveal">
+
+                <?php if ( '' !== $location_eyebrow ) : ?>
+                    <p class="eyebrow"><?php echo esc_html( $location_eyebrow ); ?></p>
+                <?php endif; ?>
+
+                <?php if ( '' !== $location_title ) : ?>
+                    <h2><?php echo esc_html( $location_title ); ?></h2>
+                <?php endif; ?>
+
+                <?php if ( '' !== $location_lead ) : ?>
+                    <p class="lead"><?php echo esc_html( $location_lead ); ?></p>
+                <?php endif; ?>
+
+                <?php if ( $has_location_actions ) : ?>
+                    <div class="local-v4__actions">
+
+                        <?php if ( $has_location_two_gis ) : ?>
+                            <a
+                                class="button button--walnut"
+                                href="<?php echo esc_url( $location_two_gis_url ); ?>"
+                                rel="noopener"
+                                target="_blank"
+                            ><?php echo esc_html( $location_two_gis_label ); ?></a>
+                        <?php endif; ?>
+
+                        <?php if ( $has_location_yandex ) : ?>
+                            <a
+                                class="button button--walnut"
+                                href="<?php echo esc_url( $location_yandex_url ); ?>"
+                                rel="noopener"
+                                target="_blank"
+                            ><?php echo esc_html( $location_yandex_label ); ?></a>
+                        <?php endif; ?>
+
+                    </div>
+                <?php endif; ?>
+
+            </div>
+        <?php endif; ?>
+
+        <?php if ( $has_location_map ) : ?>
+            <div class="local-v4__visual local-v4__map">
+                <iframe
+                    allowfullscreen
+                    loading="eager"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    src="<?php echo esc_url( $location_map_url ); ?>"
+                    title="<?php echo esc_attr( $location_map_title ); ?>"
+                ></iframe>
+            </div>
+        <?php endif; ?>
+
+    </div>
 </section>
+<?php endif; ?>
 <section class="section section--dark events-home-v4" id="events">
 <div class="container">
 <div class="section-heading reveal">

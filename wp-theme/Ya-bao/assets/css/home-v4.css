@@ -515,7 +515,7 @@ button.format-card-v4{width:100%;font:inherit}
   z-index:2;
   left:14px;
   bottom:14px;
-  display:none;
+  display:block;
   max-width:calc(100% - 28px);
   padding:9px 12px;
   border:1px solid rgba(255,255,255,.22);
@@ -527,6 +527,34 @@ button.format-card-v4{width:100%;font:inherit}
   line-height:1.2;
   backdrop-filter:blur(8px);
   pointer-events:none;
+}
+.space-gallery-v4__hidden{display:none!important}
+.space-gallery-v4__play{
+  position:absolute;
+  z-index:2;
+  top:50%;
+  left:50%;
+  display:grid;
+  place-items:center;
+  width:58px;
+  height:58px;
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:50%;
+  background:rgba(20,16,13,.68);
+  color:#fff;
+  transform:translate(-50%,-50%);
+  backdrop-filter:blur(8px);
+  pointer-events:none;
+}
+.space-gallery-v4__play svg{
+  width:24px;
+  height:24px;
+}
+.space-gallery-v4__video-placeholder{
+  display:block;
+  width:100%;
+  height:100%;
+  background:#241d16;
 }
 .space-gallery-v4 img{
   width:100%;

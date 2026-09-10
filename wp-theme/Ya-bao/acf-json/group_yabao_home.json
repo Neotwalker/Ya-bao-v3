@@ -310,6 +310,336 @@
           ]
         }
       ]
+    },
+    {
+      "key": "field_yabao_home_tab_ceremony",
+      "label": "Чайная церемония",
+      "name": "",
+      "type": "tab",
+      "placement": "top",
+      "endpoint": 0
+    },
+    {
+      "key": "field_yabao_home_ceremony_image",
+      "label": "Изображение",
+      "name": "home_ceremony_image",
+      "type": "image",
+      "required": 0,
+      "return_format": "id",
+      "preview_size": "medium",
+      "library": "all"
+    },
+    {
+      "key": "field_yabao_home_ceremony_eyebrow",
+      "label": "Надзаголовок",
+      "name": "home_ceremony_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_ceremony_title",
+      "label": "Заголовок",
+      "name": "home_ceremony_title",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_ceremony_lead",
+      "label": "Описание",
+      "name": "home_ceremony_lead",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_home_ceremony_steps",
+      "label": "Этапы церемонии",
+      "name": "home_ceremony_steps",
+      "type": "repeater",
+      "required": 0,
+      "collapsed": "field_yabao_home_ceremony_step_title",
+      "min": 0,
+      "max": 0,
+      "layout": "block",
+      "button_label": "Добавить этап",
+      "sub_fields": [
+        {
+          "key": "field_yabao_home_ceremony_step_number",
+          "label": "Номер",
+          "name": "step_number",
+          "type": "text",
+          "required": 0,
+          "default_value": ""
+        },
+        {
+          "key": "field_yabao_home_ceremony_step_title",
+          "label": "Заголовок",
+          "name": "step_title",
+          "type": "text",
+          "required": 0,
+          "default_value": ""
+        },
+        {
+          "key": "field_yabao_home_ceremony_step_text",
+          "label": "Описание",
+          "name": "step_text",
+          "type": "textarea",
+          "required": 0,
+          "default_value": "",
+          "rows": 2,
+          "new_lines": ""
+        }
+      ]
+    },
+    {
+      "key": "field_yabao_home_ceremony_booking_context",
+      "label": "Код формата бронирования",
+      "name": "home_ceremony_booking_context",
+      "type": "text",
+      "instructions": "Техническое значение data-ceremony. Сейчас: first.",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_ceremony_secondary_label",
+      "label": "Текст второй кнопки",
+      "name": "home_ceremony_secondary_label",
+      "type": "text",
+      "instructions": "Кнопка ведёт к секции первого знакомства ниже.",
+      "required": 0,
+      "default_value": ""
+    },
+
+    {
+      "key": "field_yabao_home_tab_beginner",
+      "label": "Первое знакомство",
+      "name": "",
+      "type": "tab",
+      "placement": "top",
+      "endpoint": 0
+    },
+    {
+      "key": "field_yabao_home_beginner_eyebrow",
+      "label": "Надзаголовок",
+      "name": "home_beginner_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_beginner_title",
+      "label": "Заголовок",
+      "name": "home_beginner_title",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_beginner_lead",
+      "label": "Описание",
+      "name": "home_beginner_lead",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_home_beginner_points",
+      "label": "Пункты",
+      "name": "home_beginner_points",
+      "type": "repeater",
+      "required": 0,
+      "collapsed": "field_yabao_home_beginner_point_text",
+      "min": 0,
+      "max": 0,
+      "layout": "table",
+      "button_label": "Добавить пункт",
+      "sub_fields": [
+        {
+          "key": "field_yabao_home_beginner_point_text",
+          "label": "Текст",
+          "name": "point_text",
+          "type": "text",
+          "required": 0,
+          "default_value": ""
+        }
+      ]
+    },
+    {
+      "key": "field_yabao_home_beginner_cta_link",
+      "label": "Ссылка кнопки",
+      "name": "home_beginner_cta_link",
+      "type": "link",
+      "instructions": "Можно указать любую страницу или статью и изменить текст кнопки. Пустое поле скрывает кнопку.",
+      "required": 0,
+      "return_format": "array"
+    },
+    {
+      "key": "field_yabao_home_beginner_image",
+      "label": "Изображение",
+      "name": "home_beginner_image",
+      "type": "image",
+      "required": 0,
+      "return_format": "id",
+      "preview_size": "medium",
+      "library": "all"
+    },
+
+    {
+      "key": "field_yabao_home_tab_space",
+      "label": "Пространство",
+      "name": "",
+      "type": "tab",
+      "placement": "top",
+      "endpoint": 0
+    },
+    {
+      "key": "field_yabao_home_space_eyebrow",
+      "label": "Надзаголовок",
+      "name": "home_space_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_space_title",
+      "label": "Заголовок",
+      "name": "home_space_title",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_space_intro",
+      "label": "Описание",
+      "name": "home_space_intro",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
+    },
+
+    {
+      "key": "field_yabao_home_space_gallery",
+      "label": "Галерея",
+      "name": "home_space_gallery",
+      "type": "repeater",
+      "instructions": "Можно добавлять любое количество фото и видео. На главной отображаются первые 3 элемента, а Fancybox открывает всю галерею.",
+      "required": 0,
+      "collapsed": "field_yabao_home_space_gallery_image",
+      "min": 0,
+      "max": 0,
+      "layout": "block",
+      "button_label": "Добавить фото или видео",
+      "sub_fields": [
+        {
+          "key": "field_yabao_home_space_gallery_image",
+          "label": "Изображение / превью видео",
+          "name": "image",
+          "type": "image",
+          "instructions": "Для фотографии это сам элемент галереи. Для видео можно использовать как превью.",
+          "required": 0,
+          "return_format": "id",
+          "preview_size": "medium",
+          "library": "all"
+        },
+        {
+          "key": "field_yabao_home_space_gallery_video",
+          "label": "Видео",
+          "name": "video",
+          "type": "file",
+          "instructions": "Необязательно. Если выбрано видео, элемент галереи считается видео. Поддерживаются MP4 и WebM.",
+          "required": 0,
+          "return_format": "id",
+          "library": "all",
+          "mime_types": "mp4,webm"
+        }
+      ]
+    },
+    {
+      "key": "field_yabao_home_space_about_link",
+      "label": "Кнопка «О чайной»",
+      "name": "home_space_about_link",
+      "type": "link",
+      "instructions": "Если ссылка не заполнена, кнопка не выводится.",
+      "required": 0,
+      "return_format": "array"
+    },
+
+    {
+      "key": "field_yabao_home_tab_location",
+      "label": "Локация",
+      "name": "",
+      "type": "tab",
+      "placement": "top",
+      "endpoint": 0
+    },
+    {
+      "key": "field_yabao_home_location_eyebrow",
+      "label": "Надзаголовок",
+      "name": "home_location_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_location_title",
+      "label": "Заголовок",
+      "name": "home_location_title",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_location_lead",
+      "label": "Описание",
+      "name": "home_location_lead",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_home_location_2gis_label",
+      "label": "Текст кнопки 2ГИС",
+      "name": "home_location_2gis_label",
+      "type": "text",
+      "instructions": "URL берётся из глобальных настроек.",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_location_yandex_label",
+      "label": "Текст кнопки Яндекс Карт",
+      "name": "home_location_yandex_label",
+      "type": "text",
+      "instructions": "URL берётся из глобальных настроек.",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_location_map_embed_url",
+      "label": "URL карты для iframe",
+      "name": "home_location_map_embed_url",
+      "type": "url",
+      "instructions": "Ссылка именно на встраиваемую карту, а не обычную страницу Яндекс Карт.",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_location_map_title",
+      "label": "Описание карты для доступности",
+      "name": "home_location_map_title",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
     }
   ],
   "location": [
@@ -330,5 +660,5 @@
   "active": true,
   "description": "Редактируемый контент главной страницы. Пустые значения не имеют runtime fallback.",
   "show_in_rest": 0,
-  "modified": 1789050000
+  "modified": 1789053303
 }
