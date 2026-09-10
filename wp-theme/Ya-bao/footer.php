@@ -9,7 +9,6 @@ $footer_email      = yabao_site_text( 'email' );
 
 $footer_address    = yabao_site_group_text( 'address', 'display' );
 $footer_yandex_url = yabao_site_url( 'yandex_maps_url' );
-$footer_two_gis    = yabao_site_url( 'two_gis_url' );
 
 $footer_contact_heading = yabao_site_text( 'footer_contact_heading' );
 $footer_socials         = yabao_site_social_links( 'footer' );
