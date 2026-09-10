@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ya Bao Commerce Core
  * Description: Theme-independent WooCommerce order and delivery-payment lifecycle for Ya Bao Zavari.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Requires at least: 6.5
  * Requires PHP: 8.0
  * Requires Plugins: woocommerce
@@ -13,19 +13,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_COMMERCE_CORE_VERSION = '0.1.0';
+const YABAO_COMMERCE_CORE_VERSION = '0.1.1';
 
 /**
  * The current ApiShip integration is classic-checkout only. HPOS is supported,
  * while Cart/Checkout Blocks are deliberately declared incompatible.
  */
 function yabao_commerce_declare_compatibility(): void {
-	if ( ! class_exists( '\\Automattic\\WooCommerce\\Utilities\\FeaturesUtil' ) ) {
+	$features_util = '\Automattic\WooCommerce\Utilities\FeaturesUtil';
+	if ( ! class_exists( $features_util ) ) {
 		return;
 	}
 
-	\\Automattic\\WooCommerce\\Utilities\\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-	\\Automattic\\WooCommerce\\Utilities\\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, false );
+	$features_util::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	$features_util::declare_compatibility( 'cart_checkout_blocks', __FILE__, false );
 }
 add_action( 'before_woocommerce_init', 'yabao_commerce_declare_compatibility' );
 
@@ -95,7 +96,8 @@ function yabao_commerce_method_title( string $method_id ): string {
 
 /**
  * Disable the Stage 68 theme-owned commercial lifecycle once this permanent
- * plugin is active. Shipping presentation/fallback remains untouched for now.
+ * plugin is active. Shipping presentation/fallback remains in the theme until
+ * the compatibility cleanup stage.
  */
 function yabao_commerce_disable_theme_lifecycle(): void {
 	remove_action( 'woocommerce_checkout_create_order', 'yabao_delivery_mark_order', 30 );
@@ -190,7 +192,10 @@ function yabao_commerce_load_quote_gateway(): void {
 		}
 	}
 }
-add_action( 'plugins_loaded', 'yabao_commerce_load_quote_gateway', 20 );
+add_action( 'woocommerce_loaded', 'yabao_commerce_load_quote_gateway', 20 );
+if ( class_exists( 'WC_Payment_Gateway' ) ) {
+	yabao_commerce_load_quote_gateway();
+}
 
 function yabao_commerce_register_quote_gateway( array $gateways ): array {
 	if ( class_exists( 'Yabao_Commerce_Quote_Gateway' ) ) {
