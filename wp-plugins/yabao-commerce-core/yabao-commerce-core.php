@@ -45,6 +45,17 @@ function yabao_commerce_threshold(): float {
 	return max( 0.0, (float) $value );
 }
 
+/** Backward-compatible bridge for the theme and ApiShip adapter. */
+if ( ! defined( 'YABAO_FREE_SHIPPING_THRESHOLD' ) ) {
+	define( 'YABAO_FREE_SHIPPING_THRESHOLD', yabao_commerce_threshold() );
+}
+
+/** Allow WooCommerce managers who can see the page to save the option. */
+function yabao_commerce_delivery_settings_capability(): string {
+	return 'manage_woocommerce';
+}
+add_filter( 'option_page_capability_yabao_delivery_settings', 'yabao_commerce_delivery_settings_capability' );
+
 function yabao_commerce_cart_goods_total(): float {
 	if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
 		return 0.0;
