@@ -1,11 +1,9 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-
-// update_order_review is rendered over Woo AJAX, so keep zero trimming here too.
-add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
 ?>
 <div class="woocommerce-checkout-review-order-table">
 <div class="checkout-items">
+	<?php do_action( 'woocommerce_review_order_before_cart_contents' ); ?>
 	<?php foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) :
 		$_product = apply_filters( 'woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key );
 		if ( ! $_product || ! $_product->exists() || $cart_item['quantity'] <= 0 || ! apply_filters( 'woocommerce_checkout_cart_item_visible', true, $cart_item, $cart_item_key ) ) { continue; }
@@ -17,13 +15,18 @@ add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
 		<strong class="checkout-item__price"><?php echo WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></strong>
 	</article>
 	<?php endforeach; ?>
+	<?php do_action( 'woocommerce_review_order_after_cart_contents' ); ?>
 </div>
 
 <div class="checkout-summary__row"><span>Товаров</span><strong><?php echo esc_html( (string) WC()->cart->get_cart_contents_count() ); ?></strong></div>
 <div class="checkout-summary__row"><span>Товары</span><strong><?php wc_cart_totals_subtotal_html(); ?></strong></div>
 
-<?php if ( function_exists( 'yabao_delivery_render_checkout_shipping' ) ) : ?>
-	<?php yabao_delivery_render_checkout_shipping(); ?>
+<?php if ( function_exists( 'yabao_delivery_cart_requires_fulfilment' ) && yabao_delivery_cart_requires_fulfilment() ) : ?>
+	<?php do_action( 'woocommerce_review_order_before_shipping' ); ?>
+	<?php if ( function_exists( 'yabao_delivery_render_checkout_shipping' ) ) : ?>
+		<?php yabao_delivery_render_checkout_shipping(); ?>
+	<?php endif; ?>
+	<?php do_action( 'woocommerce_review_order_after_shipping' ); ?>
 <?php endif; ?>
 
 <?php foreach ( WC()->cart->get_coupons() as $code => $coupon ) : ?>
@@ -40,5 +43,7 @@ add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
 	<?php else : ?><div class="checkout-summary__row tax-total"><span><?php echo esc_html( WC()->countries->tax_or_vat() ); ?></span><strong><?php wc_cart_totals_taxes_total_html(); ?></strong></div><?php endif; ?>
 <?php endif; ?>
 
+<?php do_action( 'woocommerce_review_order_before_order_total' ); ?>
 <div class="checkout-summary__row checkout-summary__row--total"><span>Итого</span><strong><?php wc_cart_totals_order_total_html(); ?></strong></div>
+<?php do_action( 'woocommerce_review_order_after_order_total' ); ?>
 </div>
