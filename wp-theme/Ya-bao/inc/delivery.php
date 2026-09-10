@@ -5,16 +5,122 @@
  * Real commercial terms supplied by the store owner:
  * - pickup: Chelyabinsk, Kirova 94, 12:00-01:00;
  * - carriers: Avito Delivery, CDEK, 5Post, Russian Post;
- * - free carrier delivery from 5,000 RUB;
+ * - free carrier delivery from the admin-configured threshold (10,000 RUB by default);
  * - delivery time: usually 2-10 days;
- * - below 5,000 RUB the carrier tariff is confirmed before payment.
+ * - below the threshold the carrier tariff is confirmed before payment.
+ *
+ * The threshold is calculated from the merchandise total after coupons/discounts.
+ * Shipping charges and payment fees are not part of the threshold calculation.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_FREE_SHIPPING_THRESHOLD = 5000.0;
+/**
+ * One store-wide source of truth for the free-shipping threshold.
+ * Commerce Core and the ApiShip adapter already consume the global constant,
+ * so define it from the saved admin option instead of hard-coding a value.
+ */
+function yabao_delivery_free_shipping_threshold(): float {
+	$value = get_option( 'yabao_free_shipping_threshold', 10000 );
+	if ( ! is_numeric( $value ) ) {
+		return 10000.0;
+	}
+	return max( 0.0, (float) $value );
+}
+
+function yabao_delivery_format_free_shipping_threshold( ?float $threshold = null ): string {
+	$value = null === $threshold ? yabao_delivery_free_shipping_threshold() : max( 0.0, $threshold );
+	return number_format( $value, 0, ',', ' ' ) . ' ₽';
+}
+
+if ( ! defined( 'YABAO_FREE_SHIPPING_THRESHOLD' ) ) {
+	define( 'YABAO_FREE_SHIPPING_THRESHOLD', yabao_delivery_free_shipping_threshold() );
+}
+
+/** Admin setting: WooCommerce -> Доставка магазина. */
+function yabao_delivery_sanitize_free_shipping_threshold( $value ): float {
+	$normalized = str_replace( ',', '.', trim( (string) $value ) );
+	if ( ! is_numeric( $normalized ) || (float) $normalized < 0 ) {
+		add_settings_error(
+			'yabao_delivery_settings',
+			'yabao_invalid_free_shipping_threshold',
+			'Укажите порог бесплатной доставки числом не меньше 0.',
+			'error'
+		);
+		$current = get_option( 'yabao_free_shipping_threshold', 10000 );
+		return is_numeric( $current ) ? max( 0.0, (float) $current ) : 10000.0;
+	}
+	return round( (float) $normalized, 0 );
+}
+
+function yabao_delivery_register_admin_settings(): void {
+	register_setting(
+		'yabao_delivery_settings',
+		'yabao_free_shipping_threshold',
+		array(
+			'type'              => 'number',
+			'sanitize_callback' => 'yabao_delivery_sanitize_free_shipping_threshold',
+			'default'           => 10000,
+		)
+	);
+
+	add_settings_section(
+		'yabao_delivery_commercial_rules',
+		'Коммерческие условия доставки',
+		static function (): void {
+			echo '<p>Порог считается по стоимости товаров после применения скидок и промокодов. Стоимость доставки и платёжные комиссии в расчёт не входят.</p>';
+		},
+		'yabao_delivery_settings'
+	);
+
+	add_settings_field(
+		'yabao_free_shipping_threshold',
+		'Бесплатная доставка от, ₽',
+		static function (): void {
+			printf(
+				'<input id="yabao_free_shipping_threshold" name="yabao_free_shipping_threshold" type="number" min="0" step="1" value="%s" class="regular-text" inputmode="numeric">',
+				esc_attr( (string) yabao_delivery_free_shipping_threshold() )
+			);
+			echo '<p class="description">По умолчанию: 10 000 ₽. Новое значение применяется к корзине и checkout со следующего запроса.</p>';
+		},
+		'yabao_delivery_settings',
+		'yabao_delivery_commercial_rules'
+	);
+}
+add_action( 'admin_init', 'yabao_delivery_register_admin_settings' );
+
+function yabao_delivery_register_admin_page(): void {
+	add_submenu_page(
+		'woocommerce',
+		'Доставка магазина',
+		'Доставка магазина',
+		'manage_woocommerce',
+		'yabao-delivery-settings',
+		'yabao_delivery_render_admin_page'
+	);
+}
+add_action( 'admin_menu', 'yabao_delivery_register_admin_page', 30 );
+
+function yabao_delivery_render_admin_page(): void {
+	if ( ! current_user_can( 'manage_woocommerce' ) ) {
+		wp_die( esc_html__( 'Недостаточно прав для этого действия.', 'yabao' ) );
+	}
+	?>
+	<div class="wrap">
+		<h1>Доставка магазина</h1>
+		<?php settings_errors( 'yabao_delivery_settings' ); ?>
+		<form method="post" action="options.php">
+			<?php
+			settings_fields( 'yabao_delivery_settings' );
+			do_settings_sections( 'yabao_delivery_settings' );
+			submit_button( 'Сохранить условия доставки' );
+			?>
+		</form>
+	</div>
+	<?php
+}
 
 /**
  * Reuse the approved Stage 60 delivery styles on the WordPress delivery page,
@@ -264,7 +370,10 @@ function yabao_delivery_rate_detail( WC_Shipping_Rate $rate, float $goods_total 
 
 	if ( yabao_delivery_is_manual_carrier_method( $id ) ) {
 		if ( $goods_total >= YABAO_FREE_SHIPPING_THRESHOLD ) {
-			return 'Обычно 2–10 дней · доставка бесплатная при сумме товаров от 5 000 ₽.';
+			return sprintf(
+				'Обычно 2–10 дней · доставка бесплатная при сумме товаров от %s.',
+				yabao_delivery_format_free_shipping_threshold()
+			);
 		}
 		return 'Обычно 2–10 дней · стоимость по тарифу службы подтвердим до оплаты.';
 	}
@@ -339,7 +448,10 @@ function yabao_delivery_render_checkout_shipping(): void {
 	if ( yabao_delivery_method_needs_quote( $selected, $goods_total ) ) {
 		echo '<p class="checkout-shipping-quote"><strong>Стоимость доставки рассчитывается отдельно.</strong> Заказ будет сохранён без списания денег. После расчёта тарифа магазин подтвердит полную сумму до оплаты.</p>';
 	} elseif ( '' !== $selected && ! yabao_delivery_is_pickup_method( $selected ) && $goods_total >= YABAO_FREE_SHIPPING_THRESHOLD ) {
-		echo '<p class="checkout-shipping-quote checkout-shipping-quote--free"><strong>Бесплатная доставка.</strong> Порог 5 000 ₽ проверяется сервером по стоимости товаров после скидок.</p>';
+		printf(
+			'<p class="checkout-shipping-quote checkout-shipping-quote--free"><strong>Бесплатная доставка.</strong> Порог %s проверяется сервером по стоимости товаров после скидок и промокодов.</p>',
+			esc_html( yabao_delivery_format_free_shipping_threshold() )
+		);
 	}
 
 	echo '</section>';
@@ -372,7 +484,7 @@ function yabao_delivery_validate_checkout( array $data, WP_Error $errors ): void
 	);
 
 	foreach ( $required as $key => $message ) {
-		if ( empty( trim( (string) ( $data[ $key ] ?? '' ) ) ) ) {
+		if ( empty( trim( (string) ( $data[ $key ] ?? '' ) ) ) {
 			$errors->add( 'yabao_' . $key, $message );
 		}
 	}
