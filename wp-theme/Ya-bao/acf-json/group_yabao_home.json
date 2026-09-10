@@ -312,6 +312,82 @@
       ]
     },
     {
+      "key": "field_yabao_home_tab_tea",
+      "label": "Каталог чая",
+      "name": "",
+      "type": "tab",
+      "placement": "top",
+      "endpoint": 0
+    },
+    {
+      "key": "field_yabao_home_tea_eyebrow",
+      "label": "Надзаголовок",
+      "name": "home_tea_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_tea_title",
+      "label": "Заголовок",
+      "name": "home_tea_title",
+      "type": "textarea",
+      "instructions": "Поддерживает ручной перенос строки.",
+      "required": 0,
+      "default_value": "",
+      "rows": 2,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_home_tea_intro",
+      "label": "Описание",
+      "name": "home_tea_intro",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_home_tea_categories",
+      "label": "Категории на главной",
+      "name": "home_tea_categories",
+      "type": "repeater",
+      "instructions": "Здесь хранится только ссылка на реальную категорию WooCommerce. Название, URL, количество товаров и изображение берутся из product_cat. Порядок строк задаёт порядок карточек.",
+      "required": 0,
+      "collapsed": "field_yabao_home_tea_category",
+      "min": 0,
+      "max": 0,
+      "layout": "table",
+      "button_label": "Добавить категорию",
+      "sub_fields": [
+        {
+          "key": "field_yabao_home_tea_category",
+          "label": "Категория WooCommerce",
+          "name": "category",
+          "type": "taxonomy",
+          "taxonomy": "product_cat",
+          "add_term": 0,
+          "save_terms": 0,
+          "load_terms": 0,
+          "return_format": "id",
+          "field_type": "select",
+          "allow_null": 1,
+          "multiple": 0,
+          "required": 0
+        }
+      ]
+    },
+    {
+      "key": "field_yabao_home_tea_cta_link",
+      "label": "Кнопка под каталогом",
+      "name": "home_tea_cta_link",
+      "type": "link",
+      "instructions": "Можно изменить текст и ссылку. Пустое поле скрывает кнопку.",
+      "required": 0,
+      "return_format": "array"
+    },
+    {
       "key": "field_yabao_home_tab_ceremony",
       "label": "Чайная церемония",
       "name": "",
@@ -660,5 +736,5 @@
   "active": true,
   "description": "Редактируемый контент главной страницы. Пустые значения не имеют runtime fallback.",
   "show_in_rest": 0,
-  "modified": 1789053303
+  "modified": 1789053904
 }

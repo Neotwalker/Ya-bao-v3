@@ -337,7 +337,7 @@ button.format-card-v4{width:100%;font:inherit}
   background:#211a14;
   color:var(--color-white);
   text-decoration:none;
-  transition:transform .35s var(--ease),border-color .35s;
+  transition:opacity .75s ease,transform .75s ease,border-color .35s ease;
 }
 .tea-card-v4:hover{
   transform:translateY(-6px);

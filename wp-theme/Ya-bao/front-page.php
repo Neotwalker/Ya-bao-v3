@@ -549,65 +549,249 @@ $has_formats =
     </div>
 </section>
 <?php endif; ?>
+<?php
+/*
+ * Stage 68.2.2c.
+ * Editorial copy/order comes from ACF.
+ * Category identity, URL, image and product count come from WooCommerce.
+ */
+$tea_eyebrow = $home_text(
+    'home_tea_eyebrow'
+);
+
+$tea_title = $home_text(
+    'home_tea_title'
+);
+
+$tea_intro = $home_text(
+    'home_tea_intro'
+);
+
+$tea_cta_link = $home_link(
+    'home_tea_cta_link'
+);
+
+$tea_category_rows = function_exists( 'get_field' )
+    ? get_field(
+        'home_tea_categories',
+        $home_id
+    )
+    : array();
+
+$tea_categories = array();
+$tea_seen_terms = array();
+
+if (
+    is_array( $tea_category_rows ) &&
+    taxonomy_exists( 'product_cat' )
+) {
+    foreach ( $tea_category_rows as $row ) {
+        if ( ! is_array( $row ) ) {
+            continue;
+        }
+
+        $term_id = isset( $row['category'] )
+            ? absint( $row['category'] )
+            : 0;
+
+        if (
+            ! $term_id ||
+            isset( $tea_seen_terms[ $term_id ] )
+        ) {
+            continue;
+        }
+
+        $term = get_term(
+            $term_id,
+            'product_cat'
+        );
+
+        if (
+            ! $term ||
+            is_wp_error( $term ) ||
+            (int) $term->count < 1
+        ) {
+            continue;
+        }
+
+        $thumbnail_id = absint(
+            get_term_meta(
+                $term_id,
+                'thumbnail_id',
+                true
+            )
+        );
+
+        if (
+            ! $thumbnail_id ||
+            ! wp_attachment_is_image(
+                $thumbnail_id
+            )
+        ) {
+            continue;
+        }
+
+        $term_link = get_term_link(
+            $term,
+            'product_cat'
+        );
+
+        if (
+            is_wp_error( $term_link ) ||
+            ! is_string( $term_link ) ||
+            '' === $term_link
+        ) {
+            continue;
+        }
+
+        $tea_seen_terms[ $term_id ] = true;
+
+        $tea_categories[] = array(
+            'term'         => $term,
+            'url'          => $term_link,
+            'thumbnail_id' => $thumbnail_id,
+            'count'        => (int) $term->count,
+        );
+    }
+}
+
+$tea_position_label = static function ( int $count ): string {
+    $mod100 = $count % 100;
+    $mod10  = $count % 10;
+
+    if (
+        $mod100 >= 11 &&
+        $mod100 <= 14
+    ) {
+        return 'позиций';
+    }
+
+    if ( 1 === $mod10 ) {
+        return 'позиция';
+    }
+
+    if (
+        $mod10 >= 2 &&
+        $mod10 <= 4
+    ) {
+        return 'позиции';
+    }
+
+    return 'позиций';
+};
+
+$has_tea_heading =
+    '' !== $tea_eyebrow ||
+    '' !== $tea_title ||
+    '' !== $tea_intro;
+
+$has_tea =
+    $has_tea_heading ||
+    ! empty( $tea_categories ) ||
+    ! empty( $tea_cta_link );
+?>
+
+<?php if ( $has_tea ) : ?>
 <section class="section tea-showcase" id="tea">
-<div class="container">
-<div class="section-heading reveal">
-<div><p class="eyebrow">Китайский чай</p><h2>Выбрать чай можно легко</h2></div>
-<p>Для первого знакомства достаточно описать вкус, который вам ближе. Ниже - несколько направлений китайского чая.</p>
-</div>
-<div class="tea-card-grid">
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea' ); ?>">
-<div class="tea-card-v4__media"><img alt="Темные улуны" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-dark-oolong-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-dark-oolong-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-dark-oolong-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Темные улуны</h3><p>5 позиций</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea' ); ?>">
-<div class="tea-card-v4__media"><img alt="Красный чай" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-red-tea-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-red-tea-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-red-tea-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Красный чай</h3><p>3 позиции</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea' ); ?>">
-<div class="tea-card-v4__media"><img alt="Габа" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-gaba-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-gaba-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-gaba-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Габа</h3><p>4 позиции</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea&category=white-tea' ); ?>">
-<div class="tea-card-v4__media"><img alt="Белый чай" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-white-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-white-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-white-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Белый чай</h3><p>5 позиций</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea' ); ?>">
-<div class="tea-card-v4__media"><img alt="Светлые улуны" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-light-oolong-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-light-oolong-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-light-oolong-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Светлые улуны</h3><p>2 позиции</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea&category=sheng-puer' ); ?>">
-<div class="tea-card-v4__media"><img alt="Шэн пуэры" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-sheng-puer-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-sheng-puer-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-sheng-puer-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Шэн пуэры</h3><p>6 позиций</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea&category=shu-puer' ); ?>">
-<div class="tea-card-v4__media"><img alt="Шу Пуэры" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-shu-puer-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-shu-puer-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-shu-puer-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Шу Пуэры</h3><p>3 позиции</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea' ); ?>">
-<div class="tea-card-v4__media"><img alt="Желтый чай" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-yellow-tea-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-yellow-tea-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-yellow-tea-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Желтый чай</h3><p>1 позиция</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea' ); ?>">
-<div class="tea-card-v4__media"><img alt="Хэй Ча" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-hei-cha-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-hei-cha-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-hei-cha-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Хэй Ча</h3><p>1 позиция</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea' ); ?>">
-<div class="tea-card-v4__media"><img alt="Лимонады" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-lemonades-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-lemonades-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-lemonades-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Лимонады</h3><p>7 позиций</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea' ); ?>">
-<div class="tea-card-v4__media"><img alt="Бабл ти" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-bubble-tea-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-bubble-tea-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-bubble-tea-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Бабл ти</h3><p>7 позиций</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-<a class="tea-card-v4 reveal" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '?type=tea' ); ?>">
-<div class="tea-card-v4__media"><img alt="Авторский чай" decoding="async" height="669" loading="lazy" sizes="(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw" src="<?php echo esc_url( yabao_asset_url( 'images/tea-category-author-tea-real.webp' ) ); ?>" srcset="<?php echo esc_url( yabao_asset_url( 'images/tea-category-author-tea-real-640.webp' ) ); ?> 640w, <?php echo esc_url( yabao_asset_url( 'images/tea-category-author-tea-real.webp' ) ); ?> 1074w" width="1074"/></div>
-<div class="tea-card-v4__body"><h3>Авторский чай</h3><p>7 позиций</p><b>Перейти <span aria-hidden="true">→</span></b></div>
-</a>
-</div>
-<div class="section-tail reveal"><a class="button button--light" href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) . '' ); ?>">Открыть магазин <span aria-hidden="true">→</span></a></div>
-</div>
+    <div class="container">
+
+        <?php if ( $has_tea_heading ) : ?>
+            <div class="section-heading reveal">
+
+                <?php if ( '' !== $tea_eyebrow || '' !== $tea_title ) : ?>
+                    <div>
+
+                        <?php if ( '' !== $tea_eyebrow ) : ?>
+                            <p class="eyebrow"><?php echo esc_html( $tea_eyebrow ); ?></p>
+                        <?php endif; ?>
+
+                        <?php if ( '' !== $tea_title ) : ?>
+                            <h2><?php echo nl2br( esc_html( $tea_title ) ); ?></h2>
+                        <?php endif; ?>
+
+                    </div>
+                <?php endif; ?>
+
+                <?php if ( '' !== $tea_intro ) : ?>
+                    <p><?php echo esc_html( $tea_intro ); ?></p>
+                <?php endif; ?>
+
+            </div>
+        <?php endif; ?>
+
+        <?php if ( $tea_categories ) : ?>
+            <div class="tea-card-grid">
+
+                <?php foreach ( $tea_categories as $tea_category ) : ?>
+                    <?php
+                    $term = $tea_category['term'];
+                    $count = $tea_category['count'];
+                    ?>
+
+                    <a
+                        class="tea-card-v4 reveal"
+                        href="<?php echo esc_url( $tea_category['url'] ); ?>"
+                    >
+                        <div class="tea-card-v4__media">
+                            <?php
+                            echo wp_get_attachment_image(
+                                $tea_category['thumbnail_id'],
+                                'full',
+                                false,
+                                array(
+                                    'alt'      => $term->name,
+                                    'loading'  => 'lazy',
+                                    'decoding' => 'async',
+                                    'sizes'    => '(max-width: 767px) 46vw, (max-width: 1024px) 31vw, 24vw',
+                                )
+                            );
+                            ?>
+                        </div>
+
+                        <div class="tea-card-v4__body">
+                            <h3><?php echo esc_html( $term->name ); ?></h3>
+
+                            <p>
+                                <?php
+                                echo esc_html(
+                                    $count .
+                                    ' ' .
+                                    $tea_position_label( $count )
+                                );
+                                ?>
+                            </p>
+
+                            <b>
+                                Перейти
+                                <span aria-hidden="true">→</span>
+                            </b>
+                        </div>
+                    </a>
+
+                <?php endforeach; ?>
+
+            </div>
+        <?php endif; ?>
+
+        <?php if ( $tea_cta_link ) : ?>
+            <div class="section-tail reveal">
+                <a
+                    class="button button--light"
+                    href="<?php echo esc_url( $tea_cta_link['url'] ); ?>"
+                    <?php if ( '_blank' === $tea_cta_link['target'] ) : ?>
+                        target="_blank"
+                        rel="noopener"
+                    <?php endif; ?>
+                >
+                    <?php echo esc_html( $tea_cta_link['title'] ); ?>
+                    <span aria-hidden="true">→</span>
+                </a>
+            </div>
+        <?php endif; ?>
+
+    </div>
 </section>
+<?php endif; ?>
 <?php
 /*
  * Stage 68.2.2b.
