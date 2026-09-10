@@ -2,8 +2,9 @@
 /**
  * Delivery and pickup page.
  *
- * Editor-facing content comes from ACF. Commercial checkout rules remain in
- * WooCommerce / inc/delivery.php and are intentionally not duplicated in ACF.
+ * Editor-facing descriptive content comes from ACF. The commercial free-shipping
+ * rule is rendered from the same server-side setting used by checkout so the
+ * public page cannot drift from the actual order calculation.
  */
 
 get_header();
@@ -32,7 +33,22 @@ $pickup_description   = $get_paragraphs( 'pickup_description', 'Заказ мо�
 $delivery_title       = $get_text( 'delivery_title', 'Доставка по России' );
 $delivery_description = $get_paragraphs( 'delivery_description', 'Отправляем заказы через Авито Доставку, СДЭК, 5Post и Почту России.' );
 $delivery_timing      = $get_text( 'delivery_timing_text', 'Обычно 2–10 дней в зависимости от города и службы доставки.' );
-$delivery_rules       = $get_paragraphs( 'delivery_rules_text', 'Стоимость и условия определяются правилами выбранной службы доставки. При заказе от 5 000 ₽ доставка бесплатная.' );
+
+$free_shipping_threshold = function_exists( 'yabao_delivery_free_shipping_threshold' )
+	? yabao_delivery_free_shipping_threshold()
+	: 10000.0;
+$free_shipping_label = function_exists( 'yabao_delivery_format_free_shipping_threshold' )
+	? yabao_delivery_format_free_shipping_threshold( $free_shipping_threshold )
+	: number_format( $free_shipping_threshold, 0, ',', ' ' ) . ' ₽';
+
+$delivery_rules = wp_kses_post(
+	wpautop(
+		sprintf(
+			'Стоимость и условия определяются правилами выбранной службы доставки. При сумме товаров от %s доставка для покупателя бесплатная. Порог считается после применения скидок и промокодов.',
+			$free_shipping_label
+		)
+	)
+);
 ?>
 <main id="main-content">
 	<?php while ( have_posts() ) : the_post(); ?>
@@ -75,7 +91,7 @@ $delivery_rules       = $get_paragraphs( 'delivery_rules_text', 'Стоимос�
 					<ul class="delivery-method__facts">
 						<li><span>География</span><strong>Челябинск и другие города России</strong></li>
 						<li><span>Службы</span><strong>Авито, СДЭК, 5Post, Почта России</strong></li>
-						<li><span>Стоимость</span><strong>Бесплатно от 5 000 ₽</strong></li>
+						<li><span>Стоимость</span><strong>Бесплатно от <?php echo esc_html( $free_shipping_label ); ?></strong></li>
 						<li><span>Срок</span><strong><?php echo esc_html( $delivery_timing ); ?></strong></li>
 					</ul>
 					<div class="delivery-method__actions"><a class="button button--walnut" href="<?php echo esc_url( yabao_wc_page_url( 'checkout' ) ); ?>">Перейти к оформлению</a></div>
@@ -92,7 +108,7 @@ $delivery_rules       = $get_paragraphs( 'delivery_rules_text', 'Стоимос�
 			<div class="delivery-process__grid">
 				<article class="delivery-step"><span class="delivery-step__number">01</span><h3>Выберите способ</h3><p>На оформлении доступны самовывоз, Авито Доставка, СДЭК, 5Post и Почта России.</p></article>
 				<article class="delivery-step"><span class="delivery-step__number">02</span><h3>Укажите данные</h3><p>Для самовывоза адрес не требуется. Для доставки укажите город, адрес и почтовый индекс.</p></article>
-				<article class="delivery-step"><span class="delivery-step__number">03</span><h3>Проверьте стоимость</h3><p>От 5 000 ₽ доставка бесплатная. Ниже порога тариф выбранной службы подтверждается до оплаты.</p></article>
+				<article class="delivery-step"><span class="delivery-step__number">03</span><h3>Проверьте стоимость</h3><p>От <?php echo esc_html( $free_shipping_label ); ?> доставка бесплатная. Ниже порога тариф выбранной службы подтверждается до оплаты.</p></article>
 			</div>
 		</div>
 	</section>
@@ -104,8 +120,9 @@ $delivery_rules       = $get_paragraphs( 'delivery_rules_text', 'Стоимос�
 				<h2>Что важно знать</h2>
 				<ul class="delivery-pending__list">
 					<li>срок обычно составляет от 2 до 10 дней и зависит от города и службы;</li>
-					<li>при заказе от 5 000 ₽ доставка бесплатная;</li>
-					<li>для заказа до 5 000 ₽ стоимость рассчитывается по тарифу выбранной службы;</li>
+					<li>при сумме товаров от <?php echo esc_html( $free_shipping_label ); ?> доставка бесплатная;</li>
+					<li>при сумме товаров меньше <?php echo esc_html( $free_shipping_label ); ?> стоимость рассчитывается по тарифу выбранной службы;</li>
+					<li>порог бесплатной доставки считается после применения скидок и промокодов;</li>
 					<li>ограничения по габаритам, пунктам выдачи и срокам хранения определяются правилами перевозчика;</li>
 					<li>самовывоз доступен по адресу <?php echo esc_html( $pickup_address ); ?> в часы работы чайной.</li>
 				</ul>
