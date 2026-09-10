@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ya Bao Commerce Core
  * Description: Theme-independent WooCommerce order and delivery-payment lifecycle for Ya Bao Zavari.
- * Version: 0.1.1
+ * Version: 0.1.2
  * Requires at least: 6.5
  * Requires PHP: 8.0
  * Requires Plugins: woocommerce
@@ -13,14 +13,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_COMMERCE_CORE_VERSION = '0.1.1';
+const YABAO_COMMERCE_CORE_VERSION = '0.1.2';
 
 /**
  * The current ApiShip integration is classic-checkout only. HPOS is supported,
  * while Cart/Checkout Blocks are deliberately declared incompatible.
  */
 function yabao_commerce_declare_compatibility(): void {
-	$features_util = '\Automattic\WooCommerce\Utilities\FeaturesUtil';
+	$features_util = '\\Automattic\\WooCommerce\\Utilities\\FeaturesUtil';
 	if ( ! class_exists( $features_util ) ) {
 		return;
 	}
@@ -332,16 +332,37 @@ function yabao_commerce_render_quote_admin_page(): void {
 	echo '</form></div>';
 }
 
+/**
+ * Find the shipping line WooCommerce created for a manual fallback rate.
+ * Stage 68 originally used a generic method_id (yabao_delivery) while the
+ * selected rate id remained carrier-specific (for example yabao_delivery_cdek).
+ * Match that legacy line by its copied rate metadata so quote confirmation
+ * updates the existing line instead of creating a duplicate shipping item.
+ */
 function yabao_commerce_find_manual_shipping_item( WC_Order $order, string $method ): ?WC_Order_Item_Shipping {
+	$expected_carrier = yabao_commerce_method_title( $method );
+
 	foreach ( $order->get_items( 'shipping' ) as $item ) {
 		if ( ! $item instanceof WC_Order_Item_Shipping ) {
 			continue;
 		}
+
 		$item_method = (string) $item->get_method_id();
 		if ( $method === $item_method || yabao_commerce_is_manual_carrier_method( $item_method ) ) {
 			return $item;
 		}
+
+		$kind    = (string) $item->get_meta( 'yabao_kind', true );
+		$carrier = (string) $item->get_meta( 'yabao_carrier', true );
+		if (
+			'yabao_delivery' === $item_method &&
+			'delivery' === $kind &&
+			( '' === $carrier || $expected_carrier === $carrier )
+		) {
+			return $item;
+		}
 	}
+
 	return null;
 }
 
