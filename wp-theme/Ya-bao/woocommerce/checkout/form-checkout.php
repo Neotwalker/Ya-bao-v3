@@ -34,6 +34,7 @@ if ( WC()->customer ) {
 	</div>
 
 	<aside class="checkout-summary" aria-labelledby="order_review_heading">
+		<?php do_action( 'woocommerce_checkout_before_order_review_heading' ); ?>
 		<div class="checkout-summary__heading"><div><p class="eyebrow">Заказ</p><h2 id="order_review_heading">Ваш заказ</h2></div><a href="<?php echo esc_url( wc_get_cart_url() ); ?>">Изменить</a></div>
 		<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
 		<div id="order_review" class="woocommerce-checkout-review-order"><?php do_action( 'woocommerce_checkout_order_review' ); ?></div>
