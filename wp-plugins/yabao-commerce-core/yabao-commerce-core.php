@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ya Bao Commerce Core
  * Description: Theme-independent WooCommerce order and delivery-payment lifecycle for Ya Bao Zavari.
- * Version: 0.1.2
+ * Version: 0.1.3
  * Requires at least: 6.5
  * Requires PHP: 8.0
  * Requires Plugins: woocommerce
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_COMMERCE_CORE_VERSION = '0.1.2';
+const YABAO_COMMERCE_CORE_VERSION = '0.1.3';
 
 /**
  * The current ApiShip integration is classic-checkout only. HPOS is supported,
@@ -30,8 +30,19 @@ function yabao_commerce_declare_compatibility(): void {
 }
 add_action( 'before_woocommerce_init', 'yabao_commerce_declare_compatibility' );
 
+/**
+ * Canonical store-wide free-shipping threshold.
+ *
+ * The option is edited from WooCommerce -> Доставка магазина by the theme UI,
+ * while Commerce Core remains the runtime source of truth. A missing or invalid
+ * option safely falls back to the currently approved 10,000 RUB threshold.
+ */
 function yabao_commerce_threshold(): float {
-	return defined( 'YABAO_FREE_SHIPPING_THRESHOLD' ) ? (float) YABAO_FREE_SHIPPING_THRESHOLD : 5000.0;
+	$value = get_option( 'yabao_free_shipping_threshold', 10000 );
+	if ( ! is_numeric( $value ) ) {
+		return 10000.0;
+	}
+	return max( 0.0, (float) $value );
 }
 
 function yabao_commerce_cart_goods_total(): float {
