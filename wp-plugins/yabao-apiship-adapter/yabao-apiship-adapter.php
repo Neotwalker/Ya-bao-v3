@@ -522,3 +522,47 @@ function yabao_apiship_clean_labels( array $rates, array $package ): array {
 	return $rates;
 }
 add_filter( 'woocommerce_package_rates', 'yabao_apiship_clean_labels', 130, 2 );
+
+/**
+ * ApiShip 1.8.0 admin compatibility.
+ *
+ * The official plugin renders populated order-shipping metadata inside an
+ * .order-hidden wrapper, but does not remove that class on the order screen.
+ * Reveal only a populated ApiShip order metabox; checkout behavior is untouched.
+ */
+function yabao_apiship_admin_reveal_order_metabox(): void {
+    ?>
+    <script>
+    (function () {
+        function revealYabaoApiShipOrderMeta() {
+            const box = document.querySelector(
+                '#wpapiship-order-metabox .order-shipping-wrapper.order-hidden'
+            );
+
+            if (!box || !box.textContent.trim()) {
+                return;
+            }
+
+            if (!box.querySelector('.provider-card, .display-meta')) {
+                return;
+            }
+
+            box.classList.remove('order-hidden');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener(
+                'DOMContentLoaded',
+                revealYabaoApiShipOrderMeta,
+                { once: true }
+            );
+        } else {
+            revealYabaoApiShipOrderMeta();
+        }
+
+        window.setTimeout(revealYabaoApiShipOrderMeta, 750);
+    })();
+    </script>
+    <?php
+}
+add_action( 'admin_footer', 'yabao_apiship_admin_reveal_order_metabox', 100 );
