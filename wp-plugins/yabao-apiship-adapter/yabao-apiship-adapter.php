@@ -566,3 +566,40 @@ function yabao_apiship_admin_reveal_order_metabox(): void {
     <?php
 }
 add_action( 'admin_footer', 'yabao_apiship_admin_reveal_order_metabox', 100 );
+/**
+ * Drop stale ApiShip quotes when the checkout destination becomes incomplete.
+ */
+function yabao_apiship_destination_is_complete( array $package ): bool {
+    $destination = isset( $package['destination'] ) && is_array( $package['destination'] )
+        ? $package['destination']
+        : array();
+
+    $address = trim( (string) ( $destination['address'] ?? '' ) );
+    if ( '' === $address ) {
+        $address = trim( (string) ( $destination['address_1'] ?? '' ) );
+    }
+
+    $city     = trim( (string) ( $destination['city'] ?? '' ) );
+    $postcode = trim( (string) ( $destination['postcode'] ?? '' ) );
+
+    return '' !== $address && '' !== $city && '' !== $postcode;
+}
+
+function yabao_apiship_drop_stale_rates_for_incomplete_destination( array $rates, array $package ): array {
+    if ( is_admin() && ! wp_doing_ajax() ) {
+        return $rates;
+    }
+
+    if ( yabao_apiship_destination_is_complete( $package ) ) {
+        return $rates;
+    }
+
+    foreach ( $rates as $rate_key => $rate ) {
+        if ( yabao_apiship_is_rate( $rate ) ) {
+            unset( $rates[ $rate_key ] );
+        }
+    }
+
+    return $rates;
+}
+add_filter( 'woocommerce_package_rates', 'yabao_apiship_drop_stale_rates_for_incomplete_destination', 99, 2 );
