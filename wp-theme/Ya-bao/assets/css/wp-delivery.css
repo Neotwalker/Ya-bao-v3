@@ -56,6 +56,17 @@
 .yabao-checkout-field--hidden{display:none!important}
 
 /*
+ * ApiShip toggles its pickup-point controls with its own state classes.
+ * The theme's form-row layout is more specific than ApiShip's generic hidden
+ * rules, so preserve the plugin state explicitly without hiding rows that
+ * ApiShip has intentionally made visible.
+ */
+.page-checkout #_wpapiship_shipping_to_point_out_field.wpapiship-checkout-row-hidden,
+.page-checkout #wpapiship-point-out-address-wrapper.hidden{
+  display:none!important;
+}
+
+/*
  * Five fulfillment choices made the sticky order card taller than the useful
  * viewport on common desktop/2K displays. Keep the approved two-column layout,
  * but give the summary a little more width and tighten only its internal rhythm.
