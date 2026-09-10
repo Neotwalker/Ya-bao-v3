@@ -484,7 +484,7 @@ function yabao_delivery_validate_checkout( array $data, WP_Error $errors ): void
 	);
 
 	foreach ( $required as $key => $message ) {
-		if ( empty( trim( (string) ( $data[ $key ] ?? '' ) ) ) {
+		if ( empty( trim( (string) ( $data[ $key ] ?? '' ) ) ) ) {
 			$errors->add( 'yabao_' . $key, $message );
 		}
 	}
