@@ -486,3 +486,12 @@ textarea{resize:none}
   .mini-cart-item__variant{font-size:12px}
   .mini-cart-item__price{font-size:14px}
 }
+
+/* Footer grid follows the number of populated admin-managed columns. */
+.footer-grid--1{grid-template-columns:minmax(0,1fr)}
+.footer-grid--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.footer-grid--3{grid-template-columns:1.25fr repeat(2,minmax(0,1fr))}
+.footer-grid--4{grid-template-columns:1.25fr .62fr 1fr .7fr}
+.footer-map-links{margin-top:14px}
+.footer-map-links a{color:rgba(255,255,255,.72);font-size:13px;text-decoration:none}
+.footer-map-links a:hover{color:var(--color-white)}

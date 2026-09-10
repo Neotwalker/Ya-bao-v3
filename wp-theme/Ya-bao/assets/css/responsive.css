@@ -37,3 +37,19 @@
 @media (max-width:390px){
   .button{padding-inline:17px}
 }
+
+/* Mobile navigation must remain reachable on short viewports. */
+@media (max-width:1240px){
+  .mobile-nav{
+    align-content:safe center;
+    overflow-y:auto;
+    overscroll-behavior-y:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+}
+
+@media (max-width:1240px) and (max-height:760px){
+  .mobile-nav{
+    align-content:start;
+  }
+}
