@@ -17,6 +17,7 @@ require_once get_template_directory() . '/inc/security-hardening.php';
 require_once get_template_directory() . '/inc/delivery.php';
 require_once get_template_directory() . '/inc/acf-global.php';
 require_once get_template_directory() . '/inc/content-types.php';
+require_once get_template_directory() . '/inc/article-meta.php';
 
 function yabao_asset_url( string $path = '' ): string {
 	return trailingslashit( get_template_directory_uri() ) . 'assets/' . ltrim( $path, '/' );
@@ -100,6 +101,11 @@ function yabao_enqueue_assets(): void {
 	if ( yabao_woocommerce_active() && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() || is_checkout() ) ) {
 		wp_enqueue_style( 'yabao-shop', yabao_asset_url( 'css/shop.css' ), array( 'yabao-pages' ), yabao_asset_version( 'css/shop.css' ) );
 	}
+    if ( is_singular( 'post' ) ) {
+        wp_enqueue_style( 'yabao-swiper', yabao_swiper_asset_url( 'swiper-bundle.min.css' ), array(), YABAO_SWIPER_VERSION );
+        wp_enqueue_script( 'yabao-swiper', yabao_swiper_asset_url( 'swiper-bundle.min.js' ), array(), YABAO_SWIPER_VERSION, true );
+        wp_enqueue_script( 'yabao-article', yabao_asset_url( 'js/article.js' ), array( 'yabao-swiper' ), yabao_asset_version( 'js/article.js' ), true );
+    }
 	wp_enqueue_style( 'yabao-wp', yabao_asset_url( 'css/wp-integration.css' ), array( is_front_page() ? 'yabao-home' : 'yabao-pages' ), yabao_asset_version( 'css/wp-integration.css' ) );
 
 	if ( yabao_woocommerce_active() && ( is_shop() || is_product_taxonomy() || is_product() ) ) {
@@ -138,7 +144,7 @@ function yabao_enqueue_assets(): void {
 add_action( 'wp_enqueue_scripts', 'yabao_enqueue_assets', 20 );
 
 function yabao_module_script_tag( string $tag, string $handle, string $src ): string {
-	$module_handles = array( 'yabao-wp-app', 'yabao-wp-shop', 'yabao-wp-cart', 'yabao-home' );
+	$module_handles = array( 'yabao-wp-app', 'yabao-wp-shop', 'yabao-wp-cart', 'yabao-home', 'yabao-article' );
 	if ( ! in_array( $handle, $module_handles, true ) ) {
 		return $tag;
 	}
@@ -157,6 +163,9 @@ function yabao_body_classes( array $classes ): array {
 	if ( is_front_page() ) {
 		$classes[] = 'page-home';
 		$classes[] = 'page-home-v4';
+    } elseif ( is_singular( 'post' ) ) {
+        $classes[] = 'page-article';
+        $classes[] = 'page-inner';
 	} elseif ( yabao_woocommerce_active() && ( is_shop() || is_product_taxonomy() ) ) {
 		$classes[] = 'page-shop';
 		$classes[] = 'page-inner';

@@ -189,7 +189,7 @@
   background:rgba(255,255,255,.66);
   color:var(--color-ink);
   text-decoration:none;
-  transition:transform .3s var(--ease),box-shadow .3s,border-color .3s,background .3s;
+  transition:opacity .75s ease,transform .75s ease,box-shadow .35s ease,border-color .35s ease,background .35s ease;
 }
 .review-stat:hover{
   transform:translateY(-4px);
@@ -250,7 +250,7 @@
   text-align:left;
   text-decoration:none;
   cursor:pointer;
-  transition:transform .35s var(--ease),box-shadow .35s,background .35s;
+  transition:opacity .75s ease,transform .75s ease,box-shadow .35s ease,background .35s ease;
 }
 button.format-card-v4{width:100%;font:inherit}
 .format-card-v4:hover{

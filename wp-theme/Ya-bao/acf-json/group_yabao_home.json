@@ -716,6 +716,85 @@
       "type": "text",
       "required": 0,
       "default_value": ""
+    },
+
+    {
+      "key": "field_yabao_home_tab_events",
+      "label": "Афиша",
+      "name": "",
+      "type": "tab",
+      "placement": "top",
+      "endpoint": 0
+    },
+    {
+      "key": "field_yabao_home_events_eyebrow",
+      "label": "Надзаголовок",
+      "name": "home_events_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_events_title",
+      "label": "Заголовок",
+      "name": "home_events_title",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_events_intro",
+      "label": "Описание",
+      "name": "home_events_intro",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_home_events_cta_label",
+      "label": "Текст кнопки афиши",
+      "name": "home_events_cta_label",
+      "type": "text",
+      "instructions": "Ссылка ведёт на реальный архив событий. Пустое поле скрывает кнопку.",
+      "required": 0,
+      "default_value": ""
+    },
+
+    {
+      "key": "field_yabao_home_tab_guides",
+      "label": "Полезно",
+      "name": "",
+      "type": "tab",
+      "placement": "top",
+      "endpoint": 0
+    },
+    {
+      "key": "field_yabao_home_guides_eyebrow",
+      "label": "Надзаголовок",
+      "name": "home_guides_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_guides_title",
+      "label": "Заголовок",
+      "name": "home_guides_title",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_home_guides_intro",
+      "label": "Описание",
+      "name": "home_guides_intro",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
     }
   ],
   "location": [
@@ -736,5 +815,5 @@
   "active": true,
   "description": "Редактируемый контент главной страницы. Пустые значения не имеют runtime fallback.",
   "show_in_rest": 0,
-  "modified": 1789053904
+  "modified": 1789110098
 }

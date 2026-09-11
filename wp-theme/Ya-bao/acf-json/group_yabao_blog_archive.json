@@ -1,0 +1,61 @@
+{
+  "key": "group_yabao_blog_archive",
+  "title": "Блог — архив",
+  "fields": [
+    {
+      "key": "field_yabao_blog_hero_intro",
+      "label": "Описание в первом экране",
+      "name": "blog_hero_intro",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
+    },
+    {
+      "key": "field_yabao_blog_list_eyebrow",
+      "label": "Надзаголовок списка",
+      "name": "blog_list_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_blog_list_title",
+      "label": "Заголовок списка",
+      "name": "blog_list_title",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_blog_list_intro",
+      "label": "Описание списка",
+      "name": "blog_list_intro",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "page_type",
+        "operator": "==",
+        "value": "posts_page"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "",
+  "show_in_rest": 0,
+  "modified": 1789113524
+}
