@@ -10,10 +10,12 @@ $search   = isset( $_GET['q'] ) ? sanitize_text_field( wp_unslash( $_GET['q'] ) 
 
 $current_order = isset( $_GET['orderby'] ) ? wc_clean( wp_unslash( $_GET['orderby'] ) ) : 'menu_order';
 $current_cat   = isset( $_GET['product_cat'] ) ? sanitize_title( wp_unslash( $_GET['product_cat'] ) ) : '';
+$current_term  = null;
 if ( is_product_category() ) {
 	$queried = get_queried_object();
 	if ( $queried instanceof WP_Term ) {
-		$current_cat = $queried->slug;
+		$current_cat  = $queried->slug;
+		$current_term = $queried;
 	}
 }
 
@@ -44,7 +46,7 @@ if ( 'menu_order' !== $current_order ) {
 	<section class="section section--dark section--compact inner-hero">
 		<div class="container inner-hero__grid">
 			<div>
-				<nav aria-label="Хлебные крошки" class="breadcrumbs breadcrumbs--hero"><ol><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Главная</a></li><li><span aria-current="page">Магазин</span></li></ol></nav>
+				<nav aria-label="Хлебные крошки" class="breadcrumbs breadcrumbs--hero"><ol><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Главная</a></li><?php if ( $current_term instanceof WP_Term ) : ?><li><a href="<?php echo esc_url( $shop_url ); ?>">Магазин</a></li><li><span aria-current="page"><?php echo esc_html( $current_term->name ); ?></span></li><?php else : ?><li><span aria-current="page">Магазин</span></li><?php endif; ?></ol></nav>
 				<h1><?php echo is_product_taxonomy() ? esc_html( single_term_title( '', false ) ) : 'Магазин китайского чая в Челябинске'; ?></h1>
 			</div>
 			<div><p class="inner-hero__text">Китайский чай, чайная посуда и аксессуары. Цена, наличие и товары теперь берутся из WooCommerce.</p></div>
