@@ -16,6 +16,7 @@ require_once get_template_directory() . '/inc/product-importer-admin.php';
 require_once get_template_directory() . '/inc/security-hardening.php';
 require_once get_template_directory() . '/inc/delivery.php';
 require_once get_template_directory() . '/inc/acf-global.php';
+require_once get_template_directory() . '/inc/content-types.php';
 
 function yabao_asset_url( string $path = '' ): string {
 	return trailingslashit( get_template_directory_uri() ) . 'assets/' . ltrim( $path, '/' );
