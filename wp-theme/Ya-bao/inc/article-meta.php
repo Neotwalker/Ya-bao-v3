@@ -64,9 +64,17 @@ function yabao_post_view_cookie_name( int $post_id ): string {
  * Count one frontend article view per browser every 30 minutes.
  */
 function yabao_track_post_view(): void {
+    $request_method = isset( $_SERVER['REQUEST_METHOD'] )
+        ? strtoupper(
+            (string) $_SERVER['REQUEST_METHOD']
+        )
+        : '';
+
     if (
+        'GET' !== $request_method ||
         is_admin() ||
         wp_doing_ajax() ||
+        current_user_can( 'edit_posts' ) ||
         is_preview() ||
         is_feed() ||
         is_embed() ||

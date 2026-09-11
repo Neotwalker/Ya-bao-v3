@@ -133,10 +133,13 @@ function yabao_event_archive_date( int $post_id ): string {
                     : '';
 
                 $excerpt = trim(
-                    wp_strip_all_tags(
-                        get_the_excerpt()
-                    )
-                );
+        wp_strip_all_tags(
+            (string) get_post_field(
+                'post_excerpt',
+                $event_id
+            )
+        )
+    );
                 ?>
 
                 <article class="event-list-card reveal">

@@ -37,6 +37,32 @@
       "default_value": "",
       "rows": 3,
       "new_lines": ""
+    },
+    {
+      "key": "field_yabao_blog_related_eyebrow",
+      "label": "Надзаголовок блока похожих материалов",
+      "name": "blog_related_eyebrow",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_blog_related_title",
+      "label": "Заголовок блока похожих материалов",
+      "name": "blog_related_title",
+      "type": "text",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_blog_related_intro",
+      "label": "Описание блока похожих материалов",
+      "name": "blog_related_intro",
+      "type": "textarea",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
     }
   ],
   "location": [

@@ -1348,7 +1348,10 @@ while ( $events_query->have_posts() ) {
 
     $event_excerpt = trim(
         wp_strip_all_tags(
-            get_the_excerpt()
+            (string) get_post_field(
+                'post_excerpt',
+                $event_id
+            )
         )
     );
 
@@ -1421,7 +1424,10 @@ while ( $guides_query->have_posts() ) {
 
     $guide_excerpt = trim(
         wp_strip_all_tags(
-            get_the_excerpt()
+            (string) get_post_field(
+                'post_excerpt',
+                $post_id
+            )
         )
     );
 

@@ -79,7 +79,10 @@ while ( have_posts() ) :
 
     $excerpt = trim(
         wp_strip_all_tags(
-            get_the_excerpt()
+            (string) get_post_field(
+                'post_excerpt',
+                $event_id
+            )
         )
     );
 

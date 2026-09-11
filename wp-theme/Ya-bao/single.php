@@ -11,6 +11,49 @@ $blog_url     = $blog_page_id
 if ( ! is_string( $blog_url ) ) {
     $blog_url = '';
 }
+
+$blog_text = static function (
+    string $name
+) use ( $blog_page_id ): string {
+    if (
+        ! $blog_page_id ||
+        ! function_exists( 'get_field' )
+    ) {
+        return '';
+    }
+
+    $value = get_field(
+        $name,
+        $blog_page_id
+    );
+
+    if ( ! is_scalar( $value ) ) {
+        return '';
+    }
+
+    return trim(
+        wp_strip_all_tags(
+            (string) $value
+        )
+    );
+};
+
+$related_eyebrow = $blog_text(
+    'blog_related_eyebrow'
+);
+
+$related_title = $blog_text(
+    'blog_related_title'
+);
+
+$related_intro = $blog_text(
+    'blog_related_intro'
+);
+
+$has_related_heading =
+    '' !== $related_eyebrow ||
+    '' !== $related_title ||
+    '' !== $related_intro;
 ?>
 
 <main id="main-content">
@@ -46,7 +89,9 @@ if ( ! is_string( $blog_url ) ) {
     ) {
         $dom = new DOMDocument();
 
-        libxml_use_internal_errors( true );
+        $previous_libxml_state = libxml_use_internal_errors(
+            true
+        );
 
         $dom->loadHTML(
             '<?xml encoding="utf-8" ?>' .
@@ -58,6 +103,10 @@ if ( ! is_string( $blog_url ) ) {
         );
 
         libxml_clear_errors();
+
+        libxml_use_internal_errors(
+            $previous_libxml_state
+        );
 
         $xpath = new DOMXPath( $dom );
 
@@ -230,17 +279,35 @@ if ( ! is_string( $blog_url ) ) {
         <section class="section section--dark related-articles">
             <div class="container">
 
-                <div class="section-heading reveal">
-                    <div>
-                        <p class="eyebrow">Полезно</p>
-                        <h2>Что почитать дальше</h2>
-                    </div>
+                <?php if ( $has_related_heading ) : ?>
+                    <div class="section-heading reveal">
 
-                    <p>
-                        Другие материалы о китайском чае,
-                        заваривании и чайной культуре.
-                    </p>
-                </div>
+                        <?php if ( '' !== $related_eyebrow || '' !== $related_title ) : ?>
+                            <div>
+
+                                <?php if ( '' !== $related_eyebrow ) : ?>
+                                    <p class="eyebrow">
+                                        <?php echo esc_html( $related_eyebrow ); ?>
+                                    </p>
+                                <?php endif; ?>
+
+                                <?php if ( '' !== $related_title ) : ?>
+                                    <h2>
+                                        <?php echo esc_html( $related_title ); ?>
+                                    </h2>
+                                <?php endif; ?>
+
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if ( '' !== $related_intro ) : ?>
+                            <p>
+                                <?php echo esc_html( $related_intro ); ?>
+                            </p>
+                        <?php endif; ?>
+
+                    </div>
+                <?php endif; ?>
 
                 <div
                     class="related-articles__shell reveal"
