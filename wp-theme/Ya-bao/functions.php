@@ -98,7 +98,7 @@ function yabao_enqueue_assets(): void {
 		wp_enqueue_style( 'yabao-pages', yabao_asset_url( 'css/pages.css' ), array( 'yabao-custom' ), yabao_asset_version( 'css/pages.css' ) );
 	}
 
-	if ( yabao_woocommerce_active() && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() || is_checkout() ) ) {
+	if ( yabao_woocommerce_active() && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() || is_checkout() || is_page( 'category' ) ) ) {
 		wp_enqueue_style( 'yabao-shop', yabao_asset_url( 'css/shop.css' ), array( 'yabao-pages' ), yabao_asset_version( 'css/shop.css' ) );
 	}
     if ( is_singular( 'post' ) ) {
@@ -166,7 +166,7 @@ function yabao_body_classes( array $classes ): array {
     } elseif ( is_singular( 'post' ) ) {
         $classes[] = 'page-article';
         $classes[] = 'page-inner';
-	} elseif ( yabao_woocommerce_active() && ( is_shop() || is_product_taxonomy() ) ) {
+	} elseif ( yabao_woocommerce_active() && ( is_shop() || is_product_taxonomy() || is_page( 'category' ) ) ) {
 		$classes[] = 'page-shop';
 		$classes[] = 'page-inner';
 	} elseif ( yabao_woocommerce_active() && is_product() ) {

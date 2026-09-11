@@ -8,21 +8,102 @@
     return Number.isFinite(parsed) ? parsed : fallback;
   }
 
+  function selectedProductId(form) {
+    const type = form.dataset.productType || 'simple';
+
+    if (type === 'variable') {
+      return String(
+        form.querySelector('[data-shop-card-variation-id]')?.value || ''
+      );
+    }
+
+    return String(
+      form.querySelector('input[name="add-to-cart"]')?.value || ''
+    );
+  }
+
+  function cartQuantityForProduct(productId) {
+    if (!productId) return 0;
+
+    let total = 0;
+
+    document
+      .querySelectorAll('[data-wc-mini-cart-content] [data-product_id]')
+      .forEach(node => {
+        if (node.getAttribute('data-product_id') !== productId) return;
+
+        const item = node.closest('[data-mini-cart-item]');
+        const quantity = item?.querySelector('.mini-cart-qty span');
+
+        total += numberOr(quantity?.textContent, 0);
+      });
+
+    return total;
+  }
+
+  function availableQuantity(form, input) {
+    const rawMax = numberOr(input.max, 0);
+
+    if (rawMax <= 0) {
+      return Number.MAX_SAFE_INTEGER;
+    }
+
+    const productId = selectedProductId(form);
+    const inCart = cartQuantityForProduct(productId);
+
+    return Math.max(0, rawMax - inCart);
+  }
+
   function quantityState(form, nextValue) {
     const input = form.querySelector('input.qty[name="quantity"]');
-    if (!input) return;
+    if (!input) return null;
 
     const min = Math.max(1, numberOr(input.min, 1));
-    const rawMax = numberOr(input.max, 0);
-    const max = rawMax > 0 ? rawMax : Number.MAX_SAFE_INTEGER;
+    const max = availableQuantity(form, input);
+    const unavailable = max === 0;
     const requested = numberOr(nextValue ?? input.value, min);
-    const value = Math.max(min, Math.min(max, requested));
+    const value = unavailable
+      ? min
+      : Math.max(min, Math.min(max, requested));
 
     input.value = String(value);
+    input.disabled = unavailable;
+
     const minus = form.querySelector('[data-shop-card-minus]');
     const plus = form.querySelector('[data-shop-card-plus]');
-    if (minus) minus.disabled = value <= min;
-    if (plus) plus.disabled = value >= max;
+    const submit = form.querySelector('[data-shop-card-add]');
+
+    if (minus) {
+      minus.disabled = unavailable || value <= min;
+    }
+
+    if (plus) {
+      plus.disabled = unavailable || value >= max;
+    }
+
+    if (submit && form.dataset.submitting !== 'true') {
+      submit.disabled = unavailable;
+    }
+
+    if (unavailable) {
+      setFeedback(
+        form,
+        'Максимальное доступное количество уже в корзине.',
+        false
+      );
+    }
+
+    return {
+      value,
+      max,
+      unavailable,
+    };
+  }
+
+  function syncQuantityAvailability() {
+    document
+      .querySelectorAll(formSelector)
+      .forEach(form => quantityState(form));
   }
 
   function setFeedback(form, message, isError) {
@@ -32,21 +113,52 @@
     node.classList.toggle('is-error', Boolean(isError));
   }
 
-  function responseErrorMessage(html) {
-    if (!html) return '';
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const error = doc.querySelector('.woocommerce-error, .woocommerce-error li, .wc-block-components-notice-banner.is-error');
-    if (!error) return '';
-    error.querySelectorAll('.wc-forward').forEach(link => link.remove());
-    return error.textContent?.replace(/\s+/g, ' ').trim() || '';
-  }
+  function addToCartPayload(form) {
+    const payload = new FormData();
+    const quantity = form.querySelector('input.qty[name="quantity"]');
+    const type = form.dataset.productType || 'simple';
 
-  function refreshCart() {
-    if (window.jQuery) {
-      window.jQuery(document.body).trigger('wc_fragment_refresh');
+    let productId = '';
+
+    if (type === 'variable') {
+      productId =
+        form.querySelector('[data-shop-card-variation-id]')?.value || '';
+    } else {
+      productId =
+        form.querySelector('input[name="add-to-cart"]')?.value || '';
     }
+
+    if (!productId) {
+      throw new Error('Не удалось определить товар.');
+    }
+
+    payload.set('product_id', productId);
+    payload.set('quantity', quantity?.value || '1');
+
+    return payload;
   }
 
+  function applyFragments(fragments, cartHash) {
+    if (!fragments || typeof fragments !== 'object') {
+      throw new Error('Корзина не вернула обновлённые данные.');
+    }
+
+    if (!window.jQuery) {
+      throw new Error('Не удалось обновить корзину.');
+    }
+
+    const $ = window.jQuery;
+
+    Object.entries(fragments).forEach(([selector, html]) => {
+      $(selector).replaceWith(html);
+    });
+
+    $(document.body).trigger('added_to_cart', [
+      fragments,
+      cartHash || '',
+      $(),
+    ]);
+  }
   function selectVariation(button) {
     if (!button || button.disabled) return;
     const form = button.closest(formSelector);
@@ -126,7 +238,6 @@
     if (!submit || submit.disabled) return;
 
     quantityState(form);
-    const formData = new FormData(form);
     const originalLabel = submit.textContent;
 
     form.dataset.submitting = 'true';
@@ -137,24 +248,46 @@
     setFeedback(form, '', false);
 
     try {
-      const response = await fetch(form.getAttribute('action') || window.location.href, {
+      const endpoint = form.dataset.shopCardAjaxUrl;
+
+      if (!endpoint) {
+        throw new Error('Адрес корзины недоступен.');
+      }
+
+      const payload = addToCartPayload(form);
+
+      const response = await fetch(endpoint, {
         method: 'POST',
-        body: formData,
+        body: payload,
         credentials: 'same-origin',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        redirect: 'follow',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
       });
 
-      const html = await response.text();
-      if (!response.ok) throw new Error('Не удалось добавить товар в корзину.');
+      if (!response.ok) {
+        throw new Error('Не удалось добавить товар в корзину.');
+      }
 
-      const serverError = responseErrorMessage(html);
-      if (serverError) throw new Error(serverError);
+      let data;
+
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error('Корзина вернула некорректный ответ.');
+      }
+
+      if (data?.error) {
+        throw new Error('Не удалось добавить товар в корзину.');
+      }
+
+      applyFragments(
+        data?.fragments,
+        data?.cart_hash
+      );
 
       submit.textContent = 'Добавлено';
       setFeedback(form, 'Товар добавлен в корзину.', false);
-      refreshCart();
-
       document.body.dispatchEvent(new CustomEvent('yabao:cartupdated', {
         detail: { source: 'shop-card' },
       }));
@@ -176,5 +309,17 @@
     }
   });
 
-  document.querySelectorAll(formSelector).forEach(form => quantityState(form));
+  document.body.addEventListener(
+    'yabao:cartupdated',
+    syncQuantityAvailability
+  );
+
+  if (window.jQuery) {
+    window.jQuery(document.body).on(
+      'removed_from_cart wc_fragments_refreshed',
+      syncQuantityAvailability
+    );
+  }
+
+  syncQuantityAvailability();
 }());

@@ -145,7 +145,14 @@ if ( $product->is_type( 'variable' ) ) {
 		<div class="shop-card__stock" data-shop-card-stock><?php echo esc_html( $stock_text ); ?></div>
 
 		<?php if ( $can_inline_buy ) : ?>
-		<form class="shop-card__cart" action="<?php echo esc_url( $link ); ?>" method="post" data-shop-card-cart data-product-type="<?php echo esc_attr( $product->is_type( 'variable' ) ? 'variable' : 'simple' ); ?>">
+        <form
+            class="shop-card__cart"
+            action="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>"
+            method="post"
+            data-shop-card-cart
+            data-shop-card-ajax-url="<?php echo esc_url( WC_AJAX::get_endpoint( 'add_to_cart' ) ); ?>"
+            data-product-type="<?php echo esc_attr( $product->is_type( 'variable' ) ? 'variable' : 'simple' ); ?>"
+        >
 			<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( (string) $product_id ); ?>">
 			<?php if ( $product->is_type( 'variable' ) && $selected_variation ) : ?>
 				<input type="hidden" name="product_id" value="<?php echo esc_attr( (string) $product_id ); ?>">

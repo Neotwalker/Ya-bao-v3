@@ -15,7 +15,49 @@ if ( ! $product ) {
 
 $image_ids = array_filter( array_merge( array( $product->get_image_id() ), $product->get_gallery_image_ids() ) );
 $image_ids = array_values( array_unique( $image_ids ) );
-$category  = yabao_product_terms_text( $product );
+$category                = yabao_product_terms_text( $product );
+$breadcrumb_category     = null;
+$breadcrumb_category_url = '';
+
+$product_terms = get_the_terms(
+    $product->get_id(),
+    'product_cat'
+);
+
+if ( is_array( $product_terms ) && $product_terms ) {
+    $product_path = (string) wp_parse_url(
+        get_permalink( $product->get_id() ),
+        PHP_URL_PATH
+    );
+
+    $product_path_segments = array_filter(
+        explode(
+            '/',
+            trim( $product_path, '/' )
+        )
+    );
+
+    foreach ( $product_path_segments as $path_segment ) {
+        foreach ( $product_terms as $term ) {
+            if (
+                $term instanceof WP_Term &&
+                $term->slug === $path_segment
+            ) {
+                $breadcrumb_category = $term;
+            }
+        }
+    }
+
+    if ( $breadcrumb_category instanceof WP_Term ) {
+        $term_link = get_term_link(
+            $breadcrumb_category
+        );
+
+        if ( ! is_wp_error( $term_link ) ) {
+            $breadcrumb_category_url = $term_link;
+        }
+    }
+}
 $stock_detail = trim( wp_strip_all_tags( wc_get_stock_html( $product ) ) );
 if ( '' === $stock_detail ) {
 	$stock_detail = $product->is_in_stock() ? 'В наличии' : 'Нет в наличии';
@@ -55,7 +97,7 @@ if ( $product->is_type( 'variable' ) ) {
 <main id="main-content">
 	<section class="section section--dark section--compact inner-hero">
 		<div class="container inner-hero__grid">
-			<div><nav aria-label="Хлебные крошки" class="breadcrumbs breadcrumbs--hero"><ol><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Главная</a></li><li><a href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) ); ?>">Магазин</a></li><li><span aria-current="page"><?php echo esc_html( $product->get_name() ); ?></span></li></ol></nav><h1><?php echo esc_html( $product->get_name() ); ?></h1></div>
+			<div><nav aria-label="Хлебные крошки" class="breadcrumbs breadcrumbs--hero"><ol><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Главная</a></li><li><a href="<?php echo esc_url( yabao_wc_page_url( 'shop' ) ); ?>">Магазин</a></li><?php if ( $breadcrumb_category instanceof WP_Term && $breadcrumb_category_url ) : ?><li><a href="<?php echo esc_url( $breadcrumb_category_url ); ?>"><?php echo esc_html( $breadcrumb_category->name ); ?></a></li><?php endif; ?><li><span aria-current="page"><?php echo esc_html( $product->get_name() ); ?></span></li></ol></nav><h1><?php echo esc_html( $product->get_name() ); ?></h1></div>
 			<p class="inner-hero__text"><?php echo esc_html( $product->get_short_description() ? wp_strip_all_tags( $product->get_short_description() ) : 'Карточка товара работает на данных WooCommerce.' ); ?></p>
 		</div>
 	</section>

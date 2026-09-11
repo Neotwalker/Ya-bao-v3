@@ -35,15 +35,22 @@ function initWooCartDrawer() {
 
   const close = () => {
     if (!open) return;
+
+    const target = lastTrigger;
+    lastTrigger = null;
+
+    if (target && document.contains(target)) {
+      target.focus({ preventScroll: true });
+    } else if (drawer.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
+
     open = false;
     drawer.classList.remove('is-open');
     backdrop.classList.remove('is-open');
     drawer.setAttribute('aria-hidden', 'true');
     backdrop.setAttribute('aria-hidden', 'true');
     unlockBody(drawer);
-    const target = lastTrigger;
-    lastTrigger = null;
-    window.setTimeout(() => target?.focus(), 20);
   };
 
   const show = trigger => {
@@ -108,13 +115,18 @@ function initWooCartDrawer() {
     }
   });
 
-  drawer.addEventListener('keydown', event => {
+  document.addEventListener('keydown', event => {
+    if (!open) return;
+
     if (event.key === 'Escape') {
       event.preventDefault();
       close();
       return;
     }
-    trapTab(event, getFocusable(drawer));
+
+    if (drawer.contains(document.activeElement)) {
+      trapTab(event, getFocusable(drawer));
+    }
   });
 
   if (window.jQuery) {
