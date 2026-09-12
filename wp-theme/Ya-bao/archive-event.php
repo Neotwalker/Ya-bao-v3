@@ -20,14 +20,13 @@ $events = new WP_Query(
         'meta_query'     => array(
             'event_date_clause' => array(
                 'key'     => 'event_date',
-                'value'   => $today,
-                'compare' => '>=',
+                'compare' => 'EXISTS',
                 'type'    => 'DATE',
             ),
         ),
         'orderby'        => array(
-            'event_date_clause' => 'ASC',
-            'date'              => 'ASC',
+            'event_date_clause' => 'DESC',
+            'date'              => 'DESC',
         ),
     )
 );
@@ -123,6 +122,18 @@ function yabao_event_archive_date( int $post_id ): string {
                     $event_id
                 );
 
+                $event_date_raw = function_exists( 'get_field' )
+                    ? get_field(
+                        'event_date',
+                        $event_id
+                    )
+                    : '';
+
+                $is_event_past =
+                    is_string( $event_date_raw ) &&
+                    '' !== $event_date_raw &&
+                    $event_date_raw < $today;
+
                 $event_location = function_exists( 'get_field' )
                     ? trim(
                         (string) get_field(
@@ -165,7 +176,7 @@ function yabao_event_archive_date( int $post_id ): string {
 
                         <div class="event-list-card__content">
 
-                            <?php if ( $event_type || $event_date || $event_location ) : ?>
+                            <?php if ( $event_type || $event_date || $event_location || $is_event_past ) : ?>
                                 <div class="event-list-card__meta">
 
                                     <?php if ( $event_type ) : ?>
@@ -183,6 +194,12 @@ function yabao_event_archive_date( int $post_id ): string {
                                     <?php if ( $event_location ) : ?>
                                         <span>
                                             <?php echo esc_html( $event_location ); ?>
+                                        </span>
+                                    <?php endif; ?>
+
+                                    <?php if ( $is_event_past ) : ?>
+                                        <span class="event-list-card__status event-list-card__status--past">
+                                            Мероприятие прошло
                                         </span>
                                     <?php endif; ?>
 

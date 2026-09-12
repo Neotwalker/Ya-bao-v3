@@ -1270,24 +1270,24 @@ if ( ! is_string( $events_archive_url ) ) {
 }
 
 $events_home = array();
+$events_today = current_time( 'Y-m-d' );
 
 $events_query = new WP_Query(
     array(
         'post_type'      => 'event',
         'post_status'    => 'publish',
-        'posts_per_page' => 10,
+        'posts_per_page' => 6,
         'no_found_rows'  => true,
         'meta_query'     => array(
             'event_date_clause' => array(
                 'key'     => 'event_date',
-                'value'   => current_time( 'Y-m-d' ),
-                'compare' => '>=',
+                'compare' => 'EXISTS',
                 'type'    => 'DATE',
             ),
         ),
         'orderby'        => array(
-            'event_date_clause' => 'ASC',
-            'date'              => 'ASC',
+            'event_date_clause' => 'DESC',
+            'date'              => 'DESC',
         ),
     )
 );
@@ -1346,6 +1346,11 @@ while ( $events_query->have_posts() ) {
         $event_meta[] = $event_date;
     }
 
+    $is_event_past =
+        is_string( $event_date_raw ) &&
+        '' !== $event_date_raw &&
+        $event_date_raw < $events_today;
+
     $event_excerpt = trim(
         wp_strip_all_tags(
             (string) get_post_field(
@@ -1359,6 +1364,7 @@ while ( $events_query->have_posts() ) {
         'title'   => get_the_title(),
         'url'     => get_permalink(),
         'excerpt' => $event_excerpt,
+        'past'    => $is_event_past,
         'meta'    => implode(
             ' · ',
             $event_meta
@@ -1880,6 +1886,12 @@ $has_guides_heading =
                                         ?>
                                     </span>
                                 </div>
+
+                                <?php if ( ! empty( $event['past'] ) ) : ?>
+                                    <span class="event-card__status event-card__status--past">
+                                        Мероприятие прошло
+                                    </span>
+                                <?php endif; ?>
 
                                 <h3><?php echo esc_html( $event['title'] ); ?></h3>
 

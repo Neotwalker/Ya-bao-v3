@@ -392,6 +392,17 @@
   letter-spacing:.08em;
   text-transform:uppercase;
 }
+.event-list-card__status--past{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 9px;
+  border-radius:999px;
+  background:var(--color-walnut);
+  color:#fff;
+  font-size:10px;
+  line-height:1.2;
+  letter-spacing:.07em;
+}
 .event-list-card h3{
   margin:0 0 10px;
 }
