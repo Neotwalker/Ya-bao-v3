@@ -69,6 +69,28 @@ while ( have_posts() ) :
         }
     }
 
+    $is_event_upcoming = false;
+
+    if (
+        is_string( $event_date_raw ) &&
+        '' !== $event_date_raw
+    ) {
+        $event_date_object = DateTimeImmutable::createFromFormat(
+            '!Y-m-d',
+            $event_date_raw,
+            wp_timezone()
+        );
+
+        $today = new DateTimeImmutable(
+            'today',
+            wp_timezone()
+        );
+
+        $is_event_upcoming =
+            $event_date_object &&
+            $event_date_object >= $today;
+    }
+
     $excerpt = trim(
         wp_strip_all_tags(
             (string) get_post_field(
@@ -184,21 +206,23 @@ while ( have_posts() ) :
                         <?php endif; ?>
 
                         <div class="event-detail__actions">
-                            <button
-                                class="button button--walnut"
-                                data-event="<?php echo esc_attr( get_the_title( $event_id ) ); ?>"
-                                <?php if ( $event_date ) : ?>
-                                    data-event-date="<?php echo esc_attr( $event_date ); ?>"
-                                <?php endif; ?>
-                                <?php if ( $event_time ) : ?>
-                                    data-event-time="<?php echo esc_attr( $event_time ); ?>"
-                                <?php endif; ?>
-                                data-modal-open
-                                data-source="event-detail"
-                                type="button"
-                            >
-                                Записаться
-                            </button>
+                            <?php if ( $is_event_upcoming ) : ?>
+                                <button
+                                    class="button button--walnut"
+                                    data-event="<?php echo esc_attr( get_the_title( $event_id ) ); ?>"
+                                    <?php if ( $event_date ) : ?>
+                                        data-event-date="<?php echo esc_attr( $event_date ); ?>"
+                                    <?php endif; ?>
+                                    <?php if ( $event_time ) : ?>
+                                        data-event-time="<?php echo esc_attr( $event_time ); ?>"
+                                    <?php endif; ?>
+                                    data-modal-open
+                                    data-source="event-detail"
+                                    type="button"
+                                >
+                                    Записаться
+                                </button>
+                            <?php endif; ?>
 
                             <?php if ( ! empty( $event_cta['url'] ) && ! empty( $event_cta['title'] ) ) : ?>
                                 <a
