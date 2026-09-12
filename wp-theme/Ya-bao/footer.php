@@ -289,16 +289,20 @@ $has_footer_bottom =
 		<p class="modal__intro" data-modal-intro>Оставьте контакты и удобную дату. Отправку формы подключим отдельным интеграционным этапом.</p>
 		<form class="booking-form" data-demo-form novalidate>
 			<input name="source" type="hidden" value="modal">
+            <input name="event_name" type="hidden" value="">
+            <input name="event_date" type="hidden" value="">
+            <input name="event_time" type="hidden" value="">
+            <input name="event_price" type="hidden" value="">
 			<div class="form-grid">
 				<div class="field"><label for="modal-name">Ваше имя *</label><input autocomplete="name" id="modal-name" name="name" required><span class="field__error"></span></div>
 				<div class="field"><label for="modal-phone">Телефон *</label><input autocomplete="tel" id="modal-phone" inputmode="tel" name="phone" placeholder="+7 (___) ___-__-__" required type="tel"><span class="field__error"></span></div>
-				<div class="field"><label for="modal-date">Дата *</label><input id="modal-date" name="date" required type="date"><span class="field__error"></span></div>
-				<div class="field"><label for="modal-time">Время *</label><input id="modal-time" name="time" required type="time"><span class="field__error"></span></div>
+				<div class="field" data-general-field><label for="modal-date">Дата *</label><input id="modal-date" name="date" required type="date"><span class="field__error"></span></div>
+				<div class="field" data-general-field><label for="modal-time">Время *</label><input id="modal-time" name="time" required type="time"><span class="field__error"></span></div>
 				<div class="field"><label for="modal-guests">Количество гостей *</label><select id="modal-guests" name="guests" required><option value="">Выберите</option><option>1 гость</option><option>2 гостя</option><option>3 гостя</option><option>4 гостя</option><option>5-6 гостей</option><option>7-8 гостей</option></select><span class="field__error"></span></div>
-				<div class="field"><label for="modal-ceremony">Формат посещения *</label><select id="modal-ceremony" name="ceremony" required><option value="">Выберите формат</option><option value="first">Первое знакомство</option><option value="couple">Встреча вдвоём</option><option value="company">Небольшая компания</option><option value="visit">Свободный визит</option></select><span class="field__error"></span></div>
-				<div class="field field--full"><label for="modal-comment">Комментарий</label><textarea id="modal-comment" name="comment" placeholder="Что хотите уточнить"></textarea><span class="field__error"></span></div>
+				<div class="field" data-general-field><label for="modal-ceremony">Формат посещения *</label><select id="modal-ceremony" name="ceremony" required><option value="">Выберите формат</option><option value="first">Первое знакомство</option><option value="couple">Встреча вдвоём</option><option value="company">Небольшая компания</option><option value="visit">Свободный визит</option></select><span class="field__error"></span></div>
+				<div class="field field--full" data-general-field><label for="modal-comment">Комментарий</label><textarea id="modal-comment" name="comment" placeholder="Повод визита и дополнительные пожелания"></textarea><span class="field__error"></span></div>
 				<label class="checkbox field--full"><input name="consent" required type="checkbox"><span>Согласен на <a href="<?php echo esc_url( yabao_page_url( 'consent' ) ); ?>">обработку персональных данных</a> и ознакомлен с <a href="<?php echo esc_url( yabao_page_url( 'privacy' ) ); ?>">политикой конфиденциальности</a>.</span><span class="field__error"></span></label>
-				<div class="field--full form-submit"><button class="button button--walnut" type="submit">Отправить <span aria-hidden="true">→</span></button><div aria-live="polite" class="form-status" data-form-status></div></div>
+				<div class="field--full form-submit"><button class="button button--walnut" type="submit">Отправить заявку <span aria-hidden="true">→</span></button><div aria-live="polite" class="form-status" data-form-status></div></div>
 			</div>
 		</form>
 	</div>

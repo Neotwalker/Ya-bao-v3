@@ -36,14 +36,6 @@ while ( have_posts() ) :
         )
         : '';
 
-    $event_type = function_exists( 'get_field' )
-        ? trim(
-            (string) get_field(
-                'event_type',
-                $event_id
-            )
-        )
-        : '';
 
     $event_cta = function_exists( 'get_field' )
         ? get_field(
@@ -126,11 +118,6 @@ while ( have_posts() ) :
 
                 <h1><?php the_title(); ?></h1>
 
-                <?php if ( $event_type ) : ?>
-                    <p class="eyebrow">
-                        <?php echo esc_html( $event_type ); ?>
-                    </p>
-                <?php endif; ?>
             </div>
 
             <?php if ( $excerpt ) : ?>
@@ -149,9 +136,7 @@ while ( have_posts() ) :
                 <article class="event-detail__main reveal">
 
                     <?php if ( get_the_content() ) : ?>
-                        <div class="content-prose">
-                            <?php the_content(); ?>
-                        </div>
+                        <?php the_content(); ?>
                     <?php endif; ?>
 
                 </article>
@@ -198,10 +183,26 @@ while ( have_posts() ) :
                             </div>
                         <?php endif; ?>
 
-                        <?php if ( ! empty( $event_cta['url'] ) && ! empty( $event_cta['title'] ) ) : ?>
-                            <div class="event-detail__actions">
+                        <div class="event-detail__actions">
+                            <button
+                                class="button button--walnut"
+                                data-event="<?php echo esc_attr( get_the_title( $event_id ) ); ?>"
+                                <?php if ( $event_date ) : ?>
+                                    data-event-date="<?php echo esc_attr( $event_date ); ?>"
+                                <?php endif; ?>
+                                <?php if ( $event_time ) : ?>
+                                    data-event-time="<?php echo esc_attr( $event_time ); ?>"
+                                <?php endif; ?>
+                                data-modal-open
+                                data-source="event-detail"
+                                type="button"
+                            >
+                                Записаться
+                            </button>
+
+                            <?php if ( ! empty( $event_cta['url'] ) && ! empty( $event_cta['title'] ) ) : ?>
                                 <a
-                                    class="button button--walnut"
+                                    class="button button--outline-walnut"
                                     href="<?php echo esc_url( $event_cta['url'] ); ?>"
                                     <?php if ( '_blank' === ( $event_cta['target'] ?? '' ) ) : ?>
                                         target="_blank"
@@ -210,27 +211,17 @@ while ( have_posts() ) :
                                 >
                                     <?php echo esc_html( $event_cta['title'] ); ?>
                                 </a>
+                            <?php endif; ?>
 
-                                <?php if ( $events_url ) : ?>
-                                    <a
-                                        class="button button--outline-walnut"
-                                        href="<?php echo esc_url( $events_url ); ?>"
-                                    >
-                                        К мероприятиям
-                                    </a>
-                                <?php endif; ?>
-                            </div>
-
-                        <?php elseif ( $events_url ) : ?>
-                            <div class="event-detail__actions">
+                            <?php if ( $events_url ) : ?>
                                 <a
                                     class="button button--outline-walnut"
                                     href="<?php echo esc_url( $events_url ); ?>"
                                 >
                                     К мероприятиям
                                 </a>
-                            </div>
-                        <?php endif; ?>
+                            <?php endif; ?>
+                        </div>
 
                     </aside>
                 <?php endif; ?>

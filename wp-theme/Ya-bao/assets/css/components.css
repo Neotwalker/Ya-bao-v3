@@ -492,3 +492,31 @@ textarea{resize:none}
 .footer-grid--2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .footer-grid--3{grid-template-columns:1.25fr repeat(2,minmax(0,1fr))}
 .footer-grid--4{grid-template-columns:1.25fr .62fr 1fr .7fr}
+
+/* Event modal: keep event-specific fields visible but clearly unavailable. */
+.modal--event [data-general-field].is-disabled {
+  opacity:.68;
+}
+
+.modal--event [data-general-field].is-disabled label {
+  color:var(--color-muted);
+}
+
+.modal--event [data-general-field].is-disabled .date-time-control,
+.modal--event [data-general-field].is-disabled .custom-select__trigger,
+.modal--event [data-general-field].is-disabled textarea {
+  border-color:rgba(95,70,48,.18);
+  background:rgba(95,70,48,.08);
+  color:var(--color-muted);
+  box-shadow:none;
+  cursor:not-allowed;
+}
+
+.modal--event [data-general-field].is-disabled .date-time-control__display,
+.modal--event [data-general-field].is-disabled .custom-select__value {
+  color:var(--color-muted);
+}
+
+.modal--event [data-general-field].is-disabled .custom-select__arrow {
+  opacity:.45;
+}

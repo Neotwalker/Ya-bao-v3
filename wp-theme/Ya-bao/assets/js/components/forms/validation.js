@@ -48,6 +48,11 @@ export function validateForm(form) {
   let firstInvalid = null;
 
   form.querySelectorAll('[required]').forEach(field => {
+    if (field.disabled) {
+      setFieldError(field, '');
+      return;
+    }
+
     let message = '';
 
     if (field.type === 'checkbox' && !field.checked) {

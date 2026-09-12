@@ -33,7 +33,9 @@ export function initModal() {
     guestsField?.classList.toggle('field--select-pair-single', isEvent);
 
     generalFields.forEach(field => {
-      field.hidden = isEvent;
+      field.hidden = false;
+      field.classList.toggle('is-disabled', isEvent);
+
       field.querySelectorAll('input, select, textarea').forEach(control => {
         control.disabled = isEvent;
         control.dispatchEvent(new Event('change', { bubbles: true }));
