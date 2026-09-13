@@ -1,0 +1,313 @@
+{
+    "key": "group_yabao_global_settings",
+    "title": "Глобальные настройки сайта",
+    "fields": [
+        {
+            "key": "field_yabao_tab_identity",
+            "label": "Бренд и интерфейс",
+            "name": "",
+            "type": "tab",
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_yabao_site_name",
+            "label": "Название",
+            "name": "site_name",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_site_tagline",
+            "label": "Подпись под названием",
+            "name": "site_tagline",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_footer_description",
+            "label": "Описание в подвале",
+            "name": "footer_description",
+            "type": "textarea",
+            "required": 0,
+            "default_value": "",
+            "rows": 3,
+            "new_lines": ""
+        },
+        {
+            "key": "field_yabao_booking_cta_label",
+            "label": "Текст кнопки бронирования",
+            "name": "booking_cta_label",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_footer_contact_heading",
+            "label": "Заголовок блока контактов в подвале",
+            "name": "footer_contact_heading",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_tab_contacts",
+            "label": "Контакты",
+            "name": "",
+            "type": "tab",
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_yabao_phone",
+            "label": "Телефон",
+            "name": "phone",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_email",
+            "label": "Email",
+            "name": "email",
+            "type": "email",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_address",
+            "label": "Адрес",
+            "name": "address",
+            "type": "group",
+            "required": 0,
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_yabao_address_display",
+                    "label": "Адрес для вывода на сайте",
+                    "name": "display",
+                    "type": "text",
+                    "required": 0,
+                    "default_value": ""
+                },
+                {
+                    "key": "field_yabao_address_street",
+                    "label": "Улица и дом",
+                    "name": "street",
+                    "type": "text",
+                    "required": 0,
+                    "default_value": ""
+                },
+                {
+                    "key": "field_yabao_address_city",
+                    "label": "Город",
+                    "name": "city",
+                    "type": "text",
+                    "required": 0,
+                    "default_value": ""
+                },
+                {
+                    "key": "field_yabao_address_region",
+                    "label": "Регион",
+                    "name": "region",
+                    "type": "text",
+                    "required": 0,
+                    "default_value": ""
+                },
+                {
+                    "key": "field_yabao_address_postcode",
+                    "label": "Индекс",
+                    "name": "postcode",
+                    "type": "text",
+                    "required": 0,
+                    "default_value": ""
+                },
+                {
+                    "key": "field_yabao_address_country",
+                    "label": "Страна",
+                    "name": "country",
+                    "type": "text",
+                    "required": 0,
+                    "default_value": ""
+                }
+            ]
+        },
+        {
+            "key": "field_yabao_opening_hours_text",
+            "label": "Режим работы",
+            "name": "opening_hours_text",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_yandex_maps_url",
+            "label": "Яндекс Карты",
+            "name": "yandex_maps_url",
+            "type": "url",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_two_gis_url",
+            "label": "2ГИС",
+            "name": "two_gis_url",
+            "type": "url",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_tab_social",
+            "label": "Соцсети",
+            "name": "",
+            "type": "tab",
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_yabao_social_links",
+            "label": "Соцсети и мессенджеры",
+            "name": "social_links",
+            "type": "repeater",
+            "instructions": "Можно добавлять любое количество ссылок. Для нового сервиса выберите «Своя иконка» и загрузите изображение.",
+            "required": 0,
+            "collapsed": "field_yabao_social_label",
+            "min": 0,
+            "max": 0,
+            "layout": "block",
+            "button_label": "Добавить соцсеть",
+            "sub_fields": [
+                {
+                    "key": "field_yabao_social_label",
+                    "label": "Название",
+                    "name": "social_label",
+                    "type": "text",
+                    "required": 0,
+                    "default_value": ""
+                },
+                {
+                    "key": "field_yabao_social_url",
+                    "label": "Ссылка",
+                    "name": "social_url",
+                    "type": "url",
+                    "required": 0,
+                    "default_value": ""
+                },
+                {
+                    "key": "field_yabao_social_icon_type",
+                    "label": "Иконка",
+                    "name": "social_icon_type",
+                    "type": "select",
+                    "required": 0,
+                    "choices": {
+                        "vk": "VK",
+                        "telegram": "Telegram",
+                        "custom": "Своя иконка"
+                    },
+                    "default_value": "",
+                    "allow_null": 1,
+                    "multiple": 0,
+                    "ui": 1,
+                    "return_format": "value"
+                },
+                {
+                    "key": "field_yabao_social_custom_icon",
+                    "label": "Своя иконка",
+                    "name": "social_custom_icon",
+                    "type": "image",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_yabao_social_icon_type",
+                                "operator": "==",
+                                "value": "custom"
+                            }
+                        ]
+                    ],
+                    "return_format": "id",
+                    "preview_size": "thumbnail",
+                    "library": "all"
+                },
+                {
+                    "key": "field_yabao_social_locations",
+                    "label": "Где показывать",
+                    "name": "social_locations",
+                    "type": "checkbox",
+                    "required": 0,
+                    "choices": {
+                        "header": "Шапка",
+                        "mobile": "Мобильное меню",
+                        "footer": "Подвал"
+                    },
+                    "default_value": [],
+                    "layout": "horizontal",
+                    "return_format": "value"
+                }
+            ]
+        },
+        {
+            "key": "field_yabao_tab_legal",
+            "label": "Реквизиты",
+            "name": "",
+            "type": "tab",
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_yabao_legal_name",
+            "label": "Юридическое наименование",
+            "name": "legal_name",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_inn",
+            "label": "ИНН",
+            "name": "inn",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_ogrn",
+            "label": "ОГРН / ОГРНИП",
+            "name": "ogrn",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_legal_address",
+            "label": "Юридический адрес",
+            "name": "legal_address",
+            "type": "textarea",
+            "required": 0,
+            "default_value": "",
+            "rows": 3,
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "yabao-global-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Глобальный источник редактируемого контента шапки, подвала, контактов, соцсетей и реквизитов. Пустые поля не имеют fallback.",
+    "show_in_rest": 0,
+    "modified": 1789044300
+}
