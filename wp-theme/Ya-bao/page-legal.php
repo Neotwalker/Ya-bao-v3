@@ -110,7 +110,7 @@ $legal_rows = array_values(
 
 		<?php if ( $show_legal ) : ?>
 			<section class="section section--paper">
-				<div class="container content-prose legal-content wp-entry-content">
+				<div class="container content-prose legal-content">
 					<?php if ( ! empty( $legal_rows ) ) : ?>
 						<table class="legal-details">
 							<caption class="visually-hidden">Реквизиты оператора персональных данных</caption>
