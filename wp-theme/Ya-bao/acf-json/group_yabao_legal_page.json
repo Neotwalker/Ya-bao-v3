@@ -1,0 +1,45 @@
+{
+  "key": "group_yabao_legal_page",
+  "title": "Юридическая страница",
+  "fields": [
+    {
+      "key": "field_yabao_legal_hero_title",
+      "label": "Заголовок hero",
+      "name": "legal_hero_title",
+      "type": "text",
+      "instructions": "H1 страницы. Пустое поле скрывает hero-секцию.",
+      "required": 0,
+      "default_value": ""
+    },
+    {
+      "key": "field_yabao_legal_hero_intro",
+      "label": "Текст hero",
+      "name": "legal_hero_intro",
+      "type": "textarea",
+      "instructions": "Короткое пояснение справа от H1.",
+      "required": 0,
+      "default_value": "",
+      "rows": 3,
+      "new_lines": ""
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "page_template",
+        "operator": "==",
+        "value": "page-legal.php"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Общий hero-контракт для /privacy/ и /consent/. Основной юридический текст хранится в стандартном редакторе WordPress; реквизиты оператора берутся только из глобальных ACF-настроек.",
+  "show_in_rest": 0,
+  "modified": 1789412400
+}
