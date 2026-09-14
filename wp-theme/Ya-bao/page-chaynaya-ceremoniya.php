@@ -5,7 +5,7 @@
  *
  * Production template for /chaynaya-ceremoniya/.
  * Page-specific editorial content lives in ACF Local JSON.
- * Shared booking text and internal URLs reuse existing sources of truth.
+ * Shared booking/contact data and internal URLs reuse existing sources of truth.
  */
 
 if ( function_exists( 'yabao_asset_url' ) && function_exists( 'yabao_asset_version' ) ) {
@@ -143,6 +143,8 @@ $admin_title = $get_text( 'ceremony_admin_title' );
 $admin_intro = $get_text( 'ceremony_admin_intro' );
 $admin_cards = $get_pair_rows( 'ceremony_admin_cards', 'card_title', 'card_text' );
 
+$location_title = $get_text( 'ceremony_location_title' );
+
 $final_title          = $get_text( 'ceremony_final_title' );
 $final_text           = $get_text( 'ceremony_final_text' );
 $final_contacts_label = $get_text( 'ceremony_final_contacts_label' );
@@ -152,26 +154,55 @@ $shop_url      = function_exists( 'yabao_wc_page_url' ) ? yabao_wc_page_url( 'sh
 $blog_url      = function_exists( 'yabao_page_url' ) ? yabao_page_url( 'blog' ) : '';
 $contacts_url  = function_exists( 'yabao_page_url' ) ? yabao_page_url( 'contacts' ) : '';
 
+$site_name     = function_exists( 'yabao_site_text' ) ? yabao_site_text( 'site_name' ) : '';
+$address       = function_exists( 'yabao_site_group_text' ) ? yabao_site_group_text( 'address', 'display' ) : '';
+$opening_hours = function_exists( 'yabao_site_text' ) ? yabao_site_text( 'opening_hours_text' ) : '';
+$two_gis_url   = function_exists( 'yabao_site_url' ) ? yabao_site_url( 'two_gis_url' ) : '';
+$yandex_url    = function_exists( 'yabao_site_url' ) ? yabao_site_url( 'yandex_maps_url' ) : '';
+
+$location_copy_parts = array();
+
+if ( '' !== $site_name && '' !== $address ) {
+	$location_copy_parts[] = sprintf( '«%s» находится по адресу: %s.', $site_name, $address );
+} elseif ( '' !== $address ) {
+	$location_copy_parts[] = sprintf( 'Адрес: %s.', $address );
+}
+
+if ( '' !== $opening_hours ) {
+	$location_copy_parts[] = sprintf( 'Подтверждённый график работы: %s.', $opening_hours );
+}
+
+$location_copy = implode( ' ', $location_copy_parts );
+
 $show_intro_copy =
 	'' !== $intro_title ||
 	'' !== $intro_lead ||
 	! empty( $intro_steps ) ||
-	'' !== $booking_label ||
 	( '' !== $intro_shop_label && '' !== $shop_url );
 
 $show_intro      = $intro_image_id || $show_intro_copy;
 $show_experience = '' !== $experience_title || '' !== $experience_intro || ! empty( $experience_cards );
+
 $show_beginner_copy =
 	'' !== $beginner_title ||
 	'' !== $beginner_lead ||
 	! empty( $beginner_points ) ||
 	( '' !== $beginner_blog_label && '' !== $blog_url );
+
 $show_beginner = $beginner_image_id || $show_beginner_copy;
 $show_admin    = '' !== $admin_title || '' !== $admin_intro || ! empty( $admin_cards );
-$show_final    =
+
+$show_location =
+	'' !== $location_title &&
+	(
+		'' !== $location_copy ||
+		'' !== $two_gis_url ||
+		'' !== $yandex_url
+	);
+
+$show_final =
 	'' !== $final_title ||
 	'' !== $final_text ||
-	'' !== $booking_label ||
 	( '' !== $final_contacts_label && '' !== $contacts_url );
 ?>
 <main id="main-content">
@@ -246,26 +277,15 @@ $show_final    =
 							<?php if ( '' !== $booking_label || ( '' !== $intro_shop_label && '' !== $shop_url ) ) : ?>
 								<div class="ceremony-v4__actions">
 									<?php if ( '' !== $booking_label ) : ?>
-										<button
-											class="button button--primary"
-											data-ceremony="first"
-											data-modal-open
-											data-source="ceremony-page-intro"
-											type="button"
-										><?php echo esc_html( $booking_label ); ?></button>
+										<button class="button button--primary" data-ceremony="first" data-modal-open data-source="ceremony-page-intro" type="button"><?php echo esc_html( $booking_label ); ?></button>
 									<?php endif; ?>
-
 									<?php if ( '' !== $intro_shop_label && '' !== $shop_url ) : ?>
-										<a class="button button--light ceremony-v4__secondary" href="<?php echo esc_url( $shop_url ); ?>">
-											<?php echo esc_html( $intro_shop_label ); ?>
-											<span aria-hidden="true">→</span>
-										</a>
+										<a class="button button--light ceremony-v4__secondary" href="<?php echo esc_url( $shop_url ); ?>"><?php echo esc_html( $intro_shop_label ); ?> <span aria-hidden="true">→</span></a>
 									<?php endif; ?>
 								</div>
 							<?php endif; ?>
 						</div>
 					<?php endif; ?>
-
 				</div>
 			</section>
 		<?php endif; ?>
@@ -275,24 +295,14 @@ $show_final    =
 				<div class="container">
 					<?php if ( '' !== $experience_title || '' !== $experience_intro ) : ?>
 						<div class="section-heading reveal">
-							<?php if ( '' !== $experience_title ) : ?>
-								<div><h2><?php echo esc_html( $experience_title ); ?></h2></div>
-							<?php endif; ?>
-							<?php if ( '' !== $experience_intro ) : ?>
-								<p><?php echo esc_html( $experience_intro ); ?></p>
-							<?php endif; ?>
+							<?php if ( '' !== $experience_title ) : ?><div><h2><?php echo esc_html( $experience_title ); ?></h2></div><?php endif; ?>
+							<?php if ( '' !== $experience_intro ) : ?><p><?php echo esc_html( $experience_intro ); ?></p><?php endif; ?>
 						</div>
 					<?php endif; ?>
-
 					<?php if ( ! empty( $experience_cards ) ) : ?>
 						<div class="cards-grid cards-grid--three">
 							<?php foreach ( $experience_cards as $card ) : ?>
-								<article class="card feature-panel reveal">
-									<div class="card__body">
-										<h3><?php echo esc_html( $card['title'] ); ?></h3>
-										<p><?php echo esc_html( $card['text'] ); ?></p>
-									</div>
-								</article>
+								<article class="card feature-panel reveal"><div class="card__body"><h3><?php echo esc_html( $card['title'] ); ?></h3><p><?php echo esc_html( $card['text'] ); ?></p></div></article>
 							<?php endforeach; ?>
 						</div>
 					<?php endif; ?>
@@ -303,50 +313,21 @@ $show_final    =
 		<?php if ( $show_beginner ) : ?>
 			<section class="section beginner-v4">
 				<div class="container<?php echo $show_beginner_copy && $beginner_image_id ? ' beginner-v4__grid' : ''; ?>">
-
 					<?php if ( $show_beginner_copy ) : ?>
 						<div class="beginner-v4__copy reveal">
-							<?php if ( '' !== $beginner_title ) : ?>
-								<h2><?php echo esc_html( $beginner_title ); ?></h2>
-							<?php endif; ?>
-
-							<?php if ( '' !== $beginner_lead ) : ?>
-								<p class="lead"><?php echo esc_html( $beginner_lead ); ?></p>
-							<?php endif; ?>
-
+							<?php if ( '' !== $beginner_title ) : ?><h2><?php echo esc_html( $beginner_title ); ?></h2><?php endif; ?>
+							<?php if ( '' !== $beginner_lead ) : ?><p class="lead"><?php echo esc_html( $beginner_lead ); ?></p><?php endif; ?>
 							<?php if ( ! empty( $beginner_points ) ) : ?>
-								<ul class="plain-checks">
-									<?php foreach ( $beginner_points as $point ) : ?>
-										<li><?php echo esc_html( $point ); ?></li>
-									<?php endforeach; ?>
-								</ul>
+								<ul class="plain-checks"><?php foreach ( $beginner_points as $point ) : ?><li><?php echo esc_html( $point ); ?></li><?php endforeach; ?></ul>
 							<?php endif; ?>
-
-							<?php if ( '' !== $beginner_blog_label && '' !== $blog_url ) : ?>
-								<a class="button button--walnut" href="<?php echo esc_url( $blog_url ); ?>">
-									<?php echo esc_html( $beginner_blog_label ); ?>
-								</a>
-							<?php endif; ?>
+							<?php if ( '' !== $beginner_blog_label && '' !== $blog_url ) : ?><a class="button button--walnut" href="<?php echo esc_url( $blog_url ); ?>"><?php echo esc_html( $beginner_blog_label ); ?></a><?php endif; ?>
 						</div>
 					<?php endif; ?>
-
 					<?php if ( $beginner_image_id ) : ?>
 						<div class="beginner-v4__media reveal">
-							<?php
-							echo wp_get_attachment_image(
-								$beginner_image_id,
-								'large',
-								false,
-								array(
-									'loading'  => 'lazy',
-									'decoding' => 'async',
-									'sizes'    => '(max-width: 1024px) calc(100vw - 44px), 50vw',
-								)
-							); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							?>
+							<?php echo wp_get_attachment_image( $beginner_image_id, 'large', false, array( 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '(max-width: 1024px) calc(100vw - 44px), 50vw' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</div>
 					<?php endif; ?>
-
 				</div>
 			</section>
 		<?php endif; ?>
@@ -356,25 +337,30 @@ $show_final    =
 				<div class="container">
 					<?php if ( '' !== $admin_title || '' !== $admin_intro ) : ?>
 						<div class="section-heading reveal">
-							<?php if ( '' !== $admin_title ) : ?>
-								<div><h2><?php echo esc_html( $admin_title ); ?></h2></div>
-							<?php endif; ?>
-							<?php if ( '' !== $admin_intro ) : ?>
-								<p><?php echo esc_html( $admin_intro ); ?></p>
-							<?php endif; ?>
+							<?php if ( '' !== $admin_title ) : ?><div><h2><?php echo esc_html( $admin_title ); ?></h2></div><?php endif; ?>
+							<?php if ( '' !== $admin_intro ) : ?><p><?php echo esc_html( $admin_intro ); ?></p><?php endif; ?>
 						</div>
 					<?php endif; ?>
-
 					<?php if ( ! empty( $admin_cards ) ) : ?>
 						<div class="cards-grid cards-grid--three">
-							<?php foreach ( $admin_cards as $card ) : ?>
-								<article class="card reveal">
-									<div class="card__body">
-										<h3><?php echo esc_html( $card['title'] ); ?></h3>
-										<p><?php echo esc_html( $card['text'] ); ?></p>
-									</div>
-								</article>
-							<?php endforeach; ?>
+							<?php foreach ( $admin_cards as $card ) : ?><article class="card reveal"><div class="card__body"><h3><?php echo esc_html( $card['title'] ); ?></h3><p><?php echo esc_html( $card['text'] ); ?></p></div></article><?php endforeach; ?>
+						</div>
+					<?php endif; ?>
+				</div>
+			</section>
+		<?php endif; ?>
+
+		<?php if ( $show_location ) : ?>
+			<section class="section section--dark">
+				<div class="container">
+					<div class="section-heading reveal">
+						<div><h2><?php echo esc_html( $location_title ); ?></h2></div>
+						<?php if ( '' !== $location_copy ) : ?><p><?php echo esc_html( $location_copy ); ?></p><?php endif; ?>
+					</div>
+					<?php if ( '' !== $two_gis_url || '' !== $yandex_url ) : ?>
+						<div class="contact-actions reveal">
+							<?php if ( '' !== $two_gis_url ) : ?><a class="button button--primary" href="<?php echo esc_url( $two_gis_url ); ?>" rel="noopener" target="_blank">Открыть в 2ГИС</a><?php endif; ?>
+							<?php if ( '' !== $yandex_url ) : ?><a class="button button--light" href="<?php echo esc_url( $yandex_url ); ?>" rel="noopener" target="_blank">Яндекс Карты</a><?php endif; ?>
 						</div>
 					<?php endif; ?>
 				</div>
@@ -387,32 +373,14 @@ $show_final    =
 					<div class="final-cta-v4__panel reveal">
 						<?php if ( '' !== $final_title || '' !== $final_text ) : ?>
 							<div>
-								<?php if ( '' !== $final_title ) : ?>
-									<h2><?php echo esc_html( $final_title ); ?></h2>
-								<?php endif; ?>
-								<?php if ( '' !== $final_text ) : ?>
-									<p><?php echo esc_html( $final_text ); ?></p>
-								<?php endif; ?>
+								<?php if ( '' !== $final_title ) : ?><h2><?php echo esc_html( $final_title ); ?></h2><?php endif; ?>
+								<?php if ( '' !== $final_text ) : ?><p><?php echo esc_html( $final_text ); ?></p><?php endif; ?>
 							</div>
 						<?php endif; ?>
-
 						<?php if ( '' !== $booking_label || ( '' !== $final_contacts_label && '' !== $contacts_url ) ) : ?>
 							<div class="final-cta-v4__actions">
-								<?php if ( '' !== $booking_label ) : ?>
-									<button
-										class="button button--primary"
-										data-ceremony="first"
-										data-modal-open
-										data-source="ceremony-page-final"
-										type="button"
-									><?php echo esc_html( $booking_label ); ?></button>
-								<?php endif; ?>
-
-								<?php if ( '' !== $final_contacts_label && '' !== $contacts_url ) : ?>
-									<a class="button button--light" href="<?php echo esc_url( $contacts_url ); ?>">
-										<?php echo esc_html( $final_contacts_label ); ?>
-									</a>
-								<?php endif; ?>
+								<?php if ( '' !== $booking_label ) : ?><button class="button button--primary" data-ceremony="first" data-modal-open data-source="ceremony-page-final" type="button"><?php echo esc_html( $booking_label ); ?></button><?php endif; ?>
+								<?php if ( '' !== $final_contacts_label && '' !== $contacts_url ) : ?><a class="button button--light" href="<?php echo esc_url( $contacts_url ); ?>"><?php echo esc_html( $final_contacts_label ); ?></a><?php endif; ?>
 							</div>
 						<?php endif; ?>
 					</div>
