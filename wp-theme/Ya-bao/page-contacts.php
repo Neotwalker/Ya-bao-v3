@@ -148,10 +148,20 @@ $show_features     = $features_eyebrow || $features_title || $features_intro || 
 									<?php if ( ! empty( $social_links ) ) : ?>
 										<li>
 											<small>Социальные сети</small>
-											<?php foreach ( $social_links as $index => $social ) : ?>
-												<?php if ( $index > 0 ) : ?><span aria-hidden="true"> · </span><?php endif; ?>
-												<a href="<?php echo esc_url( $social['url'] ); ?>" rel="noopener" target="_blank"><?php echo esc_html( $social['label'] ); ?></a>
-											<?php endforeach; ?>
+											<div class="header-socials">
+												<?php foreach ( $social_links as $social ) : ?>
+													<?php $icon = function_exists( 'yabao_site_social_icon_html' ) ? yabao_site_social_icon_html( $social ) : ''; ?>
+													<?php if ( '' !== $icon ) : ?>
+														<a
+															aria-label="<?php echo esc_attr( $social['label'] ); ?>"
+															class="social-link"
+															href="<?php echo esc_url( $social['url'] ); ?>"
+															rel="noopener"
+															target="_blank"
+														><?php echo $icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
+													<?php endif; ?>
+												<?php endforeach; ?>
+											</div>
 										</li>
 									<?php endif; ?>
 								</ul>
