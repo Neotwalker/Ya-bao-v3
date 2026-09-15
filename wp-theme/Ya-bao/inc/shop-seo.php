@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_SEO_SITEMAP_RULES_VERSION = '2026-09-15-1';
+const YABAO_SEO_SITEMAP_RULES_VERSION = '2026-09-15-2';
 
 /**
  * Return the current request path without query parameters.
@@ -324,13 +324,25 @@ function yabao_seo_utility_page_ids(): array {
 
 /**
  * Keep redirecting/noindex utility pages out of Rank Math's page sitemap.
+ *
+ * Rank Math builds sitemap rows with a direct SQL query, so $object can be a
+ * plain database object rather than WP_Post. Inspect the stable fields instead
+ * of requiring a concrete WP_Post instance.
  */
 function yabao_seo_rank_math_sitemap_entry( $url, string $type, $object ) {
 	if (
 		'post' !== $type
-		|| ! $object instanceof WP_Post
-		|| 'page' !== $object->post_type
+		|| ! is_object( $object )
+		|| empty( $object->ID )
 	) {
+		return $url;
+	}
+
+	$post_type = isset( $object->post_type )
+		? (string) $object->post_type
+		: (string) get_post_type( (int) $object->ID );
+
+	if ( 'page' !== $post_type ) {
 		return $url;
 	}
 
