@@ -9,6 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
+$events_archive_title = function_exists( 'yabao_site_text' )
+    ? yabao_site_text( 'events_archive_title' )
+    : '';
+
 while ( have_posts() ) :
     the_post();
 
@@ -35,7 +39,6 @@ while ( have_posts() ) :
             )
         )
         : '';
-
 
     $event_cta = function_exists( 'get_field' )
         ? get_field(
@@ -122,10 +125,10 @@ while ( have_posts() ) :
                             </a>
                         </li>
 
-                        <?php if ( $events_url ) : ?>
+                        <?php if ( $events_url && '' !== $events_archive_title ) : ?>
                             <li>
                                 <a href="<?php echo esc_url( $events_url ); ?>">
-                                    Мероприятия
+                                    <?php echo esc_html( $events_archive_title ); ?>
                                 </a>
                             </li>
                         <?php endif; ?>

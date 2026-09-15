@@ -1,0 +1,49 @@
+{
+    "key": "group_yabao_events_archive",
+    "title": "Афиша — архив",
+    "fields": [
+        {
+            "key": "field_yabao_events_archive_title",
+            "label": "Заголовок архива",
+            "name": "events_archive_title",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_events_archive_eyebrow",
+            "label": "Подпись списка",
+            "name": "events_archive_eyebrow",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        },
+        {
+            "key": "field_yabao_events_archive_list_title",
+            "label": "Заголовок списка",
+            "name": "events_archive_list_title",
+            "type": "text",
+            "required": 0,
+            "default_value": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "yabao-events-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Редакторский shell архива /events/. Пустые поля не имеют fallback; данные конкретных событий остаются в группе «Событие — данные афиши».",
+    "show_in_rest": 0,
+    "modified": 1789447800
+}

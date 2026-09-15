@@ -11,6 +11,18 @@ get_header();
 
 $today = current_time( 'Y-m-d' );
 
+$archive_title = function_exists( 'yabao_site_text' )
+    ? yabao_site_text( 'events_archive_title' )
+    : '';
+
+$archive_eyebrow = function_exists( 'yabao_site_text' )
+    ? yabao_site_text( 'events_archive_eyebrow' )
+    : '';
+
+$archive_list_title = function_exists( 'yabao_site_text' )
+    ? yabao_site_text( 'events_archive_list_title' )
+    : '';
+
 $events = new WP_Query(
     array(
         'post_type'      => 'event',
@@ -59,6 +71,7 @@ function yabao_event_archive_date( int $post_id ): string {
 ?>
 <main id="main-content">
 
+<?php if ( '' !== $archive_title ) : ?>
 <section class="section section--dark section--compact inner-hero">
     <div class="container inner-hero__grid">
         <div>
@@ -73,15 +86,18 @@ function yabao_event_archive_date( int $post_id ): string {
                         </a>
                     </li>
                     <li>
-                        <span aria-current="page">Мероприятия</span>
+                        <span aria-current="page">
+                            <?php echo esc_html( $archive_title ); ?>
+                        </span>
                     </li>
                 </ol>
             </nav>
 
-            <h1>Мероприятия</h1>
+            <h1><?php echo esc_html( $archive_title ); ?></h1>
         </div>
     </div>
 </section>
+<?php endif; ?>
 
 <?php if ( $events->have_posts() ) : ?>
 <section
@@ -90,12 +106,21 @@ function yabao_event_archive_date( int $post_id ): string {
 >
     <div class="container">
 
-        <div class="section-heading reveal">
-            <div>
-                <p class="eyebrow">Афиша</p>
-                <h2>События и встречи</h2>
+        <?php if ( '' !== $archive_eyebrow || '' !== $archive_list_title ) : ?>
+            <div class="section-heading reveal">
+                <div>
+                    <?php if ( '' !== $archive_eyebrow ) : ?>
+                        <p class="eyebrow">
+                            <?php echo esc_html( $archive_eyebrow ); ?>
+                        </p>
+                    <?php endif; ?>
+
+                    <?php if ( '' !== $archive_list_title ) : ?>
+                        <h2><?php echo esc_html( $archive_list_title ); ?></h2>
+                    <?php endif; ?>
+                </div>
             </div>
-        </div>
+        <?php endif; ?>
 
         <div class="events-list">
             <?php

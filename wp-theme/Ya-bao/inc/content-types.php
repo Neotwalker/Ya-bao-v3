@@ -58,4 +58,27 @@ function yabao_register_event_post_type(): void {
 }
 add_action( 'init', 'yabao_register_event_post_type' );
 
+/**
+ * Event archive editorial settings live in a dedicated ACF options subpage.
+ * Event post data remains in the existing per-event ACF group.
+ */
+function yabao_register_event_settings_page(): void {
+    if ( ! function_exists( 'acf_add_options_sub_page' ) ) {
+        return;
+    }
+
+    acf_add_options_sub_page(
+        array(
+            'page_title'  => 'Настройки афиши',
+            'menu_title'  => 'Афиша',
+            'menu_slug'   => 'yabao-events-settings',
+            'parent_slug' => 'yabao-global-settings',
+            'capability'  => 'edit_theme_options',
+            'redirect'    => false,
+            'post_id'     => 'option',
+        )
+    );
+}
+add_action( 'acf/init', 'yabao_register_event_settings_page', 10 );
+
 require_once get_template_directory() . '/inc/shop-seo.php';
