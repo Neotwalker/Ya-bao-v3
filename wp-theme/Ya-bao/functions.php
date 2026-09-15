@@ -249,6 +249,25 @@ function yabao_redirect_legacy_product_category_urls(): void {
 }
 add_action( 'template_redirect', 'yabao_redirect_legacy_product_category_urls', 5 );
 
+function yabao_preserve_shop_category_filter_url( $redirect_url, string $requested_url ) {
+	if (
+		! yabao_woocommerce_active()
+		|| empty( $_GET['product_cat'] )
+	) {
+		return $redirect_url;
+	}
+
+	$request_path = (string) wp_parse_url( $requested_url, PHP_URL_PATH );
+	$shop_path    = (string) wp_parse_url( yabao_wc_page_url( 'shop' ), PHP_URL_PATH );
+
+	if ( untrailingslashit( $request_path ) === untrailingslashit( $shop_path ) ) {
+		return false;
+	}
+
+	return $redirect_url;
+}
+add_filter( 'redirect_canonical', 'yabao_preserve_shop_category_filter_url', 10, 2 );
+
 function yabao_is_shop_context(): bool {
 	return yabao_woocommerce_active() && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() || is_checkout() );
 }
