@@ -187,13 +187,76 @@ function yabao_body_classes( array $classes ): array {
 add_filter( 'body_class', 'yabao_body_classes' );
 
 function yabao_wp_robots( array $robots ): array {
-	if ( yabao_woocommerce_active() && ( is_cart() || is_checkout() || is_account_page() ) ) {
+	$has_product_category_filter =
+		isset( $_GET['product_cat'] )
+		&& '' !== sanitize_title( wp_unslash( $_GET['product_cat'] ) );
+
+	if (
+		yabao_woocommerce_active()
+		&& (
+			is_cart()
+			|| is_checkout()
+			|| is_account_page()
+			|| is_product_category()
+			|| $has_product_category_filter
+		)
+	) {
 		$robots['noindex'] = true;
 		$robots['follow']  = true;
 	}
 	return $robots;
 }
 add_filter( 'wp_robots', 'yabao_wp_robots' );
+
+function yabao_product_category_filter_url( WP_Term $term ): string {
+	return add_query_arg(
+		'product_cat',
+		$term->slug,
+		yabao_wc_page_url( 'shop' )
+	);
+}
+
+function yabao_product_category_term_link( string $term_link, WP_Term $term, string $taxonomy ): string {
+	if ( 'product_cat' !== $taxonomy || ! yabao_woocommerce_active() ) {
+		return $term_link;
+	}
+
+	return yabao_product_category_filter_url( $term );
+}
+add_filter( 'term_link', 'yabao_product_category_term_link', 10, 3 );
+
+function yabao_redirect_legacy_product_category_urls(): void {
+	if ( ! yabao_woocommerce_active() ) {
+		return;
+	}
+
+	if ( is_page( 'category' ) ) {
+		wp_safe_redirect( yabao_wc_page_url( 'shop' ), 301 );
+		exit;
+	}
+
+	if ( ! is_product_category() ) {
+		return;
+	}
+
+	$term = get_queried_object();
+	if ( ! $term instanceof WP_Term ) {
+		return;
+	}
+
+	$request_path = isset( $_SERVER['REQUEST_URI'] )
+		? (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH )
+		: '';
+	$shop_path = (string) wp_parse_url( yabao_wc_page_url( 'shop' ), PHP_URL_PATH );
+
+	if ( untrailingslashit( $request_path ) === untrailingslashit( $shop_path ) ) {
+		return;
+	}
+
+	wp_safe_redirect( yabao_product_category_filter_url( $term ), 301 );
+	exit;
+}
+add_action( 'template_redirect', 'yabao_redirect_legacy_product_category_urls', 5 );
 
 function yabao_is_shop_context(): bool {
 	return yabao_woocommerce_active() && ( is_shop() || is_product_taxonomy() || is_product() || is_cart() || is_checkout() );
