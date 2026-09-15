@@ -7,6 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+const YABAO_SEO_SITEMAP_RULES_VERSION = '2026-09-15-1';
+
 /**
  * Return the current request path without query parameters.
  */
@@ -175,18 +177,10 @@ add_filter(
 );
 
 /**
- * Filtered catalog states consolidate canonical signals to the clean shop URL.
+ * Filter states are explicitly noindex. Do not force a second canonical signal
+ * on top of that policy; Rank Math may intentionally omit canonical output for
+ * noindex requests. The clean /shop/ page keeps its normal self-canonical.
  */
-function yabao_seo_shop_filter_rank_math_canonical( string $canonical ): string {
-	return yabao_seo_is_shop_filter_state()
-		? yabao_wc_page_url( 'shop' )
-		: $canonical;
-}
-add_filter(
-	'rank_math/frontend/canonical',
-	'yabao_seo_shop_filter_rank_math_canonical',
-	20
-);
 
 /**
  * Do not let WordPress canonicalize public /shop/ filter states back to native
@@ -287,69 +281,6 @@ add_filter(
 );
 
 /**
- * Keep redirecting/noindex utility pages out of Rank Math's page sitemap.
- */
-function yabao_seo_rank_math_sitemap_entry( $url, string $type, $object ) {
-	if (
-		'post' !== $type
-		|| ! $object instanceof WP_Post
-		|| 'page' !== $object->post_type
-	) {
-		return $url;
-	}
-
-	$page_id   = (int) $object->ID;
-	$page_path = trim( (string) get_page_uri( $page_id ), '/' );
-
-	$utility_ids = array();
-	if ( function_exists( 'wc_get_page_id' ) ) {
-		foreach ( array( 'cart', 'checkout', 'myaccount' ) as $wc_page ) {
-			$wc_page_id = (int) wc_get_page_id( $wc_page );
-			if ( $wc_page_id > 0 ) {
-				$utility_ids[] = $wc_page_id;
-			}
-		}
-	}
-
-	$excluded_paths = array(
-		'category',
-		'cart',
-		'checkout',
-		'my-account',
-		'order-success',
-		'order-failed',
-	);
-
-	if (
-		in_array( $page_id, $utility_ids, true )
-		|| in_array( $page_path, $excluded_paths, true )
-	) {
-		return false;
-	}
-
-	return $url;
-}
-add_filter(
-	'rank_math/sitemap/entry',
-	'yabao_seo_rank_math_sitemap_entry',
-	20,
-	3
-);
-
-/**
- * If Rank Math is disabled, WordPress core resumes serving wp-sitemap.xml.
- * Keep the same taxonomy policy there as well.
- */
-function yabao_seo_core_sitemap_taxonomies( array $taxonomies ): array {
-	unset( $taxonomies['product_cat'] );
-	return $taxonomies;
-}
-add_filter(
-	'wp_sitemaps_taxonomies',
-	'yabao_seo_core_sitemap_taxonomies'
-);
-
-/**
  * Resolve utility page IDs for sitemap exclusions without depending solely on
  * WooCommerce page assignments, which can be incomplete on staging/local DBs.
  */
@@ -390,6 +321,85 @@ function yabao_seo_utility_page_ids(): array {
 		)
 	);
 }
+
+/**
+ * Keep redirecting/noindex utility pages out of Rank Math's page sitemap.
+ */
+function yabao_seo_rank_math_sitemap_entry( $url, string $type, $object ) {
+	if (
+		'post' !== $type
+		|| ! $object instanceof WP_Post
+		|| 'page' !== $object->post_type
+	) {
+		return $url;
+	}
+
+	return in_array(
+		(int) $object->ID,
+		yabao_seo_utility_page_ids(),
+		true
+	) ? false : $url;
+}
+add_filter(
+	'rank_math/sitemap/entry',
+	'yabao_seo_rank_math_sitemap_entry',
+	20,
+	3
+);
+
+/**
+ * Rank Math caches generated XML. After sitemap routing rules change, clear
+ * that cache once so an old page-sitemap.xml cannot survive the deployment.
+ */
+function yabao_seo_maybe_invalidate_rank_math_sitemap_cache(): void {
+	if (
+		YABAO_SEO_SITEMAP_RULES_VERSION
+		=== get_option( 'yabao_seo_sitemap_rules_version', '' )
+	) {
+		return;
+	}
+
+	if ( ! class_exists( 'RankMath\\Sitemap\\Cache' ) ) {
+		return;
+	}
+
+	try {
+		\RankMath\Sitemap\Cache::invalidate_storage();
+	} catch ( ArgumentCountError $error ) {
+		try {
+			\RankMath\Sitemap\Cache::invalidate_storage( 'page' );
+			\RankMath\Sitemap\Cache::invalidate_storage( 'product_cat' );
+		} catch ( Throwable $fallback_error ) {
+			return;
+		}
+	} catch ( Throwable $error ) {
+		return;
+	}
+
+	update_option(
+		'yabao_seo_sitemap_rules_version',
+		YABAO_SEO_SITEMAP_RULES_VERSION,
+		false
+	);
+}
+add_action(
+	'init',
+	'yabao_seo_maybe_invalidate_rank_math_sitemap_cache',
+	99
+);
+
+/**
+ * If Rank Math is disabled, WordPress core resumes serving wp-sitemap.xml.
+ * Keep the same taxonomy policy there as well.
+ */
+function yabao_seo_core_sitemap_taxonomies( array $taxonomies ): array {
+	unset( $taxonomies['product_cat'] );
+	return $taxonomies;
+}
+add_filter(
+	'wp_sitemaps_taxonomies',
+	'yabao_seo_core_sitemap_taxonomies'
+);
 
 /**
  * Exclude utility pages from the WordPress core page sitemap too.
