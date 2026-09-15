@@ -3,7 +3,7 @@
  * Stage 68: delivery and pickup rules.
  *
  * Real commercial terms supplied by the store owner:
- * - pickup: Chelyabinsk, Kirova 94, 12:00-01:00;
+ * - pickup address and opening hours come from Global ACF settings;
  * - carriers: Avito Delivery, CDEK, 5Post, Russian Post;
  * - free carrier delivery from the admin-configured threshold (10,000 RUB by default);
  * - delivery time: usually 2-10 days;
@@ -255,7 +255,7 @@ function yabao_delivery_add_fallback_rates( array $rates, array $package ): arra
 
 	$pickup = new WC_Shipping_Rate(
 		'yabao_pickup',
-		'Самовывоз — Кирова, 94',
+		'Самовывоз',
 		0,
 		array(),
 		'yabao_pickup',
@@ -364,9 +364,27 @@ add_action( 'woocommerce_after_calculate_totals', 'yabao_delivery_prepare_checko
 function yabao_delivery_rate_detail( WC_Shipping_Rate $rate, float $goods_total ): string {
 	$id = (string) $rate->get_id();
 
-	if ( yabao_delivery_is_pickup_method( $id ) ) {
-		return 'Челябинск, ул. Кирова, 94 · ежедневно 12:00–01:00';
-	}
+    if ( yabao_delivery_is_pickup_method( $id ) ) {
+        $parts = array();
+
+        if ( function_exists( 'yabao_site_group_text' ) ) {
+            $address = yabao_site_group_text( 'address', 'display' );
+
+            if ( '' !== $address ) {
+                $parts[] = $address;
+            }
+        }
+
+        if ( function_exists( 'yabao_site_text' ) ) {
+            $hours = yabao_site_text( 'opening_hours_text' );
+
+            if ( '' !== $hours ) {
+                $parts[] = $hours;
+            }
+        }
+
+        return implode( ' · ', $parts );
+    }
 
 	if ( yabao_delivery_is_manual_carrier_method( $id ) ) {
 		if ( $goods_total >= YABAO_FREE_SHIPPING_THRESHOLD ) {

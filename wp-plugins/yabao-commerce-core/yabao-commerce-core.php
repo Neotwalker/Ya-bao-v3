@@ -107,7 +107,7 @@ function yabao_commerce_method_needs_quote( string $method_id, ?float $goods_tot
 
 function yabao_commerce_method_title( string $method_id ): string {
 	$labels = array(
-		'yabao_pickup'                => 'Самовывоз — Кирова, 94',
+		'yabao_pickup'                => 'Самовывоз',
 		'yabao_delivery_avito'        => 'Авито Доставка',
 		'yabao_delivery_cdek'         => 'СДЭК',
 		'yabao_delivery_5post'        => '5Post',

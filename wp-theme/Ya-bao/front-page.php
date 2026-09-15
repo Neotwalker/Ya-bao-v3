@@ -2136,10 +2136,17 @@ $has_guides_heading =
 </div>
 </div>
 </section>
+<?php
+$final_cta_address = function_exists( 'yabao_site_group_text' )
+    ? yabao_site_group_text( 'address', 'display' )
+    : '';
+?>
 <section class="section final-cta-v4" id="contacts">
 <div class="container final-cta-v4__panel reveal">
 <div>
-<p class="eyebrow">Кирова, 94</p>
+<?php if ( '' !== $final_cta_address ) : ?>
+<p class="eyebrow"><?php echo esc_html( $final_cta_address ); ?></p>
+<?php endif; ?>
 <h2>Зайти на чай или выбрать церемонию</h2>
 <p>Оставьте заявку, чтобы уточнить свободное время и формат встречи. Для маршрута используйте официальные карточки на картах.</p>
 </div>
