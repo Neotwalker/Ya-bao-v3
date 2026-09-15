@@ -371,3 +371,14 @@
 		margin-bottom:12px
 	}
 }
+
+/* WordPress footer legal menu markup. */
+.footer-bottom__links{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.footer-bottom__links>li{
+  margin:0;
+  padding:0;
+}
