@@ -216,15 +216,6 @@ function yabao_product_category_filter_url( WP_Term $term ): string {
 	);
 }
 
-function yabao_product_category_term_link( string $term_link, WP_Term $term, string $taxonomy ): string {
-	if ( 'product_cat' !== $taxonomy || ! yabao_woocommerce_active() ) {
-		return $term_link;
-	}
-
-	return yabao_product_category_filter_url( $term );
-}
-add_filter( 'term_link', 'yabao_product_category_term_link', 10, 3 );
-
 function yabao_redirect_legacy_product_category_urls(): void {
 	if ( ! yabao_woocommerce_active() ) {
 		return;
