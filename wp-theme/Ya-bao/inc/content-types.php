@@ -57,3 +57,5 @@ function yabao_register_event_post_type(): void {
     );
 }
 add_action( 'init', 'yabao_register_event_post_type' );
+
+require_once get_template_directory() . '/inc/shop-seo.php';
