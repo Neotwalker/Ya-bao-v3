@@ -19,6 +19,13 @@ add_filter(
 	}
 );
 
+wp_enqueue_style(
+	'yabao-sitemap',
+	yabao_asset_url( 'css/sitemap.css' ),
+	array( 'yabao-pages' ),
+	yabao_asset_version( 'css/sitemap.css' )
+);
+
 get_header();
 
 $current_page_id = get_queried_object_id();
@@ -83,9 +90,8 @@ foreach ( $published_pages as $published_page ) {
 	}
 
 	/*
-	 * The legacy category landing page is intentionally excluded from the
-	 * human-readable sitemap until the separate product-category URL decision
-	 * in Stage 68.2G is closed.
+	 * The legacy category landing page is intentionally excluded. Product
+	 * categories are represented as filter states inside /shop/.
 	 */
 	if ( 'category' === $published_page->post_name ) {
 		continue;
@@ -133,7 +139,7 @@ $event_posts = post_type_exists( 'event' )
 					</nav>
 					<h1><?php the_title(); ?></h1>
 				</div>
-				<p class="inner-hero__text">Все основные разделы, материалы блога и служебные страницы «Я Бао Завари» в одном месте.</p>
+				<p class="inner-hero__text">Все основные разделы, материалы блога, афиша и юридическая информация «Я Бао Завари» в одном месте.</p>
 			</div>
 		</section>
 
@@ -144,31 +150,51 @@ $event_posts = post_type_exists( 'event' )
 						<p class="eyebrow">Навигация</p>
 						<h2>Все страницы сайта</h2>
 					</div>
-					<p>Можно сразу перейти к нужному разделу, статье или юридической информации.</p>
+					<p>Можно сразу перейти к нужному разделу, статье, мероприятию или юридической информации.</p>
 				</div>
 
-				<div class="sitemap-grid">
-					<?php if ( $main_pages || $event_archive_url ) : ?>
-						<section class="sitemap-card reveal">
+				<div class="sitemap-grid sitemap-grid--full">
+					<?php if ( $main_pages || $event_archive_url || $legal_pages ) : ?>
+						<section class="sitemap-card sitemap-card--full reveal">
 							<h3>Основные разделы</h3>
-							<ul>
-								<?php foreach ( $main_pages as $main_page ) : ?>
-									<li>
-										<a href="<?php echo esc_url( get_permalink( $main_page ) ); ?>">
-											<?php echo esc_html( get_the_title( $main_page ) ); ?>
-										</a>
-									</li>
-								<?php endforeach; ?>
 
-								<?php if ( $event_archive_url ) : ?>
-									<li><a href="<?php echo esc_url( $event_archive_url ); ?>">Мероприятия</a></li>
+							<div class="sitemap-card__groups">
+								<div class="sitemap-card__group">
+									<ul class="sitemap-card__columns">
+										<?php foreach ( $main_pages as $main_page ) : ?>
+											<li>
+												<a href="<?php echo esc_url( get_permalink( $main_page ) ); ?>">
+													<?php echo esc_html( get_the_title( $main_page ) ); ?>
+												</a>
+											</li>
+										<?php endforeach; ?>
+
+										<?php if ( $event_archive_url ) : ?>
+											<li><a href="<?php echo esc_url( $event_archive_url ); ?>">Мероприятия</a></li>
+										<?php endif; ?>
+									</ul>
+								</div>
+
+								<?php if ( $legal_pages ) : ?>
+									<div class="sitemap-card__group sitemap-card__group--legal">
+										<h4>Юридическая информация</h4>
+										<ul class="sitemap-card__columns">
+											<?php foreach ( $legal_pages as $legal_page ) : ?>
+												<li>
+													<a href="<?php echo esc_url( get_permalink( $legal_page ) ); ?>">
+														<?php echo esc_html( get_the_title( $legal_page ) ); ?>
+													</a>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+									</div>
 								<?php endif; ?>
-							</ul>
+							</div>
 						</section>
 					<?php endif; ?>
 
 					<?php if ( $blog_page > 0 || $blog_posts ) : ?>
-						<section class="sitemap-card sitemap-card--wide reveal">
+						<section class="sitemap-card sitemap-card--full reveal">
 							<h3>Блог</h3>
 							<ul class="sitemap-card__columns">
 								<?php if ( $blog_page > 0 ) : ?>
@@ -187,28 +213,13 @@ $event_posts = post_type_exists( 'event' )
 					<?php endif; ?>
 
 					<?php if ( $event_posts ) : ?>
-						<section class="sitemap-card reveal">
+						<section class="sitemap-card sitemap-card--full reveal">
 							<h3>Афиша</h3>
-							<ul>
+							<ul class="sitemap-card__columns">
 								<?php foreach ( $event_posts as $event_post ) : ?>
 									<li>
 										<a href="<?php echo esc_url( get_permalink( $event_post ) ); ?>">
 											<?php echo esc_html( get_the_title( $event_post ) ); ?>
-										</a>
-									</li>
-								<?php endforeach; ?>
-							</ul>
-						</section>
-					<?php endif; ?>
-
-					<?php if ( $legal_pages ) : ?>
-						<section class="sitemap-card reveal">
-							<h3>Юридическая информация</h3>
-							<ul>
-								<?php foreach ( $legal_pages as $legal_page ) : ?>
-									<li>
-										<a href="<?php echo esc_url( get_permalink( $legal_page ) ); ?>">
-											<?php echo esc_html( get_the_title( $legal_page ) ); ?>
 										</a>
 									</li>
 								<?php endforeach; ?>
