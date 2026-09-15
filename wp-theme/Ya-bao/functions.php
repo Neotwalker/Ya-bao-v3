@@ -15,6 +15,7 @@ require_once get_template_directory() . '/inc/product-importer.php';
 require_once get_template_directory() . '/inc/product-importer-admin.php';
 require_once get_template_directory() . '/inc/security-hardening.php';
 require_once get_template_directory() . '/inc/delivery.php';
+require_once get_template_directory() . '/inc/checkout-legal.php';
 require_once get_template_directory() . '/inc/acf-global.php';
 require_once get_template_directory() . '/inc/content-types.php';
 require_once get_template_directory() . '/inc/article-meta.php';
