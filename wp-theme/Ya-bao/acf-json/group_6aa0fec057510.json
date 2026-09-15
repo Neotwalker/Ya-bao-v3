@@ -28,7 +28,7 @@
             "name": "pickup_title",
             "aria-label": "",
             "type": "text",
-            "instructions": "",
+            "instructions": "Адрес и часы самовывоза берутся из глобальных настроек сайта.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -37,46 +37,6 @@
                 "id": ""
             },
             "default_value": "Самовывоз из чайной",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_6aa1004be05d9",
-            "label": "Адрес самовывоза",
-            "name": "pickup_address",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "Челябинск, ул. Кирова, 94",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_6aa1005de05da",
-            "label": "Время самовывоза",
-            "name": "pickup_hours",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "ежедневно с 12:00 до 01:00",
             "maxlength": "",
             "placeholder": "",
             "prepend": "",
@@ -179,7 +139,7 @@
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
-    "description": "",
+    "description": "Адрес, часы работы и ссылки на карты не дублируются здесь: они берутся из глобальных настроек сайта.",
     "show_in_rest": 0,
-    "modified": 1789038000
+    "modified": 1789440000
 }
