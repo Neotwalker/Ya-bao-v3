@@ -335,3 +335,91 @@ add_filter(
 	20,
 	3
 );
+
+/**
+ * If Rank Math is disabled, WordPress core resumes serving wp-sitemap.xml.
+ * Keep the same taxonomy policy there as well.
+ */
+function yabao_seo_core_sitemap_taxonomies( array $taxonomies ): array {
+	unset( $taxonomies['product_cat'] );
+	return $taxonomies;
+}
+add_filter(
+	'wp_sitemaps_taxonomies',
+	'yabao_seo_core_sitemap_taxonomies'
+);
+
+/**
+ * Resolve utility page IDs for sitemap exclusions without depending solely on
+ * WooCommerce page assignments, which can be incomplete on staging/local DBs.
+ */
+function yabao_seo_utility_page_ids(): array {
+	$page_ids = array();
+
+	if ( function_exists( 'wc_get_page_id' ) ) {
+		foreach ( array( 'cart', 'checkout', 'myaccount' ) as $wc_page ) {
+			$page_id = (int) wc_get_page_id( $wc_page );
+			if ( $page_id > 0 ) {
+				$page_ids[] = $page_id;
+			}
+		}
+	}
+
+	foreach (
+		array(
+			'category',
+			'cart',
+			'checkout',
+			'my-account',
+			'order-success',
+			'order-failed',
+		) as $page_path
+	) {
+		$page = get_page_by_path( $page_path, OBJECT, 'page' );
+		if ( $page instanceof WP_Post ) {
+			$page_ids[] = (int) $page->ID;
+		}
+	}
+
+	return array_values(
+		array_unique(
+			array_filter(
+				$page_ids,
+				static fn( int $page_id ): bool => $page_id > 0
+			)
+		)
+	);
+}
+
+/**
+ * Exclude utility pages from the WordPress core page sitemap too.
+ */
+function yabao_seo_core_sitemap_posts_query_args(
+	array $args,
+	string $post_type
+): array {
+	if ( 'page' !== $post_type ) {
+		return $args;
+	}
+
+	$existing = isset( $args['post__not_in'] )
+		? array_map( 'intval', (array) $args['post__not_in'] )
+		: array();
+
+	$args['post__not_in'] = array_values(
+		array_unique(
+			array_merge(
+				$existing,
+				yabao_seo_utility_page_ids()
+			)
+		)
+	);
+
+	return $args;
+}
+add_filter(
+	'wp_sitemaps_posts_query_args',
+	'yabao_seo_core_sitemap_posts_query_args',
+	20,
+	2
+);
