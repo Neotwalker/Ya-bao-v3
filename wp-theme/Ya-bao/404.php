@@ -1,25 +1,4 @@
 <?php
-/**
- * 404 template and centralized redirects for legacy page slugs.
- */
-
-global $wp;
-
-$legacy_page_redirects = array(
-	'privacy-policy' => 'privacy',
-);
-
-$request_path = isset( $wp->request ) ? trim( (string) $wp->request, '/' ) : '';
-
-if ( isset( $legacy_page_redirects[ $request_path ] ) ) {
-	$target = get_page_by_path( $legacy_page_redirects[ $request_path ], OBJECT, 'page' );
-
-	if ( $target instanceof WP_Post && 'publish' === $target->post_status ) {
-		wp_safe_redirect( get_permalink( $target ), 301, 'Ya Bao legacy page redirect' );
-		exit;
-	}
-}
-
 get_header();
 ?>
 <main id="main-content">
