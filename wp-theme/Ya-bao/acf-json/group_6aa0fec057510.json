@@ -16,7 +16,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Доставка по Челябинску и другим городам. Выберите удобный способ получения заказа.",
+            "default_value": "",
             "maxlength": "",
             "rows": "",
             "placeholder": "",
@@ -36,7 +36,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Самовывоз из чайной",
+            "default_value": "",
             "maxlength": "",
             "placeholder": "",
             "prepend": "",
@@ -56,7 +56,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Заказ можно забрать в чайной после подтверждения готовности.",
+            "default_value": "",
             "maxlength": "",
             "rows": "",
             "placeholder": "",
@@ -76,7 +76,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Доставка по России",
+            "default_value": "",
             "maxlength": "",
             "placeholder": "",
             "prepend": "",
@@ -96,7 +96,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Отправляем заказы через Авито Доставку, СДЭК, 5Post и Почту России.",
+            "default_value": "",
             "maxlength": "",
             "rows": "",
             "placeholder": "",
@@ -116,7 +116,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Обычно 2–10 дней в зависимости от города и службы доставки.",
+            "default_value": "",
             "maxlength": "",
             "placeholder": "",
             "prepend": "",
@@ -139,7 +139,7 @@
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
-    "description": "Адрес, часы работы и ссылки на карты не дублируются здесь: они берутся из глобальных настроек сайта.",
+    "description": "Адрес, часы работы и ссылки на карты не дублируются здесь: они берутся из глобальных настроек сайта. Редакторские поля не имеют runtime-дефолтов: пустое значение не подменяется текстом из Local JSON.",
     "show_in_rest": 0,
-    "modified": 1789443000
+    "modified": 1789443300
 }
