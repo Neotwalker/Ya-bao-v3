@@ -51,6 +51,10 @@
       return 'x5';
     }
 
+    if (method === 'yabao_delivery_russian_post') {
+      return 'rupost';
+    }
+
     return '';
   }
 
@@ -61,6 +65,10 @@
 
     if (provider === 'x5') {
       return 'yabao_delivery_5post';
+    }
+
+    if (provider === 'rupost') {
+      return 'yabao_delivery_russian_post';
     }
 
     return '';
