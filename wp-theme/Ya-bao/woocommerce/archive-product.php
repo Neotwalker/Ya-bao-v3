@@ -1,6 +1,14 @@
 <?php
 /** WooCommerce shop and product taxonomy archive. */
 defined( 'ABSPATH' ) || exit;
+
+wp_enqueue_style(
+	'yabao-shop-categories',
+	yabao_asset_url( 'css/shop-categories.css' ),
+	array( 'yabao-shop' ),
+	yabao_asset_version( 'css/shop-categories.css' )
+);
+
 get_header();
 
 global $wp_query;
@@ -33,7 +41,7 @@ $orderby_options = array(
 	'price'      => 'Сначала дешевле',
 	'price-desc' => 'Сначала дороже',
 );
-$active_filter_count = ( $current_cat ? 1 : 0 ) + ( 'menu_order' !== $current_order ? 1 : 0 );
+$active_filter_count = 'menu_order' !== $current_order ? 1 : 0;
 $preserved_args      = array();
 if ( $search ) {
 	$preserved_args['q'] = $search;
@@ -41,6 +49,7 @@ if ( $search ) {
 if ( 'menu_order' !== $current_order ) {
 	$preserved_args['orderby'] = $current_order;
 }
+$popular_terms = ! is_wp_error( $terms ) ? array_slice( $terms, 0, 3 ) : array();
 ?>
 <main id="main-content">
 	<section class="section section--dark section--compact inner-hero">
@@ -57,8 +66,53 @@ if ( 'menu_order' !== $current_order ) {
 		<div class="container">
 			<div class="section-heading"><div><p class="eyebrow">Каталог</p><h2>Чай, посуда и аксессуары</h2></div><p>Каталог работает на данных WooCommerce. Структуру товарных полей и весовых вариаций закрепим на следующем этапе.</p></div>
 
+			<?php if ( ! is_wp_error( $terms ) && $terms ) : ?>
+				<section class="shop-category-section" aria-labelledby="shop-categories-title">
+					<div class="shop-category-section__heading">
+						<div>
+							<p class="eyebrow">Категории</p>
+							<h3 id="shop-categories-title">Выберите раздел</h3>
+						</div>
+						<p>Категории открываются внутри магазина и сразу показывают подходящие товары.</p>
+					</div>
+
+					<nav class="shop-category-grid" aria-label="Категории товаров">
+						<a
+							class="shop-category-card<?php echo $current_cat ? '' : ' is-active'; ?>"
+							<?php echo $current_cat ? '' : 'aria-current="page"'; ?>
+							href="<?php echo esc_url( add_query_arg( $preserved_args, $shop_url ) ); ?>"
+						>
+							<strong>Все товары</strong>
+							<span>Весь каталог</span>
+						</a>
+
+						<?php foreach ( $terms as $term ) : ?>
+							<?php
+							$category_url = add_query_arg(
+								$preserved_args,
+								yabao_product_category_filter_url( $term )
+							);
+							$is_active = $current_cat === $term->slug;
+							?>
+							<a
+								class="shop-category-card<?php echo $is_active ? ' is-active' : ''; ?>"
+								<?php echo $is_active ? 'aria-current="page"' : ''; ?>
+								href="<?php echo esc_url( $category_url ); ?>"
+							>
+								<strong><?php echo esc_html( $term->name ); ?></strong>
+								<span>Смотреть товары</span>
+							</a>
+						<?php endforeach; ?>
+					</nav>
+				</section>
+			<?php endif; ?>
+
 			<div class="yabao-wc-catalog-shell" data-wc-catalog-shell aria-live="polite">
 			<form class="shop-catalog__controls yabao-wc-catalog-controls" action="<?php echo esc_url( $shop_url ); ?>" method="get" data-wc-catalog-controls>
+				<?php if ( $current_cat ) : ?>
+					<input type="hidden" name="product_cat" value="<?php echo esc_attr( $current_cat ); ?>" />
+				<?php endif; ?>
+
 				<label class="shop-control shop-control--search" for="shop-search">
 					<span class="shop-control__label">Поиск по названию</span>
 					<span class="shop-search-field">
@@ -69,21 +123,12 @@ if ( 'menu_order' !== $current_order ) {
 
 				<button class="shop-filters-toggle" type="button" data-wc-filters-toggle aria-expanded="false" aria-controls="shop-filter-panel">
 					<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10M14 4v6M7 14v6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg>
-					<span>Фильтры</span>
+					<span>Сортировка</span>
 					<span class="shop-filters-toggle__count"<?php echo $active_filter_count ? '' : ' hidden'; ?>><?php echo esc_html( (string) $active_filter_count ); ?></span>
 					<svg class="shop-filters-toggle__chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 				</button>
 
 				<div class="shop-filter-panel" id="shop-filter-panel" data-wc-filter-panel>
-					<label class="shop-control" for="shop-category">
-						<span class="shop-control__label">Категория</span>
-						<span class="shop-select-field"><select id="shop-category" name="product_cat" data-shop-category aria-controls="shop-grid" data-wc-auto-submit>
-							<option value="">Все категории</option>
-							<?php if ( ! is_wp_error( $terms ) ) : foreach ( $terms as $term ) : ?>
-								<option value="<?php echo esc_attr( $term->slug ); ?>"<?php selected( $current_cat, $term->slug ); ?>><?php echo esc_html( $term->name ); ?></option>
-							<?php endforeach; endif; ?>
-						</select></span>
-					</label>
 					<label class="shop-control" for="shop-sort">
 						<span class="shop-control__label">Сортировка</span>
 						<span class="shop-select-field"><select id="shop-sort" name="orderby" data-shop-sort aria-controls="shop-grid" data-wc-auto-submit>
@@ -95,20 +140,7 @@ if ( 'menu_order' !== $current_order ) {
 				</div>
 			</form>
 
-			<div class="shop-catalog__toolbar">
-				<div class="shop-filter-bar" role="group" aria-label="Категории магазина">
-					<a class="shop-filter<?php echo $current_cat ? '' : ' is-active'; ?>" data-wc-category=""<?php echo $current_cat ? '' : ' aria-current="page"'; ?> href="<?php echo esc_url( add_query_arg( $preserved_args, $shop_url ) ); ?>">Все</a>
-					<?php if ( ! is_wp_error( $terms ) ) : foreach ( $terms as $term ) :
-						$term_link = get_term_link( $term );
-						if ( is_wp_error( $term_link ) ) {
-							continue;
-						}
-						$term_link = add_query_arg( $preserved_args, $term_link );
-						$is_active = $current_cat === $term->slug;
-					?>
-						<a class="shop-filter<?php echo $is_active ? ' is-active' : ''; ?>" data-wc-category="<?php echo esc_attr( $term->slug ); ?>"<?php echo $is_active ? ' aria-current="page"' : ''; ?> href="<?php echo esc_url( $term_link ); ?>"><?php echo esc_html( $term->name ); ?></a>
-					<?php endforeach; endif; ?>
-				</div>
+			<div class="shop-catalog__toolbar shop-catalog__toolbar--summary-only">
 				<div class="shop-catalog__summary">
 					<p class="shop-result-count" aria-live="polite">Найдено: <?php echo esc_html( (string) (int) $wp_query->found_posts ); ?></p>
 					<?php if ( $search || $current_cat || 'menu_order' !== $current_order ) : ?><a class="shop-reset" href="<?php echo esc_url( $shop_url ); ?>">Сбросить</a><?php endif; ?>
@@ -134,9 +166,9 @@ if ( 'menu_order' !== $current_order ) {
 					<p>Информация о посещении чайной находится на <a href="<?php echo esc_url( home_url( '/' ) ); ?>">главной</a>, а формат чайной церемонии - на отдельной <a href="<?php echo esc_url( yabao_page_url( 'chaynaya-ceremoniya' ) ); ?>">странице церемонии</a>.</p>
 					<div class="shop-seo-links" aria-label="Популярные разделы магазина">
 						<a class="button button--outline-walnut" href="<?php echo esc_url( $shop_url ); ?>">Все товары</a>
-						<a class="button button--outline-walnut" href="<?php echo esc_url( add_query_arg( 'q', 'пуэр', $shop_url ) ); ?>">Пуэр</a>
-						<a class="button button--outline-walnut" href="<?php echo esc_url( add_query_arg( 'q', 'посуда', $shop_url ) ); ?>">Чайная посуда</a>
-						<a class="button button--outline-walnut" href="<?php echo esc_url( add_query_arg( 'q', 'аксессуар', $shop_url ) ); ?>">Аксессуары</a>
+						<?php foreach ( $popular_terms as $popular_term ) : ?>
+							<a class="button button--outline-walnut" href="<?php echo esc_url( yabao_product_category_filter_url( $popular_term ) ); ?>"><?php echo esc_html( $popular_term->name ); ?></a>
+						<?php endforeach; ?>
 					</div>
 				</div>
 			</div>
