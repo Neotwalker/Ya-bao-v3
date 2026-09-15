@@ -32,6 +32,16 @@ $utility_page_ids = array_filter(
 	)
 );
 
+/*
+ * Keep utility pages out of the human-readable sitemap even when WooCommerce
+ * page assignments are missing or incomplete in a local/staging database.
+ */
+$utility_page_paths = array(
+	'cart',
+	'checkout',
+	'my-account',
+);
+
 $blog_page = (int) get_option( 'page_for_posts' );
 if ( $blog_page <= 0 ) {
 	$blog_page_object = get_page_by_path( 'blog', OBJECT, 'page' );
@@ -54,8 +64,12 @@ $legal_pages = array();
 foreach ( $published_pages as $published_page ) {
 	$page_id       = (int) $published_page->ID;
 	$page_template = get_page_template_slug( $page_id );
+	$page_path     = trim( (string) get_page_uri( $page_id ), '/' );
 
-	if ( in_array( $page_id, $utility_page_ids, true ) ) {
+	if (
+		in_array( $page_id, $utility_page_ids, true )
+		|| in_array( $page_path, $utility_page_paths, true )
+	) {
 		continue;
 	}
 
