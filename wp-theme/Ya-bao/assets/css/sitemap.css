@@ -1,0 +1,34 @@
+/* Stage 68.2: human-readable sitemap layout. */
+.page-sitemap .sitemap-grid--full{
+  grid-template-columns:1fr;
+}
+.page-sitemap .sitemap-card--full{
+  grid-column:1/-1;
+}
+.page-sitemap .sitemap-card__groups{
+  display:grid;
+  gap:26px;
+}
+.page-sitemap .sitemap-card__group--legal{
+  padding-top:24px;
+  border-top:1px solid var(--color-line);
+}
+.page-sitemap .sitemap-card__group h4{
+  margin:0 0 16px;
+  font-size:clamp(20px,2vw,26px);
+}
+.page-sitemap .sitemap-card__columns{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+@media(max-width:960px){
+  .page-sitemap .sitemap-card__columns{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:640px){
+  .page-sitemap .sitemap-card__columns{
+    grid-template-columns:1fr;
+  }
+}
