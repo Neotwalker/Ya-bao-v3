@@ -126,9 +126,9 @@
     "location": [
         [
             {
-                "param": "page",
+                "param": "page_template",
                 "operator": "==",
-                "value": "46"
+                "value": "page-delivery.php"
             }
         ]
     ],
@@ -141,5 +141,5 @@
     "active": true,
     "description": "Адрес, часы работы и ссылки на карты не дублируются здесь: они берутся из глобальных настроек сайта.",
     "show_in_rest": 0,
-    "modified": 1789440000
+    "modified": 1789443000
 }
