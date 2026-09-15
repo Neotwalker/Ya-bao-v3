@@ -1,5 +1,8 @@
 <?php
 /**
+ * Template Name: Доставка и самовывоз
+ * Template Post Type: page
+ *
  * Delivery and pickup page.
  *
  * Editor-facing descriptive content comes from page ACF. Shared store contact
