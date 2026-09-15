@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ya Bao × ApiShip Adapter
  * Description: Companion layer between the official ApiShip WooCommerce plugin and the custom Ya Bao checkout.
- * Version: 0.2.0
+ * Version: 0.2.1
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * Requires Plugins: woocommerce
@@ -13,16 +13,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const YABAO_APISHIP_ADAPTER_VERSION = '0.2.0';
+const YABAO_APISHIP_ADAPTER_VERSION = '0.2.1';
 
 /**
  * Stage 68.1 keeps ApiShip as a third-party dependency. This adapter owns only
  * Ya Bao policy and compatibility glue around the official WooCommerce rates.
  */
 function yabao_apiship_threshold(): float {
-	return defined( 'YABAO_FREE_SHIPPING_THRESHOLD' )
-		? (float) YABAO_FREE_SHIPPING_THRESHOLD
-		: 5000.0;
+	if ( function_exists( 'yabao_commerce_threshold' ) ) {
+		return (float) yabao_commerce_threshold();
+	}
+
+	if ( defined( 'YABAO_FREE_SHIPPING_THRESHOLD' ) ) {
+		return max( 0.0, (float) YABAO_FREE_SHIPPING_THRESHOLD );
+	}
+
+	$value = get_option( 'yabao_free_shipping_threshold', 10000 );
+	return is_numeric( $value ) ? max( 0.0, (float) $value ) : 10000.0;
 }
 
 function yabao_apiship_package_goods_total( array $package ): float {
@@ -190,8 +197,9 @@ function yabao_apiship_provider_key( WC_Shipping_Rate $rate ): string {
 /** Carrier policy and provider allowlist. */
 function yabao_apiship_manual_provider_map(): array {
 	$map = array(
-		'yabao_delivery_cdek'  => 'cdek',
-		'yabao_delivery_5post' => 'x5',
+		'yabao_delivery_cdek'         => 'cdek',
+		'yabao_delivery_5post'        => 'x5',
+		'yabao_delivery_russian_post' => 'rupost',
 	);
 	return (array) apply_filters( 'yabao_apiship_manual_provider_map', $map );
 }
@@ -303,7 +311,7 @@ function yabao_apiship_keep_store_pickup( array $rates, array $package ): array 
 	if ( ! $has_apiship ) {
 		return $rates;
 	}
-	$pickup = new WC_Shipping_Rate( 'yabao_pickup', 'Самовывоз — Кирова, 94', 0, array(), 'yabao_pickup', 0 );
+	$pickup = new WC_Shipping_Rate( 'yabao_pickup', 'Самовывоз', 0, array(), 'yabao_pickup', 0 );
 	$pickup->add_meta_data( 'yabao_kind', 'pickup' );
 	return array( 'yabao_pickup' => $pickup ) + $rates;
 }
@@ -487,7 +495,11 @@ add_filter( 'woocommerce_package_rates', 'yabao_apiship_dedupe_rates', 127, 2 );
 
 /** Compact customer-facing labels. */
 function yabao_apiship_provider_names(): array {
-	$names = array( 'cdek' => 'СДЭК', 'x5' => '5Post' );
+	$names = array(
+		'cdek'   => 'СДЭК',
+		'x5'     => '5Post',
+		'rupost' => 'Почта России',
+	);
 	return (array) apply_filters( 'yabao_apiship_provider_names', $names );
 }
 
